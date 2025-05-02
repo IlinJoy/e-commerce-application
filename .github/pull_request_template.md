@@ -21,6 +21,7 @@ _(Check all that apply)_
 ## Self-Check
 - [ ] Title follows naming convention  
 - [ ] Tests pass, no merge conflicts 
+- [ ] Deploy Preview ready
 - [ ] Reviewers assigned
 
 ### 📸 Screenshots  
