@@ -27,7 +27,7 @@ const loginCustomer = async (email, password) => {
       grant_type: "password",
       username: email,
       password: password,
-      scope: "manage_my_quote_requests:frontend-first-project manage_my_payments:frontend-first-project manage_my_profile:frontend-first-project manage_my_quotes:frontend-first-project view_published_products:frontend-first-project manage_my_orders:frontend-first-project manage_my_shopping_lists:frontend-first-project",
+      scope: process.env.CLIENT_SCOPES!,
     }),
   });
 
