@@ -1,16 +1,14 @@
-import { PROJECT_KEY } from '../utils/constants'
-import { apiRoot } from './platformApi'
+import { ctpClient } from './sdkClient.js';
+import { PROJECT_KEY } from '../utils/constants.js';
 
 export const getProducts = async () => {
-  const response = await apiRoot
-    .withProjectKey({ projectKey: PROJECT_KEY })
-    .productProjections()
-    .get({
-      queryArgs: {
-        limit: 20,
-      },
-    })
-    .execute()
+  const response = await ctpClient.execute({
+    method: 'GET',
+    uri: `/${PROJECT_KEY}/product-projections`,
+    queryArgs: {
+      limit: 20,
+    },
+  });
 
-  return response.body.results
-}
+  return response.body.results;
+};

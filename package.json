@@ -12,8 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@commercetools/platform-sdk": "^8.8.0",
-    "@commercetools/sdk-client": "^4.0.1",
-    "@commercetools/sdk-client-v2": "^3.0.0",
+    "@commercetools/ts-client": "^3.3.0",
     "dotenv": "^16.5.0",
     "node-fetch": "^3.3.2"
   },

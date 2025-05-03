@@ -1,76 +1,58 @@
-import { CustomerDraft } from '@commercetools/platform-sdk'
-import { apiRoot } from './platformApi'
-import { CTP_AUTH_URL, PROJECT_KEY } from '../utils/constants'
+import { CustomerDraft, ClientRequest, CustomerSignInResult } from '@commercetools/platform-sdk';
+import { ClientBuilder, PasswordAuthMiddlewareOptions } from '@commercetools/ts-client';
+import fetch from 'node-fetch';
+import { ctpClient } from './sdkClient.js';
+import { CTP_AUTH_URL, CTP_API_URL, PROJECT_KEY } from '../utils/constants.js';
 
 const registerCustomer = async (customerData: CustomerDraft) => {
-  const response = await apiRoot
-    .withProjectKey({ projectKey: PROJECT_KEY })
-    .customers()
-    .post({ body: customerData })
-    .execute()
-
-  return response.body
-}
-
-
-const loginCustomer = async (email, password) => {
-
-  const basicAuth = btoa(`${process.env.CLIENT_CLIENT_ID}:${process.env.CLIENT_CLIENT_SECRET}`);
-
-  const response = await fetch(`${CTP_AUTH_URL}/oauth/${PROJECT_KEY}/customers/token`, {
-    method: "POST",
-    headers: {
-      "Authorization": `Basic ${basicAuth}`,
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: new URLSearchParams({
-      grant_type: "password",
-      username: email,
-      password: password,
-      scope: process.env.CLIENT_SCOPES!,
-    }),
-  });
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    console.error("Login failed:", data);
-    throw new Error("Login error");
-  }
-
-  return {
-    access_token: data.access_token,
-    refresh_token: data.refresh_token
+  const request: ClientRequest = {
+    method: 'POST',
+    uri: `/${PROJECT_KEY}/customers`,
+    body: customerData,
   };
+
+  const response = await ctpClient.execute(request);
+  return response.body;
 };
 
-const refreshAccessToken = async (refreshToken) => {
-  const basicAuth = btoa(`${process.env.CLIENT_CLIENT_ID}:${process.env.CLIENT_CLIENT_SECRET}`);
-
-  const response = await fetch(`${CTP_AUTH_URL}/oauth/token`, {
-    method: "POST",
-    headers: {
-      "Authorization": `Basic ${basicAuth}`,
-      "Content-Type": "application/x-www-form-urlencoded",
+const loginCustomer = async (email: string, password: string) => {
+  const options: PasswordAuthMiddlewareOptions = {
+    host: CTP_AUTH_URL,
+    projectKey: PROJECT_KEY,
+    credentials: {
+      clientId: process.env.CLIENT_CLIENT_ID!,
+      clientSecret: process.env.CLIENT_CLIENT_SECRET!,
+      user: {
+        username: email,
+        password,
+      },
     },
-    body: new URLSearchParams({
-      grant_type: "refresh_token",
-      refresh_token: refreshToken,
-    }),
-  });
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    console.error("🔁 Refresh failed:", data);
-    throw new Error("Token refresh failed");
-  }
-
-  return {
-    access_token: data.access_token,
-    refresh_token: data.refresh_token,
-    expires_in: data.expires_in,
+    scopes: process.env.CLIENT_SCOPES!.split(' '),
+    httpClient: fetch,
   };
+
+  const client = new ClientBuilder()
+    .withPasswordFlow(options)
+    .withHttpMiddleware({
+      host: CTP_API_URL,
+      httpClient: fetch,
+    })
+    .build();
+
+  const request: ClientRequest = {
+    method: 'GET',
+    uri: `/${PROJECT_KEY}/me`,
+  };
+
+  try {
+    const response = await client.execute(request);
+    return {
+      customer: response.body,
+    };
+  } catch (error) {
+    console.error('Login failed:', error);
+    throw new Error('Login error');
+  }
 };
 
-export { registerCustomer, loginCustomer, refreshAccessToken };
+export { registerCustomer, loginCustomer };

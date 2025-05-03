@@ -1,5 +1,9 @@
-import { PROJECT_KEY } from "../utils/constants"
-import { apiRoot } from "./platformApi"
+import { ctpClient } from './sdkClient.js';
+import { PROJECT_KEY } from '../utils/constants.js';
+import {
+  CartUpdateAction,
+  ClientRequest,
+} from '@commercetools/platform-sdk';
 
 export const addProductToCart = async ({
   cartId,
@@ -8,30 +12,30 @@ export const addProductToCart = async ({
   variantId,
   quantity,
 }: {
-  cartId: string
-  cartVersion: number
-  productId: string
-  variantId: number
-  quantity: number
+  cartId: string;
+  cartVersion: number;
+  productId: string;
+  variantId: number;
+  quantity: number;
 }) => {
-  const response = await apiRoot
-    .withProjectKey({ projectKey: PROJECT_KEY })
-    .carts()
-    .withId({ ID: cartId })
-    .post({
-      body: {
-        version: cartVersion,
-        actions: [
-          {
-            action: 'addLineItem',
-            productId,
-            variantId,
-            quantity,
-          },
-        ],
-      },
-    })
-    .execute()
+  const actions: CartUpdateAction[] = [
+    {
+      action: 'addLineItem',
+      productId,
+      variantId,
+      quantity,
+    },
+  ];
 
-  return response.body
-}
+  const request: ClientRequest = {
+    method: 'POST',
+    uri: `/${PROJECT_KEY}/carts/${cartId}`,
+    body: {
+      version: cartVersion,
+      actions,
+    },
+  };
+
+  const response = await ctpClient.execute(request);
+  return response.body;
+};

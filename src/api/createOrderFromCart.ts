@@ -1,23 +1,21 @@
-import { PROJECT_KEY } from "../utils/constants"
-import { apiRoot } from "./platformApi"
+import { ctpClient } from './sdkClient.js';
+import { PROJECT_KEY } from '../utils/constants.js';
 
 export const createOrderFromCart = async ({
   cartId,
   cartVersion,
 }: {
-  cartId: string
-  cartVersion: number
+  cartId: string;
+  cartVersion: number;
 }) => {
-  const response = await apiRoot
-    .withProjectKey({ projectKey: PROJECT_KEY })
-    .orders()
-    .post({
-      body: {
-        id: cartId,
-        version: cartVersion,
-      },
-    })
-    .execute()
+  const response = await ctpClient.execute({
+    method: 'POST',
+    uri: `/${PROJECT_KEY}/orders`,
+    body: {
+      id: cartId,
+      version: cartVersion,
+    },
+  });
 
-  return response.body
-}
+  return response.body;
+};

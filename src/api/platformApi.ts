@@ -1,4 +1,4 @@
-import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk'
-import ctpClient from './sdkClient'
+import { Client } from '@commercetools/ts-client';
+import { ctpClient } from './sdkClient.js';
 
-export const apiRoot = createApiBuilderFromCtpClient(ctpClient)
+export const client: Client = ctpClient;
