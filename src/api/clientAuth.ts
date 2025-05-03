@@ -1,6 +1,6 @@
 import { CustomerDraft } from '@commercetools/platform-sdk'
 import { apiRoot } from './platformApi'
-import { PROJECT_KEY } from '../utils/constants'
+import { CTP_AUTH_URL, PROJECT_KEY } from '../utils/constants'
 
 const registerCustomer = async (customerData: CustomerDraft) => {
   const response = await apiRoot
@@ -17,7 +17,7 @@ const loginCustomer = async (email, password) => {
 
   const basicAuth = btoa(`${process.env.CLIENT_CLIENT_ID}:${process.env.CLIENT_CLIENT_SECRET}`);
 
-  const response = await fetch(`${process.env.CLIENT_AUTH_URL}/oauth/${PROJECT_KEY}/customers/token`, {
+  const response = await fetch(`${CTP_AUTH_URL}/oauth/${PROJECT_KEY}/customers/token`, {
     method: "POST",
     headers: {
       "Authorization": `Basic ${basicAuth}`,
@@ -47,7 +47,7 @@ const loginCustomer = async (email, password) => {
 const refreshAccessToken = async (refreshToken) => {
   const basicAuth = btoa(`${process.env.CLIENT_CLIENT_ID}:${process.env.CLIENT_CLIENT_SECRET}`);
 
-  const response = await fetch("https://auth.us-central1.gcp.commercetools.com/oauth/token", {
+  const response = await fetch(`${CTP_AUTH_URL}/oauth/token`, {
     method: "POST",
     headers: {
       "Authorization": `Basic ${basicAuth}`,
