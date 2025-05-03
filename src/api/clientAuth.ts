@@ -1,9 +1,10 @@
 import { CustomerDraft } from '@commercetools/platform-sdk'
 import { apiRoot } from './platformApi'
+import { PROJECT_KEY } from '../utils/constants'
 
 const registerCustomer = async (customerData: CustomerDraft) => {
   const response = await apiRoot
-    .withProjectKey({ projectKey: process.env.CTP_PROJECT_KEY! })
+    .withProjectKey({ projectKey: PROJECT_KEY })
     .customers()
     .post({ body: customerData })
     .execute()
@@ -16,7 +17,7 @@ const loginCustomer = async (email, password) => {
 
   const basicAuth = btoa(`${process.env.CLIENT_CLIENT_ID}:${process.env.CLIENT_CLIENT_SECRET}`);
 
-  const response = await fetch(`${process.env.CLIENT_AUTH_URL}/oauth/${process.env.CLIENT_PROJECT_KEY}/customers/token`, {
+  const response = await fetch(`${process.env.CLIENT_AUTH_URL}/oauth/${PROJECT_KEY}/customers/token`, {
     method: "POST",
     headers: {
       "Authorization": `Basic ${basicAuth}`,

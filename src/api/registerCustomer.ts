@@ -1,9 +1,10 @@
 import { CustomerDraft } from '@commercetools/platform-sdk'
 import { apiRoot } from './platformApi'
+import { PROJECT_KEY } from '../utils/constants'
 
 export const registerCustomer = async (customerData: CustomerDraft) => {
   const response = await apiRoot
-    .withProjectKey({ projectKey: process.env.CTP_PROJECT_KEY! })
+    .withProjectKey({ projectKey: PROJECT_KEY })
     .customers()
     .post({ body: customerData })
     .execute()

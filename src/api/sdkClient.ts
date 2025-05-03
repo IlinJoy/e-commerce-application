@@ -4,21 +4,20 @@ import {
   createHttpClient
 } from '@commercetools/sdk-client-v2'
 import { config } from 'dotenv';
+import fetch from 'node-fetch' // for test purpose
+import { CTP_API_URL, CTP_AUTH_URL, PROJECT_KEY } from '../utils/constants';
 
 config();
 
-const projectKey = process.env.CTP_PROJECT_KEY!;
 const clientId = process.env.CTP_CLIENT_ID!;
 const clientSecret = process.env.CTP_CLIENT_SECRET!;
-const authUrl = process.env.CTP_AUTH_URL!;
-const apiUrl = process.env.CTP_API_URL!;
+const authUrl = CTP_AUTH_URL;
+const apiUrl = CTP_API_URL;
 const scopes = [process.env.CTP_SCOPES!];
-
-import fetch from 'node-fetch' // for test purpose
 
 const authMiddleware = createAuthForClientCredentialsFlow({
   host: authUrl,
-  projectKey,
+  projectKey: PROJECT_KEY,
   credentials: {
     clientId,
     clientSecret,

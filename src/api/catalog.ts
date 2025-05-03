@@ -1,8 +1,9 @@
+import { PROJECT_KEY } from '../utils/constants'
 import { apiRoot } from './platformApi'
 
 export const getProducts = async () => {
   const response = await apiRoot
-    .withProjectKey({ projectKey: process.env.CTP_PROJECT_KEY! })
+    .withProjectKey({ projectKey: PROJECT_KEY })
     .productProjections()
     .get({
       queryArgs: {

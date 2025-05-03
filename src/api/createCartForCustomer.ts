@@ -1,3 +1,4 @@
+import { PROJECT_KEY } from '../utils/constants'
 import { apiRoot } from './platformApi'
 
 type CreateCartParams = {
@@ -14,7 +15,7 @@ type CreateCartParams = {
 
 export const createCartForCustomer = async ({ customerId, shippingAddress }: CreateCartParams) => {
   const response = await apiRoot
-    .withProjectKey({ projectKey: process.env.CTP_PROJECT_KEY! })
+    .withProjectKey({ projectKey: PROJECT_KEY })
     .carts()
     .post({
       body: {
