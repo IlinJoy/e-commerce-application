@@ -4,10 +4,6 @@ import path from 'path';
 
 export default defineConfig({
   base: './',
-  build: {
-    assetsDir: '',
-    minify: false,
-  },
   plugins: [react()],
   resolve: {
     alias: {
