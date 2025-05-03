@@ -4,17 +4,12 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import tseslint from 'typescript-eslint';
 import parserTypeScript from '@typescript-eslint/parser';
-import eslintConfigPrettier from 'eslint-config-prettier'
-
+import eslintConfigPrettier from 'eslint-config-prettier';
 
 export default tseslint.config(
-  { ignores: ['dist'] },
+  { ignores: ['dist', 'eslint.config.ts'] },
   {
-    extends: [
-      js.configs.recommended,
-      ...tseslint.configs.recommendedTypeChecked,
-      eslintConfigPrettier
-    ],
+    extends: [js.configs.recommended, ...tseslint.configs.recommendedTypeChecked, eslintConfigPrettier],
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
       ecmaVersion: 2020,
