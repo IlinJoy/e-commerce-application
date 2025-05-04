@@ -1,4 +1,4 @@
-import { ClientBuilder, type Client } from '@commercetools/ts-client';
+import { ClientBuilder, PasswordAuthMiddlewareOptions, type Client } from '@commercetools/ts-client';
 import fetch from 'node-fetch';
 import { config } from 'dotenv';
 import { CTP_API_URL, CTP_AUTH_URL, PROJECT_KEY } from '../utils/constants';
@@ -21,3 +21,12 @@ export const ctpClient: Client = new ClientBuilder()
     httpClient: fetch,
   })
   .build();
+
+export const buildCustomerClient = (options: PasswordAuthMiddlewareOptions) =>
+  new ClientBuilder()
+    .withPasswordFlow(options)
+    .withHttpMiddleware({
+      host: CTP_API_URL,
+      httpClient: fetch,
+    })
+    .build();
