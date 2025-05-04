@@ -4,13 +4,15 @@ on:
     branches:
       - develop
       - 'release/**'
-  env:
-    CTP_CLIENT_SECRET: ${{ secrets.CTP_CLIENT_SECRET }}
-    CTP_CLIENT_ID: ${{ secrets.CTP_CLIENT_ID }}
-    CTP_SCOPES: ${{ secrets.CTP_SCOPES }}
-    CLIENT_CLIENT_SECRET: ${{ secrets.CLIENT_CLIENT_SECRET }}
-    CLIENT_CLIENT_ID: ${{ secrets.CLIENT_CLIENT_ID }}
-    CLIENT_SCOPES: ${{ secrets.CLIENT_SCOPES }}
+
+env:
+  CTP_CLIENT_SECRET: ${{ secrets.CTP_CLIENT_SECRET }}
+  CTP_CLIENT_ID: ${{ secrets.CTP_CLIENT_ID }}
+  CTP_SCOPES: ${{ secrets.CTP_SCOPES }}
+  CLIENT_CLIENT_SECRET: ${{ secrets.CLIENT_CLIENT_SECRET }}
+  CLIENT_CLIENT_ID: ${{ secrets.CLIENT_CLIENT_ID }}
+  CLIENT_SCOPES: ${{ secrets.CLIENT_SCOPES }}
+
 jobs:
   format:
     runs-on: ubuntu-latest
