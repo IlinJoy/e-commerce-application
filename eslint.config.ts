@@ -7,7 +7,7 @@ import parserTypeScript from '@typescript-eslint/parser';
 import eslintConfigPrettier from 'eslint-config-prettier';
 
 export default tseslint.config(
-  { ignores: ['dist', 'eslint.config.ts'] },
+  { ignores: ['dist', 'eslint.config.ts', '**/*.test.{ts,tsx}'] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommendedTypeChecked, eslintConfigPrettier],
     files: ['**/*.{ts,tsx}'],
