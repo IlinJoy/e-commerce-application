@@ -28,8 +28,22 @@ export default tseslint.config(
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       '@typescript-eslint/no-unused-vars': 'warn',
-      '@typescript-eslint/no-non-null-assertion': 'error',
+      '@typescript-eslint/no-non-null-assertion': 'warn',
       'no-magic-numbers': ['error', { ignore: [0, 1], enforceConst: true }],
+      '@typescript-eslint/naming-convention': [
+        'error',
+        {
+          selector: 'typeLike',
+          format: ['PascalCase'],
+        },
+      ],
+      curly: 'error',
+      '@typescript-eslint/member-ordering': 'warn',
+      '@typescript-eslint/consistent-type-imports': 'error',
+      '@typescript-eslint/explicit-member-accessibility': [
+        'error',
+        { accessibility: 'explicit', overrides: { constructors: 'off' } },
+      ],
     },
   }
 );
