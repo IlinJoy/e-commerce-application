@@ -14,7 +14,7 @@ env:
   CLIENT_SCOPES: ${{ secrets.CLIENT_SCOPES }}
 
 jobs:
-  format:
+  run-ci:
     runs-on: ubuntu-latest
     steps:
       - name: Get repo code
@@ -37,61 +37,14 @@ jobs:
         if: steps.cache-node_modules.outputs.cache-hit != 'true'
         run: npm ci
 
-      - name: Format code with Prettier
+      - name: Run formatter
         run: npm run format
 
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Cache dependencies
-        id: cache-node_modules
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: ${{ runner.os }}-node_modules-
-
-      - name: Install dependencies
-        if: steps.cache-node_modules.outputs.cache-hit != 'true'
-        run: npm ci
-
-      - name: Run tests
+      - name: Run linter
         run: npm run lint
-
-  test:
-    needs: [ lint, format ]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Cache dependencies
-        id: cache-node_modules
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: ${{ runner.os }}-node_modules-
-
-      - name: Install dependencies
-        if: steps.cache-node_modules.outputs.cache-hit != 'true'
-        run: npm ci
 
       - name: Run tests
         run: npm run test
 
-      - name: Get report
+      - name: Generate coverage report
         run: npm run coverage
