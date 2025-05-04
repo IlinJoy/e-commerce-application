@@ -4,6 +4,7 @@ import {
   CartUpdateAction,
   ClientRequest,
 } from '@commercetools/platform-sdk';
+import { apiRoot } from './platformApi.js';
 
 export const addProductToCart = async ({
   cartId,
@@ -27,15 +28,16 @@ export const addProductToCart = async ({
     },
   ];
 
-  const request: ClientRequest = {
-    method: 'POST',
-    uri: `/${PROJECT_KEY}/carts/${cartId}`,
-    body: {
-      version: cartVersion,
-      actions,
-    },
-  };
+  const response = await apiRoot
+    .carts()
+    .withId({ ID: cartId })
+    .post({
+      body: {
+        version: cartVersion,
+        actions,
+      },
+    })
+    .execute();
 
-  const response = await ctpClient.execute(request);
   return response.body;
 };

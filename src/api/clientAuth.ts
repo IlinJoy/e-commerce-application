@@ -1,17 +1,17 @@
-import { CustomerDraft, ClientRequest, CustomerSignInResult } from '@commercetools/platform-sdk';
+import { CustomerDraft, ClientRequest, createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import { ClientBuilder, PasswordAuthMiddlewareOptions } from '@commercetools/ts-client';
 import fetch from 'node-fetch';
-import { ctpClient } from './sdkClient.js';
 import { CTP_AUTH_URL, CTP_API_URL, PROJECT_KEY } from '../utils/constants.js';
+import { apiRoot } from './platformApi.js';
 
 const registerCustomer = async (customerData: CustomerDraft) => {
-  const request: ClientRequest = {
-    method: 'POST',
-    uri: `/${PROJECT_KEY}/customers`,
-    body: customerData,
-  };
+  const response = await apiRoot
+    .customers()
+    .post({
+      body: customerData,
+    })
+    .execute();
 
-  const response = await ctpClient.execute(request);
   return response.body;
 };
 
@@ -39,13 +39,15 @@ const loginCustomer = async (email: string, password: string) => {
     })
     .build();
 
-  const request: ClientRequest = {
-    method: 'GET',
-    uri: `/${PROJECT_KEY}/me`,
-  };
+  const apiRoot = createApiBuilderFromCtpClient(client)
+    .withProjectKey({ projectKey: PROJECT_KEY });
 
   try {
-    const response = await client.execute(request);
+    const response = await apiRoot
+      .me()
+      .get()
+      .execute();
+
     return {
       customer: response.body,
     };

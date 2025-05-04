@@ -1,14 +1,13 @@
-import { CustomerDraft, ClientRequest } from '@commercetools/platform-sdk';
-import { ctpClient } from './sdkClient.js';
-import { PROJECT_KEY } from '../utils/constants.js';
+import { CustomerDraft } from '@commercetools/platform-sdk';
+import { apiRoot } from './platformApi.js';
 
 export const registerCustomer = async (customerData: CustomerDraft) => {
-  const request: ClientRequest = {
-    method: 'POST',
-    uri: `/${PROJECT_KEY}/customers`,
-    body: customerData,
-  };
+  const response = await apiRoot
+    .customers()
+    .post({
+      body: customerData,
+    })
+    .execute();
 
-  const response = await ctpClient.execute(request);
   return response.body;
 };

@@ -1,5 +1,4 @@
-import { ctpClient } from './sdkClient.js';
-import { PROJECT_KEY } from '../utils/constants.js';
+import { apiRoot } from './platformApi.js';
 
 type CreateCartParams = {
   customerId: string;
@@ -14,15 +13,16 @@ type CreateCartParams = {
 };
 
 export const createCartForCustomer = async ({ customerId, shippingAddress }: CreateCartParams) => {
-  const response = await ctpClient.execute({
-    method: 'POST',
-    uri: `/${PROJECT_KEY}/carts`,
-    body: {
-      currency: 'USD',
-      customerId,
-      shippingAddress,
-    },
-  });
+  const response = await apiRoot
+    .carts()
+    .post({
+      body: {
+        currency: 'USD',
+        customerId,
+        shippingAddress,
+      },
+    })
+    .execute();
 
   return response.body;
 };

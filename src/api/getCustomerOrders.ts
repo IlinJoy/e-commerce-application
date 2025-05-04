@@ -1,14 +1,14 @@
-import { ctpClient } from './sdkClient.js';
-import { PROJECT_KEY } from '../utils/constants.js';
+import { apiRoot } from './platformApi.js';
 
 export const getCustomerOrders = async (customerId: string) => {
-  const response = await ctpClient.execute({
-    method: 'GET',
-    uri: `/${PROJECT_KEY}/orders`,
-    queryArgs: {
-      where: `customerId="${customerId}"`,
-    },
-  });
+  const response = await apiRoot
+    .orders()
+    .get({
+      queryArgs: {
+        where: `customerId="${customerId}"`,
+      },
+    })
+    .execute();
 
   return response.body.results;
 };
