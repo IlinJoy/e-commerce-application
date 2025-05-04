@@ -1,54 +1,79 @@
-# React + TypeScript + Vite
+# eCommerce-Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project delivers a complete online shopping experience. Built with TypeScript and powered by CommerceTools API, the platform combines modern web development practices with eCommerce functionality to showcase artisanal craftsmanship in a digital space.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Responsive product catalog with advanced filtering and searching functions
 
-## Expanding the ESLint configuration
+- Immersive product pages showcasing grain details and artisan stories
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Checkout flow includes customer registration and authorization forms
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-});
-```
+- Add items to a shopping cart and proceed to checkout securely.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- User accounts with ability manage shipping details
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
+## Technology Stack
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-});
-```
+- Frontend:
+
+  - Vite
+  - React
+  - Typescript
+  - Tanstack
+  - Zod
+  - SСSS
+  - Mui
+
+- Backend
+
+  - CommerceTools
+
+- Testing:
+
+  - Vitest
+  - Testing Library (Jest-DOM, React)
+
+- Code Quality
+  - ESLint
+  - Prettier
+  - Husky
+  - Commitlint
+  - Lint-staged
+  - Stylelint
+
+## How to run locally
+
+Please follow the instructions below to configure and run the project locally:
+
+1. Clone the repository;
+
+2. Change the directory to the project folder:
+   `cd e-commerce-application`;
+
+3. Install dependencies: `npm install`;
+
+4. Run the project: `npm run start`.
+
+## Available scripts
+
+To execute a script, use the command `npm run` followed by the script name from the list below:
+
+1. `dev`: starts Vite development server
+
+2. `build`: creates production-optimized bundle, the result is available in a `dist` folder
+
+3. `lint`: runs ESLint static analysis to analyze code for errors and style issues.
+
+4. `preview`: locally serves the production build for testing
+
+5. `format`: automatically formats code using Prettier.
+
+6. `prepare`: sets up Git hooks with Husky for pre-commit checks
+
+7. `test`: runs unit tests with Vitest in terminal mode
+
+8. `test:ui`: launches the Vitest interactive test UI
+
+9. `coverage`: generates a code coverage report via Vitest.
