@@ -11,6 +11,8 @@ const registerCustomer = async (customerData: CustomerDraft) => {
       })
       .execute();
 
+    console.log('Customer registered');
+
     return response.body;
   } catch (error) {
     mapApiErrorToMessage(error as ErrorResponse);
@@ -21,6 +23,8 @@ const loginCustomer = async (email: string, password: string) => {
   try {
     const api = getCustomerApiRoot(email, password);
     const response = await api.me().get().execute();
+
+    console.log('Customer logged in');
 
     return {
       customer: response.body,
