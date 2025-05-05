@@ -1,7 +1,6 @@
 import type { Address, CustomerDraft, ErrorResponse } from '@commercetools/platform-sdk';
-import { apiRoot, getCustomerApiRoot } from './platformApi.js';
-import { mapApiErrorToMessage } from '../utils/mapApiErrorToMessage.js';
-// import { mapApiErrorToMessage } from '@/utils/mapApiErrorToMessage.js';
+import { apiRoot, getCustomerApiRoot } from '@/api/platformApi.js';
+import { mapApiErrorToMessage } from '@/utils/mapApiErrorToMessage.js';
 
 type RegisterCustomerOptions = {
   customerData: CustomerDraft;
