@@ -1,5 +1,5 @@
-import { CustomerDraft } from '@commercetools/platform-sdk';
-import { apiRoot, getCustomerApiRoot } from './platformApi.js';
+import type { CustomerDraft } from '@commercetools/platform-sdk';
+import { apiRoot, getCustomerApiRoot } from './platformApi';
 
 const registerCustomer = async (customerData: CustomerDraft) => {
   const response = await apiRoot
@@ -15,10 +15,7 @@ const registerCustomer = async (customerData: CustomerDraft) => {
 const loginCustomer = async (email: string, password: string) => {
   try {
     const api = getCustomerApiRoot(email, password);
-    const response = await api
-      .me()
-      .get()
-      .execute();
+    const response = await api.me().get().execute();
 
     return {
       customer: response.body,

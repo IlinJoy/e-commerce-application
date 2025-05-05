@@ -1,4 +1,4 @@
-import { apiRoot } from './platformApi.js';
+import { apiRoot } from './platformApi';
 
 export const getCustomerOrders = async (customerId: string) => {
   const response = await apiRoot

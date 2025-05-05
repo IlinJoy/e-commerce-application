@@ -1,4 +1,4 @@
-import { apiRoot } from './platformApi.js';
+import { apiRoot } from './platformApi';
 
 type CreateCartParams = {
   customerId: string;

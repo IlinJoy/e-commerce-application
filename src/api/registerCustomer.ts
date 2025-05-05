@@ -1,5 +1,5 @@
-import { CustomerDraft } from '@commercetools/platform-sdk';
-import { apiRoot } from './platformApi.js';
+import type { CustomerDraft } from '@commercetools/platform-sdk';
+import { apiRoot } from './platformApi';
 
 export const registerCustomer = async (customerData: CustomerDraft) => {
   const response = await apiRoot

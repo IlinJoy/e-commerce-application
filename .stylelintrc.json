@@ -1,0 +1,7 @@
+{
+  "extends": ["stylelint-config-standard", "stylelint-config-clean-order"],
+  "ignoreFiles": ["dist/**/*", "node_modules/**/*"],
+  "rules": {
+    "selector-class-pattern": null
+  }
+}
