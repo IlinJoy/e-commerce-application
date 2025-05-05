@@ -1,7 +1,6 @@
 import type { CustomerDraft, ErrorResponse } from '@commercetools/platform-sdk';
 import { apiRoot, getCustomerApiRoot } from './platformApi.js';
-// import { mapApiErrorToMessage } from '../utils/mapApiErrorToMessage.js';
-// import { mapApiErrorToMessage } from '@/utils/mapApiErrorToMessage.js';
+import { mapApiErrorToMessage } from '@/utils/mapApiErrorToMessage.js';
 
 const registerCustomer = async (customerData: CustomerDraft) => {
   try {
@@ -14,7 +13,7 @@ const registerCustomer = async (customerData: CustomerDraft) => {
 
     return response.body;
   } catch (error) {
-    // mapApiErrorToMessage(error as ErrorResponse);
+    mapApiErrorToMessage(error as ErrorResponse);
   }
 };
 
@@ -27,7 +26,7 @@ const loginCustomer = async (email: string, password: string) => {
       customer: response.body,
     };
   } catch (error) {
-    // mapApiErrorToMessage(error as ErrorResponse);
+    mapApiErrorToMessage(error as ErrorResponse);
   }
 };
 
