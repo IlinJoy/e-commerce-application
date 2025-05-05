@@ -1,28 +1,34 @@
 import type { Address, CustomerDraft, ErrorResponse } from '@commercetools/platform-sdk';
 import { apiRoot, getCustomerApiRoot } from './platformApi.js';
-import { mapApiErrorToMessage } from '@/utils/mapApiErrorToMessage.js';
+import { mapApiErrorToMessage } from '../utils/mapApiErrorToMessage.js';
+// import { mapApiErrorToMessage } from '@/utils/mapApiErrorToMessage.js';
 
 type RegisterCustomerOptions = {
   customerData: CustomerDraft;
-  address?: Address;
-  isDefaultShipping?: boolean;
-  isDefaultBilling?: boolean;
+  shippingAddress: Address;
+  billingAddress?: Address;
+  useSameAddress?: boolean;
 };
 
 const registerCustomer = async ({
   customerData,
-  address,
-  isDefaultShipping = false,
-  isDefaultBilling = false,
+  shippingAddress,
+  billingAddress,
+  useSameAddress = false,
 }: RegisterCustomerOptions) => {
   try {
-    const addresses = address ? [address] : [];
+    if (!useSameAddress && !billingAddress) {
+      throw new Error('Billing address is required when useSameAddress is false');
+    }
+
+    // non-null assertion operator is justified as in the above if statement we check that billingAddress is defined
+    const addresses: Address[] = useSameAddress ? [shippingAddress] : [shippingAddress, billingAddress!];
 
     const body: CustomerDraft = {
       ...customerData,
       addresses,
-      defaultShippingAddress: isDefaultShipping ? 0 : undefined,
-      defaultBillingAddress: isDefaultBilling ? 0 : undefined,
+      defaultShippingAddress: 0,
+      defaultBillingAddress: useSameAddress ? 0 : 1,
     };
 
     const response = await apiRoot
