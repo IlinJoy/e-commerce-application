@@ -1,7 +1,9 @@
-import { ClientBuilder, PasswordAuthMiddlewareOptions, type Client } from '@commercetools/ts-client';
+import type { PasswordAuthMiddlewareOptions } from '@commercetools/ts-client';
+import { ClientBuilder, type Client } from '@commercetools/ts-client';
 import fetch from 'node-fetch';
 import { config } from 'dotenv';
-import { CTP_API_URL, CTP_AUTH_URL, PROJECT_KEY } from '../utils/constants';
+import { CTP_API_URL, CTP_AUTH_URL, PROJECT_KEY } from '../utils/constants/api';
+import { requireEnv } from '../utils/require-env';
 
 config();
 
@@ -10,10 +12,10 @@ export const ctpClient: Client = new ClientBuilder()
     host: CTP_AUTH_URL,
     projectKey: PROJECT_KEY,
     credentials: {
-      clientId: process.env.CTP_CLIENT_ID!,
-      clientSecret: process.env.CTP_CLIENT_SECRET!,
+      clientId: requireEnv('CTP_CLIENT_ID'),
+      clientSecret: requireEnv('CTP_CLIENT_SECRET'),
     },
-    scopes: [process.env.CTP_SCOPES!],
+    scopes: [requireEnv('CTP_SCOPES')],
     httpClient: fetch,
   })
   .withHttpMiddleware({

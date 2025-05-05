@@ -1,10 +1,5 @@
-import { ctpClient } from './sdkClient.js';
-import { PROJECT_KEY } from '../utils/constants.js';
-import {
-  CartUpdateAction,
-  ClientRequest,
-} from '@commercetools/platform-sdk';
-import { apiRoot } from './platformApi.js';
+import type { CartUpdateAction } from '@commercetools/platform-sdk';
+import { apiRoot } from './platformApi';
 
 export const addProductToCart = async ({
   cartId,

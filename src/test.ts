@@ -1,8 +1,5 @@
 import 'dotenv/config';
-import {
-  registerCustomer,
-  loginCustomer
-} from './api/clientAuth.js';
+import { registerCustomer, loginCustomer } from './api/clientAuth.js';
 import { getProducts } from './api/catalog.js';
 import { createCartForCustomer } from './api/createCartForCustomer.js';
 import { addProductToCart } from './api/addProductToCart.js';
@@ -26,12 +23,14 @@ const run = async () => {
 
     // Логинимся
     const { customer: loggedInCustomer } = await loginCustomer(email, password);
-    console.log('Logged in! Access token:', '[hidden via SDK v3]');
+    console.log('Logged in! Access token:', '[hidden via SDK v3]', loggedInCustomer);
 
     // Получаем список продуктов
     const products = await getProducts();
     const firstProduct = products[0];
-    if (!firstProduct) throw new Error('Нет доступных продуктов');
+    if (!firstProduct) {
+      throw new Error('Нет доступных продуктов');
+    }
     console.log('Получен продукт:', {
       id: firstProduct.id,
       name: firstProduct.name,
@@ -77,4 +76,4 @@ const run = async () => {
   }
 };
 
-run();
+void run();

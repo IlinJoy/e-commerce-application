@@ -1,12 +1,6 @@
-import { apiRoot } from './platformApi.js';
+import { apiRoot } from './platformApi';
 
-export const createOrderFromCart = async ({
-  cartId,
-  cartVersion,
-}: {
-  cartId: string;
-  cartVersion: number;
-}) => {
+export const createOrderFromCart = async ({ cartId, cartVersion }: { cartId: string; cartVersion: number }) => {
   const response = await apiRoot
     .orders()
     .post({
