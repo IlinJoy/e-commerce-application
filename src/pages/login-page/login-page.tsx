@@ -1,7 +1,8 @@
-import type { LoginFormInputs } from '@/ui/form/login-form-ui';
-import { LoginPageUi } from '@/ui/pages/login-page-ui';
+import { LoginFormUi, type LoginFormInputs } from '@/ui/form/login-form-ui';
+import { Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import styles from './login-page.module.scss';
 
 export function LoginPage() {
   const [generalError, setGeneralError] = useState('temp error');
@@ -9,11 +10,10 @@ export function LoginPage() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid, isSubmitting }, // наверное лучше будет использовать что-то что будет по приходу ответа от екоммерс
+    formState: { errors, isValid, isSubmitting }, // заменить на isPending
   } = useForm<LoginFormInputs>({ mode: 'onChange' }); // + валидация resolver: resolver(schema)
 
   // для вывода ошибок с инпутами, нужны будут еще имена полей, остальные можно посмотреть как сделать чтобы отличать их можно было
-
   // через TanStack/кастомный?? можно подумать насчет вынести в отдельный файл
   // const { error, mutate, isPending} = useMutation({
   //   mutationFn: interactionWithApi,
@@ -33,16 +33,20 @@ export function LoginPage() {
   };
 
   return (
-    <>
-      <LoginPageUi
-        onSubmit={onSubmit}
-        register={register}
-        errors={errors}
-        generalError={generalError}
-        handleUserTouch={handleUserTouch}
-        isPending={isSubmitting}
-        isValidForm={isValid}
-      />
-    </>
+    <div className={styles.loginImage}>
+      <Stack className={styles.formWrapper}>
+        <Typography variant="h2">Login</Typography>
+        <LoginFormUi
+          onSubmit={onSubmit}
+          register={register}
+          errors={errors}
+          generalError={generalError}
+          handleUserTouch={handleUserTouch}
+          isPending={isSubmitting}
+          isValidForm={isValid}
+        />
+        {generalError && <Typography>{generalError}</Typography>}
+      </Stack>
+    </div>
   );
 }

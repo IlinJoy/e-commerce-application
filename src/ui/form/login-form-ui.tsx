@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { Button, FormControl, IconButton, Paper, TextField } from '@mui/material';
-import type { BaseSyntheticEvent, Dispatch } from 'react';
+import { Button, IconButton, TextField } from '@mui/material';
+import type { BaseSyntheticEvent } from 'react';
 import { useState } from 'react';
 import type { FieldErrors, UseFormRegister } from 'react-hook-form';
 import styles from './login-form-ui.module.scss';
