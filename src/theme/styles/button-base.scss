@@ -1,0 +1,17 @@
+.MuiButton-contained {
+  padding: 0.8em 3em;
+  border-radius: 40px;
+
+  font-family: var(--font-secondary);
+  font-size: var(--subtitle-size);
+  font-weight: var(--subtitle-weight);
+  text-transform: uppercase;
+  letter-spacing: var(--subtitle-spacing);
+
+  transition: all 0.5s ease;
+
+  &:hover {
+    color: var(--mui-palette-primary-main);
+    background-color: var(--mui-palette-background-default);
+  }
+}

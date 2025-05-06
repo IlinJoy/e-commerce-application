@@ -1,0 +1,36 @@
+@use '../../styles/mixins/typography' as typography;
+
+.MuiTypography-h1,
+.MuiTypography-h2 {
+  @include typography.heading-styles;
+}
+
+.MuiTypography-h1 {
+  letter-spacing: -0.03em;
+}
+
+.MuiTypography-subtitle-1,
+.MuiTypography-subtitle-2,
+.MuiTypography-caption,
+.MuiTypography-body1 {
+  @include typography.subtitle-styles;
+}
+
+.MuiTypography-subtitle-1,
+.MuiTypography-caption {
+  letter-spacing: 0.7em;
+}
+
+.MuiTypography-subtitle-1,
+.MuiTypography-subtitle-2,
+.MuiTypography-caption {
+  font-weight: 600;
+}
+
+.MuiTypography-caption {
+  text-transform: uppercase;
+}
+
+.MuiTypography-body1 {
+  font-weight: 400;
+}
