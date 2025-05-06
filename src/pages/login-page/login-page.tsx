@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import styles from './login-page.module.scss';
 
 export function LoginPage() {
-  const [generalError, setGeneralError] = useState('temp error');
+  const [generalError, setGeneralError] = useState('temp Customer account with the given credentials not found');
 
   const {
     register,
@@ -34,7 +34,7 @@ export function LoginPage() {
 
   return (
     <div className={styles.loginImage}>
-      <Stack className={styles.formWrapper}>
+      <Stack className={`${styles.formWrapper} ${generalError ? styles.generalError : ''}`}>
         <Typography variant="h2">Login</Typography>
         <LoginFormUi
           onSubmit={onSubmit}
@@ -45,8 +45,9 @@ export function LoginPage() {
           isPending={isSubmitting}
           isValidForm={isValid}
         />
-        {generalError && <Typography>{generalError}</Typography>}
       </Stack>
+      {/* TO DO replace */}
+      {generalError && <Typography className={styles.generalErrorMessage}>{generalError}</Typography>}
     </div>
   );
 }

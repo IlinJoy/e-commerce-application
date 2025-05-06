@@ -25,9 +25,30 @@
   padding: var(--spacing-7);
   border-radius: 16px;
 
-  background-color: var(--mui-palette-background-default);
+  background-color: var(--pallet-color-dark);
 
   & h2 {
-    margin-bottom: 20px;
+    margin-bottom: var(--spacing-4);
+  }
+}
+
+.general-error {
+  border: 1px solid var(--mui-palette-error-main);
+
+  &-message {
+    bottom: 0;
+
+    margin-top: var(--spacing-2);
+    padding: var(--spacing-1);
+
+    line-height: normal;
+    color: var(--mui-palette-error-main);
+    text-align: right;
+
+    background-color: var(--mui-palette-error-dark);
+
+    &::before {
+      content: '⚠ ';
+    }
   }
 }

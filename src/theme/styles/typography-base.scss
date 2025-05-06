@@ -11,8 +11,7 @@
 
 .MuiTypography-subtitle-1,
 .MuiTypography-subtitle-2,
-.MuiTypography-caption,
-.MuiTypography-body1 {
+.MuiTypography-caption {
   @include typography.subtitle-styles;
 }
 
@@ -21,16 +20,13 @@
   letter-spacing: 0.7em;
 }
 
-.MuiTypography-subtitle-1,
-.MuiTypography-subtitle-2,
-.MuiTypography-caption {
-  font-weight: 600;
-}
-
 .MuiTypography-caption {
   text-transform: uppercase;
 }
 
 .MuiTypography-body1 {
+  font-family: var(--font-secondary);
+  font-size: 0.9rem;
   font-weight: 400;
+  letter-spacing: normal;
 }

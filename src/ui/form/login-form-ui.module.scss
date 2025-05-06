@@ -4,3 +4,20 @@
   gap: 40px;
   max-width: 300px;
 }
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  & div {
+    width: 100%;
+  }
+
+  & button {
+    width: var(--spacing-3);
+    height: var(--spacing-3);
+    opacity: 0.5;
+  }
+}

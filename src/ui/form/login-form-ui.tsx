@@ -38,18 +38,20 @@ export function LoginFormUi(props: LoginFormUiProps) {
         error={!!errors.email || !!generalError}
         helperText={errors.email?.message}
       />
-      <div>
+      <div className={styles.inputWrapper}>
         <TextField
           label="Password"
           required
-          {...register('password', { required: 'Required', minLength: { value: 5, message: 'hbhub' } })}
+          {...register('password', { required: 'Required', minLength: { value: 5, message: 'placeholder' } })}
           type={showPassword ? 'text' : 'password'}
           variant="standard"
           disabled={isPending}
           error={!!errors.password || !!generalError}
           helperText={errors.password?.message}
         />
-        <IconButton onClick={handleClickShowPassword}>{showPassword ? <VisibilityOff /> : <Visibility />}</IconButton>
+        <IconButton size="small" onClick={handleClickShowPassword}>
+          {showPassword ? <VisibilityOff /> : <Visibility />}
+        </IconButton>
       </div>
       <Button type="submit" disabled={!isValidForm} loading={isPending}>
         Submit
