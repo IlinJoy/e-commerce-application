@@ -1,5 +1,11 @@
-function App() {
-  return <h1>I'm App!</h1>;
-}
+import { LoginPage } from './pages/login-page/login-page';
 
-export default App;
+export function App() {
+  return (
+    // <Header />
+    <main>
+      <LoginPage />
+    </main>
+    // <Footer />
+  );
+}
