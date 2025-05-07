@@ -1,8 +1,9 @@
-import { LoginFormUi, type LoginFormInputs } from '@/ui/form/login-form-ui';
+import { type LoginFormInputs } from '@/ui/form/login-form-ui';
 import { Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styles from './login-page.module.scss';
+import { LoginForm } from '@/components/login-form/login-form';
 
 export function LoginPage() {
   const [generalError, setGeneralError] = useState('temp Customer account with the given credentials not found');
@@ -10,7 +11,8 @@ export function LoginPage() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid, isSubmitting }, // заменить на isPending
+    // setError,
+    formState: { errors, isValid, isSubmitting }, // заменить на isPending от запроса
   } = useForm<LoginFormInputs>({ mode: 'onChange' }); // + валидация resolver: resolver(schema)
 
   // для вывода ошибок с инпутами, нужны будут еще имена полей, остальные можно посмотреть как сделать чтобы отличать их можно было
@@ -18,7 +20,11 @@ export function LoginPage() {
   // const { error, mutate, isPending} = useMutation({
   //   mutationFn: interactionWithApi,
   //   onSuccess: auth/redirect,
-  //   onError: (err) => handleError(err)
+  //   onError: (err) => {
+  //      if(field) setError(field, { message: err.message })
+  //    }else{
+  //      setGeneralError(err.message);
+  //    }
   // });
   // mutationFn: (variables: TVariables) => Promise<TData>;
 
@@ -33,10 +39,10 @@ export function LoginPage() {
   };
 
   return (
-    <div className={styles.loginImage}>
+    <div className={styles.loginBg}>
       <Stack className={`${styles.formWrapper} ${generalError ? styles.generalError : ''}`}>
         <Typography variant="h2">Login</Typography>
-        <LoginFormUi
+        <LoginForm
           onSubmit={onSubmit}
           register={register}
           errors={errors}
@@ -46,7 +52,7 @@ export function LoginPage() {
           isValidForm={isValid}
         />
       </Stack>
-      {/* TO DO replace */}
+      {/* TO DO replace with a custom component */}
       {generalError && <Typography className={styles.generalErrorMessage}>{generalError}</Typography>}
     </div>
   );

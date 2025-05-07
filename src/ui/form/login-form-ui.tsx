@@ -2,16 +2,17 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Button, IconButton, TextField } from '@mui/material';
 import type { BaseSyntheticEvent } from 'react';
-import { useState } from 'react';
 import type { FieldErrors, UseFormRegister } from 'react-hook-form';
 import styles from './login-form-ui.module.scss';
 
-type LoginFormUiProps = {
+export type LoginFormUiProps = {
   onSubmit: (e?: BaseSyntheticEvent<object>) => Promise<void>;
   register: UseFormRegister<LoginFormInputs>;
   errors: FieldErrors<LoginFormInputs>;
   generalError: string;
   handleUserTouch: () => void;
+  handleClickShowPassword: () => void;
+  showPassword: boolean;
   isPending: boolean;
   isValidForm: boolean;
 };
@@ -22,10 +23,17 @@ export type LoginFormInputs = {
 };
 
 export function LoginFormUi(props: LoginFormUiProps) {
-  const [showPassword, setShowPassword] = useState(false);
-
-  const { onSubmit, register, errors, generalError, handleUserTouch, isPending, isValidForm } = props;
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const {
+    onSubmit,
+    register,
+    errors,
+    generalError,
+    handleUserTouch,
+    handleClickShowPassword,
+    showPassword,
+    isPending,
+    isValidForm,
+  } = props;
 
   return (
     <form onSubmit={onSubmit} onChange={handleUserTouch} className={styles.form}>
