@@ -16,7 +16,7 @@ export function LoginPage() {
   } = useForm<LoginFormInputs>({ mode: 'onChange' }); // + валидация resolver: resolver(schema)
 
   // для вывода ошибок с инпутами, нужны будут еще имена полей, остальные можно посмотреть как сделать чтобы отличать их можно было
-  // через TanStack/кастомный?? можно подумать насчет вынести в отдельный файл
+  // через TanStack/кастомный??
   // const { error, mutate, isPending} = useMutation({
   //   mutationFn: interactionWithApi,
   //   onSuccess: auth/redirect,
