@@ -6,7 +6,7 @@ import styles from './login-page.module.scss';
 import { LoginForm } from '@/components/login-form/login-form';
 
 export function LoginPage() {
-  const [generalError, setGeneralError] = useState('temp Customer account with the given credentials not found');
+  const [generalError, setGeneralError] = useState('temp Something went wrong on our side. Please try again later.');
 
   const {
     register,
@@ -15,7 +15,7 @@ export function LoginPage() {
     formState: { errors, isValid, isSubmitting }, // заменить на isPending от запроса
   } = useForm<LoginFormInputs>({ mode: 'onChange' }); // + валидация resolver: resolver(schema)
 
-  // для вывода ошибок с инпутами, нужны будут еще имена полей, остальные можно посмотреть как сделать чтобы отличать их можно было
+  // для вывода ошибок с инпутами,желательно еще имена полей
   // через TanStack/кастомный??
   // const { error, mutate, isPending} = useMutation({
   //   mutationFn: interactionWithApi,
@@ -32,12 +32,6 @@ export function LoginPage() {
     console.log(data);
   });
 
-  const handleUserTouch = () => {
-    if (generalError) {
-      setGeneralError('');
-    }
-  };
-
   return (
     <div className={styles.loginBg}>
       <Stack className={`${styles.formWrapper} ${generalError ? styles.generalError : ''}`}>
@@ -47,7 +41,7 @@ export function LoginPage() {
           register={register}
           errors={errors}
           generalError={generalError}
-          handleUserTouch={handleUserTouch}
+          setGeneralError={setGeneralError}
           isPending={isSubmitting}
           isValidForm={isValid}
         />

@@ -1,5 +1,11 @@
-.MuiTextField-root {
-  margin-bottom: var(--spacing-2);
+.MuiFormControl-root {
+  margin-bottom: var(--spacing-1);
+
+  & .MuiIconButton-sizeMedium {
+    width: var(--spacing-3);
+    height: var(--spacing-3);
+    opacity: 0.5;
+  }
 }
 
 .MuiFormHelperText-sizeMedium.Mui-error {
