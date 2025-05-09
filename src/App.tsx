@@ -1,14 +1,11 @@
-import { Header } from './components/header/header';
-import { LoginPage } from './pages/login-page/login-page';
+import { PageLayout } from './pages/page-layout';
+import { ThemeAppProvider } from './theme/provider/theme-provider';
+import { responseTheme } from './theme/theme';
 
 export function App() {
   return (
-    <>
-      <Header />
-      <main>
-        <LoginPage />
-      </main>
-      {/* <Footer /> */}
-    </>
+    <ThemeAppProvider theme={responseTheme}>
+      <PageLayout />
+    </ThemeAppProvider>
   );
 }
