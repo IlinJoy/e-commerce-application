@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { LoginForm } from '@/components/login-form/login-form';
 import type { LoginFormInputs } from '@/components/login-form/login-form';
+import clsx from 'clsx';
 import styles from './login-page.module.scss';
 
 export function LoginPage() {
@@ -34,7 +35,7 @@ export function LoginPage() {
 
   return (
     <div className={styles.loginBg}>
-      <Stack className={`${styles.formWrapper} ${generalError ? styles.generalError : ''}`}>
+      <Stack className={clsx(styles.formWrapper, { [styles.generalError]: generalError })}>
         <Typography variant="h2">Login</Typography>
         <LoginForm
           onSubmit={onSubmit}
