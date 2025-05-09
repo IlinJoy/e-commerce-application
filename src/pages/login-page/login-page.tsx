@@ -1,14 +1,10 @@
 import { Stack, Typography } from '@mui/material';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { LoginForm } from '@/components/login-form/login-form';
 import type { LoginFormInputs } from '@/components/login-form/login-form';
-import clsx from 'clsx';
 import styles from './login-page.module.scss';
 
 export function LoginPage() {
-  const [generalError, setGeneralError] = useState('temp Something went wrong on our side. Please try again later.');
-
   const {
     register,
     handleSubmit,
@@ -35,20 +31,17 @@ export function LoginPage() {
 
   return (
     <div className={styles.loginBg}>
-      <Stack className={clsx(styles.formWrapper, { [styles.generalError]: generalError })}>
+      <Stack className={styles.formWrapper}>
         <Typography variant="h2">Login</Typography>
         <LoginForm
           onSubmit={onSubmit}
           register={register}
           errors={errors}
-          generalError={generalError}
-          setGeneralError={setGeneralError}
           isSubmitting={isSubmitting}
           isValidForm={isValid}
         />
       </Stack>
-      {/* TODO replace with a custom component */}
-      {generalError && <Typography className={styles.generalErrorMessage}>{generalError}</Typography>}
+      {/* TODO make a component to display general errors*/}
     </div>
   );
 }

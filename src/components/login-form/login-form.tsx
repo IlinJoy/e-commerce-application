@@ -1,16 +1,14 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { Button, TextField } from '@mui/material';
-import type { BaseSyntheticEvent, Dispatch, SetStateAction } from 'react';
+import { Button } from '@mui/material';
+import type { BaseSyntheticEvent } from 'react';
 import type { FieldErrors, UseFormRegister } from 'react-hook-form';
-import { PasswordInput } from '../input/password-input';
+import { FormInput } from '../input/input';
 import styles from './login-form.module.scss';
 
 type LoginFormProps = {
   onSubmit: (e?: BaseSyntheticEvent<object>) => Promise<void>;
   register: UseFormRegister<LoginFormInputs>;
   errors: FieldErrors<LoginFormInputs>;
-  generalError: string;
-  setGeneralError: Dispatch<SetStateAction<string>>;
   isSubmitting: boolean;
   isValidForm: boolean;
 };
@@ -20,36 +18,24 @@ export type LoginFormInputs = {
   password: string;
 };
 
-export function LoginForm({
-  onSubmit,
-  register,
-  errors,
-  setGeneralError,
-  generalError,
-  isSubmitting,
-  isValidForm,
-}: LoginFormProps) {
-  const handleUserTouch = () => {
-    if (generalError) {
-      setGeneralError('');
-    }
-  };
-
+export function LoginForm({ onSubmit, register, errors, isSubmitting, isValidForm }: LoginFormProps) {
   return (
-    <form onSubmit={onSubmit} onChange={handleUserTouch} className={styles.form}>
-      <TextField
+    <form onSubmit={onSubmit} className={styles.form}>
+      <FormInput
+        type={'email'}
         label="Email"
-        {...register('email', { required: 'Required' })}
-        disabled={isSubmitting}
-        error={!!errors.email || !!generalError}
-        helperText={errors.email?.message}
+        isDisabled={isSubmitting}
+        register={register}
+        name="email"
+        error={errors.email?.message}
       />
-      <PasswordInput
-        disabled={isSubmitting}
+      <FormInput
+        type={'password'}
+        label="Password"
+        isDisabled={isSubmitting}
         register={register}
         name="password"
         error={errors.password?.message}
-        generalError={generalError}
       />
       <Button type="submit" disabled={!isValidForm} loading={isSubmitting}>
         Submit
