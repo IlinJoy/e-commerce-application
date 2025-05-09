@@ -1,79 +1,111 @@
-import 'dotenv/config';
-import { registerCustomer, loginCustomer } from './api/clientAuth.js';
 import { getProducts } from './api/catalog.js';
+import { registerCustomer, loginCustomer } from './api/clientAuth.js';
 import { createCartForCustomer } from './api/createCartForCustomer.js';
 import { addProductToCart } from './api/addProductToCart.js';
+import type { Customer, ProductProjection } from '@commercetools/platform-sdk';
 import { createOrderFromCart } from './api/createOrderFromCart.js';
 import { getCustomerOrders } from './api/getCustomerOrders.js';
 
-const run = async () => {
+// usage example:
+// const handleClick = async () => {
+//   await run()
+// };
+// return <button onClick={() => void handleClick()}>I'm App!</button>
+// runs the whole flow: registering, authentication, getting products, creating a cart & an order, getting all user's orders
+export const run = async (): Promise<void> => {
   try {
     const timestamp = Date.now();
     const email = `test${timestamp}@example.com`;
     const password = 'Test123!';
 
-    // Регистрируем пользователя
-    const customer = await registerCustomer({
-      email,
-      password,
-      firstName: 'Test',
-      lastName: 'User',
-    });
-    console.log('Customer registered:', customer);
-
-    // Логинимся
-    const { customer: loggedInCustomer } = await loginCustomer(email, password);
-    console.log('Logged in! Access token:', '[hidden via SDK v3]', loggedInCustomer);
-
-    // Получаем список продуктов
-    const products = await getProducts();
-    const firstProduct = products[0];
-    if (!firstProduct) {
-      throw new Error('Нет доступных продуктов');
-    }
-    console.log('Получен продукт:', {
-      id: firstProduct.id,
-      name: firstProduct.name,
-      variantId: firstProduct.masterVariant.id,
-    });
-
-    // Создаём корзину
-    const cart = await createCartForCustomer({
-      customerId: customer.customer.id,
-      shippingAddress: {
+    const registered = await registerCustomer({
+      customerData: {
+        email,
+        password,
         firstName: 'Test',
         lastName: 'User',
-        streetName: 'Main Street',
-        postalCode: '12345',
-        city: 'New York',
-        country: 'US',
       },
+      shippingAddress: {
+        country: 'US',
+        streetName: 'Mockingbird Lane',
+        streetNumber: '123',
+        postalCode: '10001',
+        city: 'New York',
+      },
+      billingAddress: {
+        country: 'US',
+        streetName: 'Elm Street',
+        streetNumber: '456',
+        postalCode: '90001',
+        city: 'Los Angeles',
+      },
+      useSameAddress: false,
     });
-    console.log('Cart created:', { id: cart.id, version: cart.version });
 
-    // Добавляем продукт в корзину
+    if (!registered) {
+      throw new Error('Customer registration failed');
+    }
+
+    console.log('Customer registered:', registered);
+
+    const loginRes = await loginCustomer(email, password);
+    const customer = loginRes?.customer as Customer | undefined;
+
+    if (!customer) {
+      throw new Error('Login failed');
+    }
+
+    console.log('Customer logged in:', customer);
+
+    const products = await getProducts();
+    if (!products.length) {
+      throw new Error('No products found');
+    }
+
+    const product = products[0] as ProductProjection;
+    const variantId = product.masterVariant?.id;
+    if (!variantId) {
+      throw new Error('Product is missing master variant ID');
+    }
+
+    console.log('Product fetched: ', product);
+
+    const shippingAddress = customer.addresses?.[0];
+    if (!shippingAddress) {
+      throw new Error('Shipping address is missing');
+    }
+
+    const customerCart = await createCartForCustomer({
+      email,
+      password,
+      shippingAddress,
+    });
+
+    console.log('Cart created: ', customerCart);
+
     const updatedCart = await addProductToCart({
-      cartId: cart.id,
-      cartVersion: cart.version,
-      productId: firstProduct.id,
-      variantId: firstProduct.masterVariant.id,
+      cartId: customerCart.id,
+      cartVersion: customerCart.version,
+      productId: product.id,
+      variantId,
       quantity: 1,
     });
-    console.log('Product added to cart:', updatedCart);
 
-    // Создаём заказ
+    console.log('Added product to cart:', updatedCart);
+
     const order = await createOrderFromCart({
       cartId: updatedCart.id,
       cartVersion: updatedCart.version,
+      email,
+      password,
     });
-    console.log('Order created:', order);
 
-    // Получаем заказы пользователя
-    const orders = await getCustomerOrders(customer.customer.id);
-    console.log('Заказы пользователя:', orders);
+    console.log('Order created: ', order);
+
+    const customerOrders = await getCustomerOrders(email, password);
+
+    console.log('All customer orders: ', customerOrders);
   } catch (error) {
-    console.error('Error during full test:', error);
+    console.error('Error during full test:', error instanceof Error ? error.message : error);
   }
 };
-
-void run();
