@@ -1,14 +1,10 @@
-import { apiRoot } from './platformApi';
+import type { Order } from '@commercetools/platform-sdk';
+import { getCustomerToken, fetchFromApi } from './platformApi';
 
-export const getCustomerOrders = async (customerId: string) => {
-  const response = await apiRoot
-    .orders()
-    .get({
-      queryArgs: {
-        where: `customerId="${customerId}"`,
-      },
-    })
-    .execute();
+export const getCustomerOrders = async (email: string, password: string): Promise<Order[]> => {
+  const token = await getCustomerToken(email, password);
 
-  return response.body.results;
+  const result = await fetchFromApi<{ results: Order[] }>('/me/orders', token);
+
+  return result.results;
 };

@@ -1,5 +1,13 @@
-import type { CartUpdateAction } from '@commercetools/platform-sdk';
-import { apiRoot } from './platformApi';
+import { type CartUpdateAction, type Cart } from '@commercetools/platform-sdk';
+import { fetchFromApi, getAdminToken } from './platformApi';
+
+type AddProductToCartParams = {
+  cartId: string;
+  cartVersion: number;
+  productId: string;
+  variantId: number;
+  quantity: number;
+};
 
 export const addProductToCart = async ({
   cartId,
@@ -7,13 +15,9 @@ export const addProductToCart = async ({
   productId,
   variantId,
   quantity,
-}: {
-  cartId: string;
-  cartVersion: number;
-  productId: string;
-  variantId: number;
-  quantity: number;
-}) => {
+}: AddProductToCartParams): Promise<Cart> => {
+  const token = await getAdminToken();
+
   const actions: CartUpdateAction[] = [
     {
       action: 'addLineItem',
@@ -23,16 +27,15 @@ export const addProductToCart = async ({
     },
   ];
 
-  const response = await apiRoot
-    .carts()
-    .withId({ ID: cartId })
-    .post({
-      body: {
-        version: cartVersion,
-        actions,
-      },
-    })
-    .execute();
+  const body = {
+    version: cartVersion,
+    actions,
+  };
 
-  return response.body;
+  const updatedCart = await fetchFromApi<Cart>(`/carts/${cartId}`, token, {
+    method: 'POST',
+    body: JSON.stringify(body),
+  });
+
+  return updatedCart;
 };

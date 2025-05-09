@@ -1,7 +1,13 @@
-import { apiRoot } from './platformApi';
+import { fetchFromApi, getAdminToken } from '@/api/platformApi';
 
-export const getProducts = async () => {
-  const response = await apiRoot.productProjections().get().execute();
+type ProductProjection = {
+  id: string;
+  name: Record<string, string>;
+  slug: Record<string, string>;
+};
 
-  return response.body.results;
+export const getProducts = async (): Promise<ProductProjection[]> => {
+  const token = await getAdminToken();
+  const result = await fetchFromApi<{ results: ProductProjection[] }>('product-projections', token);
+  return result.results;
 };
