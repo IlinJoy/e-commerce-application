@@ -5,6 +5,7 @@ import reactRefresh from 'eslint-plugin-react-refresh';
 import tseslint from 'typescript-eslint';
 import parserTypeScript from '@typescript-eslint/parser';
 import eslintConfigPrettier from 'eslint-config-prettier';
+import reactPlugin from 'eslint-plugin-react';
 
 export default tseslint.config(
   { ignores: ['dist', 'eslint.config.ts', '**/*.test.{ts,tsx}'] },
@@ -23,6 +24,7 @@ export default tseslint.config(
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
+      react: reactPlugin,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
@@ -44,6 +46,8 @@ export default tseslint.config(
         'error',
         { accessibility: 'explicit', overrides: { constructors: 'off' } },
       ],
+      'react/jsx-no-useless-fragment': 'error',
+      'no-restricted-imports': ['error', { paths: [{ name: 'react', importNames: ['default'] }] }],
     },
   }
 );

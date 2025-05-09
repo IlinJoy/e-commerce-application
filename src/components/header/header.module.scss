@@ -1,0 +1,48 @@
+.logo {
+  flex-grow: 1;
+
+  font-family: var(--font-secondary);
+  font-weight: 700;
+  color: var(--mui-palette-primary-main);
+  text-decoration: none;
+  letter-spacing: var(--subtitle-spacing);
+
+  &:visited {
+    color: inherit;
+  }
+}
+
+.bar {
+  border-bottom: 1px solid var(--mui-palette-primary-main);
+  background-color: transparent;
+}
+
+.menu {
+  position: relative;
+
+  font-size: var(--subtitle-size);
+  font-weight: 600;
+  text-decoration: none;
+  text-transform: uppercase;
+
+  &::before {
+    content: '';
+
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    width: 0%;
+    height: 2px;
+
+    background-color: var(--mui-palette-primary-main);
+
+    transition: width 0.3s ease;
+  }
+
+  &:hover {
+    &::before {
+      width: 100%;
+    }
+  }
+}

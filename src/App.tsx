@@ -1,5 +1,11 @@
-function App() {
-  return <h1>I'm App!</h1>;
-}
+import { PageLayout } from './pages/page-layout';
+import { ThemeAppProvider } from './theme/provider/theme-provider';
+import { responseTheme } from './theme/theme';
 
-export default App;
+export function App() {
+  return (
+    <ThemeAppProvider theme={responseTheme}>
+      <PageLayout />
+    </ThemeAppProvider>
+  );
+}
