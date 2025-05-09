@@ -1,17 +1,23 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { FormControl, FormHelperText, IconButton, Input, InputAdornment, InputLabel } from '@mui/material';
 import { useState } from 'react';
-import type { UseFormRegister } from 'react-hook-form';
-import type { LoginFormInputs } from '../form/login-form-ui';
+import type { FieldValues, Path, UseFormRegister } from 'react-hook-form';
 
-type PasswordInputProps = {
-  isPending: boolean;
-  register: UseFormRegister<LoginFormInputs>;
-  error: string | undefined;
-  generalError: string;
+type PasswordInputProps<T extends FieldValues> = {
+  disabled?: boolean;
+  register: UseFormRegister<T>;
+  name: Path<T>;
+  error?: string;
+  generalError?: string;
 };
 
-export function PasswordInput({ isPending, error, register, generalError }: PasswordInputProps) {
+export function PasswordInput<T extends FieldValues>({
+  disabled: isDisabled,
+  error,
+  name,
+  register,
+  generalError,
+}: PasswordInputProps<T>) {
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -21,9 +27,9 @@ export function PasswordInput({ isPending, error, register, generalError }: Pass
         Password
       </InputLabel>
       <Input
-        {...register('password', { required: 'Required', minLength: { value: 5, message: 'placeholder' } })}
+        {...register(name, { required: 'Required', minLength: { value: 5, message: 'placeholder' } })}
         type={showPassword ? 'text' : 'password'}
-        disabled={isPending}
+        disabled={isDisabled}
         error={!!error || !!generalError}
         endAdornment={
           <InputAdornment position="end">

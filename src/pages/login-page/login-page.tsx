@@ -1,9 +1,9 @@
-import { type LoginFormInputs } from '@/ui/form/login-form-ui';
 import { Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import styles from './login-page.module.scss';
 import { LoginForm } from '@/components/login-form/login-form';
+import type { LoginFormInputs } from '@/components/login-form/login-form';
+import styles from './login-page.module.scss';
 
 export function LoginPage() {
   const [generalError, setGeneralError] = useState('temp Something went wrong on our side. Please try again later.');
@@ -42,11 +42,11 @@ export function LoginPage() {
           errors={errors}
           generalError={generalError}
           setGeneralError={setGeneralError}
-          isPending={isSubmitting}
+          isSubmitting={isSubmitting}
           isValidForm={isValid}
         />
       </Stack>
-      {/* TO DO replace with a custom component */}
+      {/* TODO replace with a custom component */}
       {generalError && <Typography className={styles.generalErrorMessage}>{generalError}</Typography>}
     </div>
   );
