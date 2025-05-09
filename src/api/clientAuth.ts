@@ -4,7 +4,7 @@ import { getAdminToken, getCustomerToken, fetchFromApi } from '@/api/platformApi
 import { mapApiErrorToMessage } from '@/utils/mapApiErrorToMessage';
 
 type RegisterCustomerOptions = {
-  customerData: CustomerDraft;
+  customerData: Omit<CustomerDraft, 'addresses'>;
   shippingAddress: Address;
   billingAddress?: Address;
   useSameAddress?: boolean;
