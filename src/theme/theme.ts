@@ -21,6 +21,12 @@ const theme = createTheme({
         variant: 'contained',
       },
     },
+    MuiTextField: {
+      defaultProps: { variant: 'standard' },
+    },
+    MuiFormControl: {
+      defaultProps: { variant: 'standard' },
+    },
     MuiContainer: {
       defaultProps: {
         maxWidth: false,

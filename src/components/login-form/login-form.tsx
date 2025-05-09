@@ -39,9 +39,7 @@ export function LoginForm({
     <form onSubmit={onSubmit} onChange={handleUserTouch} className={styles.form}>
       <TextField
         label="Email"
-        required
         {...register('email', { required: 'Required' })}
-        variant="standard"
         disabled={isSubmitting}
         error={!!errors.email || !!generalError}
         helperText={errors.email?.message}

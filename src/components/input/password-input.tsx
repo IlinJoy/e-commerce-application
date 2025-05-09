@@ -22,7 +22,7 @@ export function PasswordInput<T extends FieldValues>({
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   return (
-    <FormControl variant="standard">
+    <FormControl>
       <InputLabel required error={!!error || !!generalError} htmlFor="password">
         Password
       </InputLabel>
