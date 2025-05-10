@@ -6,6 +6,7 @@ import { NotFoundPage } from '@/pages/not-found-page/not-found-page';
 import { PageLayout } from '@/pages/page-layout';
 import { RegistrationPage } from '@/pages/registration-page/registration-page';
 import { Route, Routes } from 'react-router';
+import { AccountPage } from '@/pages/account-page/account-page';
 import { ROUTES } from './routes';
 
 export function AppRouter() {
@@ -17,6 +18,7 @@ export function AppRouter() {
         <Route path={ROUTES.REGISTRATION} element={<RegistrationPage />} />
         <Route path={ROUTES.CATALOG} element={<CatalogPage />} />
         <Route path={ROUTES.ABOUT} element={<AboutPage />} />
+        <Route path={ROUTES.ACCOUNT} element={<AccountPage />} />
         <Route path={ROUTES.NOT_FOUND} element={<NotFoundPage />} />
       </Route>
     </Routes>
