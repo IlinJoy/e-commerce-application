@@ -1,4 +1,7 @@
+// TODO add transition/hover mixins
 .logo {
+  cursor: pointer;
+
   flex-grow: 1;
 
   font-family: var(--font-secondary);
@@ -9,6 +12,10 @@
 
   &:visited {
     color: inherit;
+  }
+
+  &:hover {
+    opacity: 0.9;
   }
 }
 
@@ -42,6 +49,8 @@
   }
 
   &.active {
+    pointer-events: none;
+
     &::before {
       width: 100%;
     }
