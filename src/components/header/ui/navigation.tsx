@@ -4,14 +4,17 @@ import { NavLink } from 'react-router';
 import clsx from 'clsx';
 import { ROUTES } from '@/router/routes';
 
-export function Navigation() {
-  const pages = ['Home', 'Catalog', 'About'];
+export function Navigation({ auth }: { auth: boolean }) {
+  const baseLinks = ['Home', 'Catalog', 'About'];
+  const authenticationLinks = ['Login', 'Registration'];
+  const headerLinks = auth ? baseLinks : [...baseLinks, ...authenticationLinks];
+
   return (
     <Stack component={'nav'} direction={'row'} spacing={3}>
-      {pages.map((page) => (
+      {headerLinks.map((page) => (
         <NavLink
           key={page}
-          to={page === 'Home' ? ROUTES.MAIN : page.toUpperCase()}
+          to={page === 'Home' ? ROUTES.MAIN : page.toLowerCase()}
           className={({ isActive }) => clsx(styles.navLink, { [styles.active]: isActive })}
         >
           {page}
