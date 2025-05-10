@@ -17,11 +17,12 @@
   background-color: transparent;
 }
 
-.menu {
+.nav-link {
   position: relative;
 
   font-size: var(--subtitle-size);
   font-weight: 600;
+  color: var(--mui-palette-primary-main);
   text-decoration: none;
   text-transform: uppercase;
 
@@ -38,6 +39,12 @@
     background-color: var(--mui-palette-primary-main);
 
     transition: width 0.3s ease;
+  }
+
+  &.active {
+    &::before {
+      width: 100%;
+    }
   }
 
   &:hover {

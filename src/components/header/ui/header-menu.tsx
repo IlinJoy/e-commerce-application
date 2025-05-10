@@ -1,16 +1,20 @@
-import { Link, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import styles from '../header.module.scss';
+import { NavLink } from 'react-router';
+import clsx from 'clsx';
 
-const pages = ['Home', 'Catalog', 'About Us'];
-
-export function HeaderMenu() {
+export function Navigation() {
+  const pages = ['Home', 'Catalog', 'About Us'];
   return (
     <Stack component={'nav'} direction={'row'} spacing={3}>
-      {/* TODO replace with react-router links */}
       {pages.map((page) => (
-        <Link key={page} href="#" className={styles.menu}>
+        <NavLink
+          key={page}
+          to={page === 'Home' ? '/' : page.toLowerCase()}
+          className={({ isActive }) => clsx(styles.navLink, { [styles.active]: isActive })}
+        >
           {page}
-        </Link>
+        </NavLink>
       ))}
     </Stack>
   );

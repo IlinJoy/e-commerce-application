@@ -1,12 +1,12 @@
 import { Header } from '@/components/header/header';
-import { LoginPage } from './login-page/login-page';
+import { Outlet } from 'react-router';
 
 export function PageLayout() {
   return (
     <>
       <Header />
       <main>
-        <LoginPage />
+        <Outlet />
       </main>
       {/* <Footer /> */}
     </>
