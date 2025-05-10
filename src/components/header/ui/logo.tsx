@@ -5,7 +5,7 @@ import styles from '../header.module.scss';
 
 export function Logo({ navigate }: { navigate: NavigateFunction }) {
   return (
-    <Typography variant="h5" component={'a'} onClick={() => void navigate(ROUTES.MAIN)} className={styles.logo}>
+    <Typography variant="h5" component={'a'} onClick={() => void navigate(ROUTES.MAIN.path)} className={styles.logo}>
       UNICKO
     </Typography>
   );

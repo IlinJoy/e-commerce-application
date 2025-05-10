@@ -14,7 +14,7 @@ export function Navigation({ auth }: { auth: boolean }) {
       {headerLinks.map((page) => (
         <NavLink
           key={page}
-          to={page === 'Home' ? ROUTES.MAIN : page.toLowerCase()}
+          to={page === 'Home' ? ROUTES.MAIN.path : page.toLowerCase()}
           className={({ isActive }) => clsx(styles.navLink, { [styles.active]: isActive })}
         >
           {page}

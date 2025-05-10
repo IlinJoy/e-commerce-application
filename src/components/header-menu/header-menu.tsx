@@ -25,7 +25,7 @@ export function HeaderMenu({ navigate, setAuth }: HeaderMenuProps) {
 
   const handleNavigate = (route: RoutePath) => {
     setAnchorEl(null);
-    void navigate(route);
+    void navigate(route.path);
   };
 
   return (
