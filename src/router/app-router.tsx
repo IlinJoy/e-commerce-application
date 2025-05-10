@@ -1,13 +1,15 @@
-import { AboutPage } from '@/pages/about-page/about-page';
-import { CatalogPage } from '@/pages/catalog-page/catalog-page';
-import { LoginPage } from '@/pages/login-page/login-page';
-import { MainPage } from '@/pages/main-page/main-page';
-import { NotFoundPage } from '@/pages/not-found-page/not-found-page';
 import { PageLayout } from '@/pages/page-layout';
-import { RegistrationPage } from '@/pages/registration-page/registration-page';
 import { Route, Routes } from 'react-router';
 import { AccountPage } from '@/pages/account-page/account-page';
 import { ROUTES } from './routes';
+import { lazyLoad } from '@/utils/lazy-load';
+
+const AboutPage = lazyLoad('about-page');
+const CatalogPage = lazyLoad('catalog-page');
+const LoginPage = lazyLoad('login-page');
+const MainPage = lazyLoad('main-page');
+const NotFoundPage = lazyLoad('not-found-page');
+const RegistrationPage = lazyLoad('registration-page');
 
 export function AppRouter() {
   return (
