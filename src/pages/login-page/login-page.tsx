@@ -12,6 +12,8 @@ export function LoginPage() {
     formState: { errors, isValid, isSubmitting }, // заменить на isPending от запроса
   } = useForm<LoginFormInputs>({ mode: 'onChange' }); // + валидация resolver: resolver(schema)
 
+  console.log('aaa');
+
   // для вывода ошибок с инпутами,желательно еще имена полей
   // через TanStack/кастомный??
   // const { error, mutate, isPending} = useMutation({
