@@ -4,7 +4,7 @@ import type { Dispatch, SetStateAction } from 'react';
 import { ROUTES } from '@/router/routes';
 import { AccountCircleOutlined } from '@mui/icons-material';
 import { IconButton, Menu, MenuItem } from '@mui/material';
-import { useState, type MouseEvent } from 'react';
+import { useRef, useState, type MouseEvent } from 'react';
 
 type HeaderMenuProps = {
   navigate: NavigateFunction;
@@ -12,11 +12,9 @@ type HeaderMenuProps = {
 };
 
 export function HeaderMenu({ navigate, setAuth }: HeaderMenuProps) {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  const handleOpen = (event: MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const [isOpen, setIsOpen] = useState(false);
+  const anchorElRef = useRef<HTMLButtonElement>(null);
+  // const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleLogout = () => {
     setAuth(false);
@@ -24,16 +22,16 @@ export function HeaderMenu({ navigate, setAuth }: HeaderMenuProps) {
   };
 
   const handleNavigate = (route: RoutePath) => {
-    setAnchorEl(null);
+    setIsOpen(false);
     navigate(route.path);
   };
 
   return (
     <>
-      <IconButton color="primary" onClick={handleOpen}>
+      <IconButton ref={anchorElRef} color="primary" onClick={() => setIsOpen(true)}>
         <AccountCircleOutlined />
       </IconButton>
-      <Menu anchorEl={anchorEl} onClose={() => setAnchorEl(null)} open={!!anchorEl}>
+      <Menu anchorEl={anchorElRef.current} onClose={() => setIsOpen(false)} open={isOpen}>
         <MenuItem onClick={() => handleNavigate(ROUTES.ACCOUNT)}>Account</MenuItem>
         <MenuItem onClick={handleLogout}>Logout ➜</MenuItem>
       </Menu>
