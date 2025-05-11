@@ -1,10 +1,5 @@
 import { fetchFromApi, getAdminToken } from '@/api/platformApi';
-
-type ProductProjection = {
-  id: string;
-  name: Record<string, string>;
-  slug: Record<string, string>;
-};
+import type { ProductProjection } from '@commercetools/platform-sdk';
 
 export const getProducts = async (): Promise<ProductProjection[]> => {
   const token = await getAdminToken();
