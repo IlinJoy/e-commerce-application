@@ -41,7 +41,7 @@ export function FormInput<T extends FieldValues>({
       <Input
         id={id}
         value={value}
-        {...register(name, { required: isRequired && 'Required', minLength: { value: 2, message: 'placeholder' } })}
+        {...register(name)}
         type={showPassword ? 'text' : type}
         disabled={isDisabled}
         error={!!error}
