@@ -4,7 +4,7 @@ import type { Dispatch, SetStateAction } from 'react';
 import { ROUTES } from '@/router/routes';
 import { AccountCircleOutlined } from '@mui/icons-material';
 import { IconButton, Menu, MenuItem } from '@mui/material';
-import { useRef, useState, type MouseEvent } from 'react';
+import { useRef, useState } from 'react';
 
 type HeaderMenuProps = {
   navigate: NavigateFunction;
@@ -14,7 +14,6 @@ type HeaderMenuProps = {
 export function HeaderMenu({ navigate, setAuth }: HeaderMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const anchorElRef = useRef<HTMLButtonElement>(null);
-  // const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleLogout = () => {
     setAuth(false);
