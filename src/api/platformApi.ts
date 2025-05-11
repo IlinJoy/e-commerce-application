@@ -83,8 +83,7 @@ export const fetchFromApi = async <T = unknown>(path: string, token: string, opt
     },
   });
 
-  const text = await res.text();
-  const data = text ? (JSON.parse(text) as T | ApiErrorResponse) : {};
+  const data = (await res.json()) as T | ApiErrorResponse;
 
   if (!res.ok) {
     const err = data as ApiErrorResponse;

@@ -6,7 +6,8 @@ export const mapApiErrorToMessage = (error: ErrorResponse): never => {
     throw new Error('Something went wrong on our side. Please try again later.');
   }
 
-  const errorCode = error.errors?.[0]?.code;
+  const hasErrors = Array.isArray(error.errors) && error.errors.length > 0;
+  const errorCode = hasErrors ? error.errors[0].code : undefined;
 
   switch (errorCode) {
     // ↓ when registering already registered user ↓
