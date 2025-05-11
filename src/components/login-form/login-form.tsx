@@ -27,6 +27,7 @@ export function LoginForm({ onSubmit, register, errors, isSubmitting, isValidFor
         isDisabled={isSubmitting}
         register={register}
         name="email"
+        id="email"
         error={errors.email?.message}
       />
       <FormInput
@@ -35,6 +36,7 @@ export function LoginForm({ onSubmit, register, errors, isSubmitting, isValidFor
         isDisabled={isSubmitting}
         register={register}
         name="password"
+        id="password"
         error={errors.password?.message}
       />
       <Button type="submit" disabled={!isValidForm} loading={isSubmitting}>

@@ -8,6 +8,7 @@ type FormInputProps<T extends FieldValues> = {
   type: 'text' | 'password' | 'email' | 'date';
   register: UseFormRegister<T>;
   name: Path<T>;
+  id: string;
   value?: string;
   label?: string;
   error?: string;
@@ -20,6 +21,7 @@ export function FormInput<T extends FieldValues>({
   type = 'text',
   isRequired = true,
   register,
+  id,
   name,
   value,
   label,
@@ -32,16 +34,20 @@ export function FormInput<T extends FieldValues>({
   return (
     <FormControl>
       {label && (
-        <InputLabel required={isRequired} error={!!error} htmlFor={name}>
+        <InputLabel required={isRequired} error={!!error} htmlFor={id}>
           {label}
         </InputLabel>
       )}
       <Input
+        id={id}
         value={value}
         {...register(name, { required: isRequired && 'Required', minLength: { value: 2, message: 'placeholder' } })}
         type={showPassword ? 'text' : type}
         disabled={isDisabled}
         error={!!error}
+        inputProps={{
+          autoComplete: type === 'password' ? 'password' : 'current-password',
+        }}
         endAdornment={
           <InputAdornment position="end">
             {type === 'password' && <PasswordButton showPassword={showPassword} setShowPassword={setShowPassword} />}
