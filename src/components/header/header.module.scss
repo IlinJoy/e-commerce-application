@@ -1,4 +1,7 @@
+// TODO add transition/hover mixins
 .logo {
+  cursor: pointer;
+
   flex-grow: 1;
 
   font-family: var(--font-secondary);
@@ -10,6 +13,10 @@
   &:visited {
     color: inherit;
   }
+
+  &:hover {
+    opacity: 0.9;
+  }
 }
 
 .bar {
@@ -17,11 +24,12 @@
   background-color: transparent;
 }
 
-.menu {
+.nav-link {
   position: relative;
 
   font-size: var(--subtitle-size);
   font-weight: 600;
+  color: var(--mui-palette-primary-main);
   text-decoration: none;
   text-transform: uppercase;
 
@@ -38,6 +46,14 @@
     background-color: var(--mui-palette-primary-main);
 
     transition: width 0.3s ease;
+  }
+
+  &.active {
+    pointer-events: none;
+
+    &::before {
+      width: 100%;
+    }
   }
 
   &:hover {

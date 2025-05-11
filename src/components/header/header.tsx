@@ -1,18 +1,22 @@
-import { AppBar, Container, Toolbar, Typography } from '@mui/material';
-import styles from './header.module.scss';
+import { AppBar, Container, Toolbar } from '@mui/material';
 import { HeaderButtonGroup } from './ui/header-button-group';
-import { HeaderMenu } from './ui/header-menu';
+import { Navigation } from './ui/navigation';
+import { useNavigate } from 'react-router';
+import { useState } from 'react';
+import { Logo } from './ui/logo';
+import styles from './header.module.scss';
 
 export function Header() {
+  const [auth, setAuth] = useState(true);
+  const navigate = useNavigate();
+
   return (
     <AppBar elevation={0} className={styles.bar}>
       <Container>
         <Toolbar disableGutters>
-          <Typography variant="h5" component={'a'} href="#" className={styles.logo}>
-            UNICKO
-          </Typography>
-          <HeaderMenu />
-          <HeaderButtonGroup />
+          <Logo navigate={navigate} />
+          <Navigation auth={auth} />
+          <HeaderButtonGroup navigate={navigate} auth={auth} setAuth={setAuth} />
         </Toolbar>
       </Container>
     </AppBar>

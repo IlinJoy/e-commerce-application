@@ -30,7 +30,7 @@ export default tseslint.config(
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       '@typescript-eslint/no-unused-vars': 'warn',
-      '@typescript-eslint/no-non-null-assertion': 'warn',
+      '@typescript-eslint/no-non-null-assertion': 'off',
       'no-magic-numbers': ['error', { ignore: [0, 1], enforceConst: true }],
       '@typescript-eslint/naming-convention': [
         'error',
@@ -40,6 +40,8 @@ export default tseslint.config(
         },
       ],
       curly: 'error',
+      '@typescript-eslint/no-floating-promises': 'off',
+      '@typescript-eslint/no-misused-promises': ['error', { checksVoidReturn: false }],
       '@typescript-eslint/member-ordering': 'warn',
       '@typescript-eslint/consistent-type-imports': 'error',
       '@typescript-eslint/explicit-member-accessibility': [
