@@ -41,6 +41,11 @@ export function FormInput<T extends FieldValues>({
       <Input
         id={id}
         value={value}
+        onKeyDown={(e) => {
+          if ((type === 'password' && e.key === ' ') || (type === 'email' && e.key === ' ')) {
+            e.preventDefault();
+          }
+        }}
         {...register(name)}
         type={showPassword ? 'text' : type}
         disabled={isDisabled}

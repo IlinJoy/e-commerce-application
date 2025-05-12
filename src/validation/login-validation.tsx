@@ -3,15 +3,15 @@ import { z } from 'zod';
 const MIN_PASSWORD_LENGTH = 8;
 
 export const loginSchema = z.object({
-  email: z.string().trim().email('Must contain "@" and valid domain'),
+  email: z.string().email('Must contain only English letters, "@" and valid domain'),
   password: z.string().superRefine((data, ctx) => {
-    if (!/[A-Z]/.test(data)) {
+    if (!/\p{Lu}/u.test(data)) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: 'Must contain at least one uppercase letter',
       });
     }
-    if (!/[a-z]/.test(data)) {
+    if (!/\p{Ll}/u.test(data)) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: 'Must contain at least one lowercase letter',
@@ -29,10 +29,10 @@ export const loginSchema = z.object({
         message: 'Must contain at least one special character: ! @ # $ % ^ & *',
       });
     }
-    if (data.trim().length < MIN_PASSWORD_LENGTH) {
+    if (data.length < MIN_PASSWORD_LENGTH) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: 'At least 8 characters, ignoring spaces at the start or end',
+        message: 'At least 8 characters',
       });
     }
   }),
