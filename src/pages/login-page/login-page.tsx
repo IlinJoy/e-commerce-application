@@ -30,18 +30,21 @@ export function LoginPage() {
   });
 
   return (
-    <div className={styles.loginBg}>
-      <div className={styles.formWrapper}>
-        <Typography variant="h2">Login</Typography>
-        <LoginForm
-          onSubmit={onSubmit}
-          register={register}
-          errors={errors}
-          isSubmitting={isSubmitting}
-          isValidForm={isValid}
-        />
+    <>
+      <div className={styles.loginBg}>
+        <div className={styles.formWrapper}>
+          <Typography variant="h2">Login</Typography>
+          <LoginForm
+            onSubmit={onSubmit}
+            register={register}
+            errors={errors}
+            isSubmitting={isSubmitting}
+            isValidForm={isValid}
+          />
+        </div>
+        {/* TODO make a component to display general errors*/}
       </div>
-      {/* TODO make a component to display general errors*/}
-    </div>
+      <div className={styles.temp} />
+    </>
   );
 }

@@ -9,6 +9,12 @@
   border-bottom: 1px solid var(--mui-palette-primary-main);
 
   background-color: transparent;
+
+  @include transition;
+
+  &.filled {
+    background-color: var(--mui-palette-background-default);
+  }
 }
 
 .bar {
