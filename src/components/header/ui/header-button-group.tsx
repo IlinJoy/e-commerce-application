@@ -1,5 +1,7 @@
-import { ShoppingBagOutlined } from '@mui/icons-material';
-import { Badge, IconButton, Stack } from '@mui/material';
+import ShoppingBagOutlined from '@mui/icons-material/ShoppingBagOutlined';
+import Stack from '@mui/material/Stack';
+import IconButton from '@mui/material/IconButton';
+import Badge from '@mui/material/Badge';
 import type { NavigateFunction } from 'react-router';
 import type { Dispatch, SetStateAction } from 'react';
 import { HeaderMenu } from '../../header-menu/header-menu';

@@ -1,4 +1,6 @@
-import { AppBar, Container, Toolbar } from '@mui/material';
+import AppBar from '@mui/material/AppBar';
+import Container from '@mui/material/Container';
+import Toolbar from '@mui/material/Toolbar';
 import { HeaderButtonGroup } from './ui/header-button-group';
 import { Navigation } from './ui/navigation';
 import { useNavigate } from 'react-router';

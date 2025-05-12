@@ -1,4 +1,5 @@
-import { Stack, Typography } from '@mui/material';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import { useForm } from 'react-hook-form';
 import { LoginForm } from '@/components/login-form/login-form';
 import type { LoginFormInputs } from '@/components/login-form/login-form';

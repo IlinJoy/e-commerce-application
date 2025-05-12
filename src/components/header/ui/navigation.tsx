@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import Stack from '@mui/material/Stack';
 import styles from '../header.module.scss';
 import { NavLink } from 'react-router';
 import clsx from 'clsx';
