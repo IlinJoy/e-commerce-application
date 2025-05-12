@@ -24,3 +24,7 @@ main {
 
   min-height: 100vh;
 }
+
+body.disable {
+  overflow: hidden;
+}

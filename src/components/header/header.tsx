@@ -33,6 +33,11 @@ export function Header() {
     };
   }, [isFilledHeader]);
 
+  useEffect(() => {
+    const disable = 'disable';
+    document.body.classList.toggle(disable, isOpenMenu);
+  }, [isOpenMenu]);
+
   return (
     <header className={clsx(styles.header, { [styles.filled]: isFilledHeader })}>
       <Container>
