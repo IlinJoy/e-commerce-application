@@ -1,5 +1,4 @@
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { SpriteIcon } from '@/components/icon/icon';
 import IconButton from '@mui/material/IconButton';
 import type { Dispatch, SetStateAction } from 'react';
 
@@ -11,5 +10,9 @@ type PasswordButtonProps = {
 export function PasswordButton({ setShowPassword, showPassword }: PasswordButtonProps) {
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  return <IconButton onClick={handleClickShowPassword}>{showPassword ? <VisibilityOff /> : <Visibility />}</IconButton>;
+  return (
+    <IconButton onClick={handleClickShowPassword}>
+      {showPassword ? <SpriteIcon id="password" /> : <SpriteIcon id="password-off" />}
+    </IconButton>
+  );
 }
