@@ -1,64 +1,18 @@
-// TODO add transition/hover mixins
-.logo {
-  cursor: pointer;
+@use '../../styles/mixins' as *;
 
-  flex-grow: 1;
+.header {
+  position: fixed;
+  z-index: 10;
+  top: 0;
 
-  font-family: var(--font-secondary);
-  font-weight: 700;
-  color: var(--mui-palette-primary-main);
-  text-decoration: none;
-  letter-spacing: var(--subtitle-spacing);
-
-  &:visited {
-    color: inherit;
-  }
-
-  &:hover {
-    opacity: 0.9;
-  }
-}
-
-.bar {
+  width: 100%;
   border-bottom: 1px solid var(--mui-palette-primary-main);
+
   background-color: transparent;
 }
 
-.nav-link {
-  position: relative;
+.bar {
+  @include flex;
 
-  font-size: var(--subtitle-size);
-  font-weight: 600;
-  color: var(--mui-palette-primary-main);
-  text-decoration: none;
-  text-transform: uppercase;
-
-  &::before {
-    content: '';
-
-    position: absolute;
-    bottom: 0;
-    left: 0;
-
-    width: 0%;
-    height: 2px;
-
-    background-color: var(--mui-palette-primary-main);
-
-    transition: width 0.3s ease;
-  }
-
-  &.active {
-    pointer-events: none;
-
-    &::before {
-      width: 100%;
-    }
-  }
-
-  &:hover {
-    &::before {
-      width: 100%;
-    }
-  }
+  height: var(--spacing-7);
 }

@@ -1,26 +1,32 @@
-import AppBar from '@mui/material/AppBar';
 import Container from '@mui/material/Container';
-import Toolbar from '@mui/material/Toolbar';
-import { HeaderButtonGroup } from './ui/header-button-group';
-import { Navigation } from './ui/navigation';
-import { useNavigate } from 'react-router';
+import { HeaderButtonGroup } from './ui/header-button-group/header-button-group';
+import { Navigation } from './ui/navigation/navigation';
 import { useState } from 'react';
-import { Logo } from './ui/logo';
+import { Logo } from './ui/logo/logo';
 import styles from './header.module.scss';
 
 export function Header() {
+  //TODO заменить useContext
   const [auth, setAuth] = useState(true);
-  const navigate = useNavigate();
+  const [isOpenMenu, setIsOpenMenu] = useState(false);
+
+  const toggleMenuHandler = () => setIsOpenMenu((show) => !show);
+  const closeMenu = () => setIsOpenMenu(false);
 
   return (
-    <AppBar elevation={0} className={styles.bar}>
+    <header className={styles.header}>
       <Container>
-        <Toolbar disableGutters>
-          <Logo navigate={navigate} />
-          <Navigation auth={auth} />
-          <HeaderButtonGroup navigate={navigate} auth={auth} setAuth={setAuth} />
-        </Toolbar>
+        <div className={styles.bar}>
+          <Logo />
+          <Navigation auth={auth} isOpenMenu={isOpenMenu} closeMenu={closeMenu} />
+          <HeaderButtonGroup
+            auth={auth}
+            setAuth={setAuth}
+            toggleMenuHandler={toggleMenuHandler}
+            isOpenMenu={isOpenMenu}
+          />
+        </div>
       </Container>
-    </AppBar>
+    </header>
   );
 }

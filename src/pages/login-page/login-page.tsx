@@ -1,4 +1,3 @@
-import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { useForm } from 'react-hook-form';
 import { LoginForm } from '@/components/login-form/login-form';
@@ -32,7 +31,7 @@ export function LoginPage() {
 
   return (
     <div className={styles.loginBg}>
-      <Stack className={styles.formWrapper}>
+      <div className={styles.formWrapper}>
         <Typography variant="h2">Login</Typography>
         <LoginForm
           onSubmit={onSubmit}
@@ -41,7 +40,7 @@ export function LoginPage() {
           isSubmitting={isSubmitting}
           isValidForm={isValid}
         />
-      </Stack>
+      </div>
       {/* TODO make a component to display general errors*/}
     </div>
   );

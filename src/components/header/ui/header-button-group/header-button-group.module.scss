@@ -1,0 +1,56 @@
+@use '../../../../styles/mixins' as *;
+
+.button-group {
+  z-index: 100;
+  flex-grow: 1;
+
+  @include flex($justify: end);
+}
+
+.burger {
+  position: relative;
+  display: none;
+  aspect-ratio: 1/1;
+  width: 40px;
+
+  .line {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+
+    width: 20px;
+    height: 1.5px;
+    border-radius: 2px;
+
+    background-color: var(--mui-palette-primary-main);
+
+    @include transition;
+
+    &:first-of-type {
+      top: 13px;
+    }
+
+    &:last-of-type {
+      top: 23px;
+    }
+  }
+
+  &.open {
+    .line {
+      top: 50%;
+      width: 20px;
+
+      &:first-of-type {
+        transform: translate(-50%, -50%) rotate(45deg);
+      }
+
+      &:last-of-type {
+        transform: translate(-50%, -50%) rotate(-45deg);
+      }
+    }
+  }
+
+  @media (width <= 600px) {
+    display: block;
+  }
+}
