@@ -3,6 +3,7 @@ import { HeaderButtonGroup } from './ui/header-button-group/header-button-group'
 import { Navigation } from './ui/navigation/navigation';
 import { useEffect, useState } from 'react';
 import { Logo } from './ui/logo/logo';
+import { CLASSES, headerFilledOffset } from '@/utils/constants/ui';
 import styles from './header.module.scss';
 import clsx from 'clsx';
 
@@ -18,11 +19,10 @@ export function Header() {
   useEffect(() => {
     const handleScroll = () => {
       const scrollHeight = window.scrollY;
-      const offset = 50;
 
-      if (scrollHeight > offset && !isFilledHeader) {
+      if (scrollHeight > headerFilledOffset && !isFilledHeader) {
         setIsFilledHeader(true);
-      } else if (scrollHeight <= offset && isFilledHeader) {
+      } else if (scrollHeight <= headerFilledOffset && isFilledHeader) {
         setIsFilledHeader(false);
       }
     };
@@ -34,8 +34,7 @@ export function Header() {
   }, [isFilledHeader]);
 
   useEffect(() => {
-    const disable = 'disable';
-    document.body.classList.toggle(disable, isOpenMenu);
+    document.body.classList.toggle(CLASSES.disable, isOpenMenu);
   }, [isOpenMenu]);
 
   return (

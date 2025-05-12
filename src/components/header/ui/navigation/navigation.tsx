@@ -1,5 +1,6 @@
 import { ROUTES } from '@/router/routes';
 import { NavLink } from 'react-router';
+import { NAV_LINKS } from '@/utils/constants/ui';
 import styles from './navigation.module.scss';
 import clsx from 'clsx';
 
@@ -10,9 +11,7 @@ type NavigationProps = {
 };
 
 export function Navigation({ auth, isOpenMenu, closeMenu }: NavigationProps) {
-  const baseLinks = ['Home', 'Catalog', 'About'];
-  const authenticationLinks = ['Login', 'Registration'];
-  const headerLinks = auth ? baseLinks : [...baseLinks, ...authenticationLinks];
+  const headerLinks = auth ? NAV_LINKS.base : [...NAV_LINKS.base, ...NAV_LINKS.auth];
 
   return (
     <nav className={clsx(styles.nav, { [styles.open]: isOpenMenu })}>
