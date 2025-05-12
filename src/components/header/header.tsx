@@ -3,7 +3,8 @@ import { HeaderButtonGroup } from './ui/header-button-group/header-button-group'
 import { Navigation } from './ui/navigation/navigation';
 import { useEffect, useState } from 'react';
 import { Logo } from './ui/logo/logo';
-import { CLASSES, headerFilledOffset } from '@/utils/constants/ui';
+import { CLASSES, headerScrollPref } from '@/utils/constants/ui';
+import { throttle } from '@/utils/throttle';
 import styles from './header.module.scss';
 import clsx from 'clsx';
 
@@ -19,17 +20,18 @@ export function Header() {
   useEffect(() => {
     const handleScroll = () => {
       const scrollHeight = window.scrollY;
+      const newValue = scrollHeight > headerScrollPref.offset;
 
-      if (scrollHeight > headerFilledOffset && !isFilledHeader) {
-        setIsFilledHeader(true);
-      } else if (scrollHeight <= headerFilledOffset && isFilledHeader) {
-        setIsFilledHeader(false);
+      if (newValue !== isFilledHeader) {
+        setIsFilledHeader(newValue);
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    const throttledHandler = throttle(handleScroll, headerScrollPref.timeout);
+    window.addEventListener('scroll', throttledHandler);
+
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', throttledHandler);
     };
   }, [isFilledHeader]);
 
