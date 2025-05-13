@@ -1,0 +1,35 @@
+/* stylelint-disable at-rule-empty-line-before */
+@mixin flex($flex-direction: row, $gap: var(--spacing-1), $justify: space-between, $align: center) {
+  display: flex;
+  flex-direction: $flex-direction;
+  gap: $gap;
+
+  @if $justify {
+    justify-content: $justify;
+  }
+
+  @if $align {
+    align-items: $align;
+  }
+}
+
+@mixin transition($time: 0.35s, $property: all) {
+  transition: $time ease-out;
+  transition-property: $property;
+}
+
+@mixin media($size) {
+  @if $size == phone {
+    @media (width <= 600px) {
+      @content;
+    }
+  } @else if $size == tablet {
+    @media (width >= 768px) {
+      @content;
+    }
+  } @else if $size == desktop {
+    @media (width >= 1024px) {
+      @content;
+    }
+  }
+}

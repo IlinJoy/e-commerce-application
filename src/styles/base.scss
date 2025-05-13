@@ -1,3 +1,5 @@
+@use '../styles/mixins' as *;
+
 :root {
   --mui-palette-primary-main: #dddcd9;
   --mui-palette-primary-dark: #b5ada5;
@@ -15,4 +17,21 @@
   --spacing-5: 40px;
   --spacing-6: 48px;
   --spacing-7: 56px;
+  --spacing-8: 64px;
+}
+
+main {
+  @include flex(column, 0, $justify: center);
+
+  position: relative;
+  left: calc((100vw - 100%) / 2);
+  min-height: 100dvh;
+}
+
+body {
+  overflow-x: clip;
+}
+
+body.disable {
+  overflow: hidden;
 }

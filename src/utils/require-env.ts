@@ -1,4 +1,4 @@
-import { ERROR_MESSAGES } from './constants/error-messages';
+import { ERROR_MESSAGES } from './constants/messages';
 
 export const requireEnv = (key: string) => {
   const env = process.env[key];

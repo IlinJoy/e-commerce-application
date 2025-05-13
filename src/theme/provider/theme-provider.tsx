@@ -1,5 +1,6 @@
 import type { Theme } from '@emotion/react';
-import { CssBaseline, StyledEngineProvider, ThemeProvider } from '@mui/material';
+import CssBaseline from '@mui/material/CssBaseline';
+import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
 
 export function ThemeAppProvider({ theme, children }: { theme: Theme; children: React.ReactNode }) {
   return (

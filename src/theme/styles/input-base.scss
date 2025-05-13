@@ -1,21 +1,20 @@
 .MuiFormControl-root {
-  margin-bottom: var(--spacing-1);
+  margin-bottom: var(--spacing-2);
 
   & .MuiIconButton-sizeMedium {
     width: var(--spacing-3);
     height: var(--spacing-3);
     opacity: 0.5;
   }
+
+  &:last-of-type {
+    margin-bottom: var(--spacing-5);
+  }
 }
 
 .MuiFormHelperText-sizeMedium.Mui-error {
-  position: absolute;
-  top: var(--spacing-6);
-
-  margin-top: var(--spacing-1);
   padding: 0 var(--spacing-1);
   border-radius: calc(var(--spacing-1) / 2);
-
   background-color: var(--mui-palette-error-dark);
 
   &::before {
