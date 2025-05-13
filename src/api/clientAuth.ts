@@ -40,7 +40,7 @@ export const registerCustomer = async (
   }
 };
 
-export const loginCustomer = async (email: string, password: string) => {
+export const fetchLoggedInCustomer = async (email: string, password: string) => {
   try {
     const token = await getCustomerToken(email, password);
     const result = await fetchFromApi<Customer>('/me', token);

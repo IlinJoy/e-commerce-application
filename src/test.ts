@@ -1,5 +1,5 @@
 import { getProducts } from './api/catalog.js';
-import { registerCustomer, loginCustomer } from './api/clientAuth.js';
+import { registerCustomer, fetchLoggedInCustomer } from './api/clientAuth.js';
 import { createCartForCustomer } from './api/createCartForCustomer.js';
 import { addProductToCart } from './api/addProductToCart.js';
 import { createOrderFromCart } from './api/createOrderFromCart.js';
@@ -51,7 +51,9 @@ export const run = async (): Promise<void> => {
 
     console.log('Customer registered:', registered);
 
-    const loginRes = await loginCustomer(email, password);
+    const loginRes = await fetchLoggedInCustomer(email, password);
+    console.log('Login result:', loginRes);
+
     if (!loginRes) {
       throw new Error('Login failed');
     }
