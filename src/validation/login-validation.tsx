@@ -3,8 +3,14 @@ import { z } from 'zod';
 const MIN_PASSWORD_LENGTH = 8;
 
 export const loginSchema = z.object({
-  email: z.string().email('Must contain only English letters, "@" and valid domain'),
+  email: z.string().email('Must contain only English letters, "@" and valid domain without spaces.'),
   password: z.string().superRefine((data, ctx) => {
+    if (/\s/.test(data)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Must not contain spaces',
+      });
+    }
     if (!/\p{Lu}/u.test(data)) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
