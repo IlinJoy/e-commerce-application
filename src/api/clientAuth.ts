@@ -1,6 +1,6 @@
-import type { Address, CustomerDraft, CustomerSignInResult } from '@commercetools/platform-sdk';
+import type { Address, Customer, CustomerDraft, CustomerSignInResult } from '@commercetools/platform-sdk';
 import type { ErrorResponse } from '@commercetools/platform-sdk';
-import { getAdminToken, getCustomerToken, fetchFromApi } from '@/api/platformApi';
+import { getCustomerToken, fetchFromApi } from '@/api/platformApi';
 import { mapApiErrorToMessage } from '@/utils/mapApiErrorToMessage';
 
 type RegisterCustomerOptions = {
@@ -10,12 +10,10 @@ type RegisterCustomerOptions = {
   useSameAddress?: boolean;
 };
 
-export const registerCustomer = async ({
-  customerData,
-  shippingAddress,
-  billingAddress,
-  useSameAddress = false,
-}: RegisterCustomerOptions) => {
+export const registerCustomer = async (
+  token: string,
+  { customerData, shippingAddress, billingAddress, useSameAddress = false }: RegisterCustomerOptions
+) => {
   try {
     if (!useSameAddress && !billingAddress) {
       throw new Error('Billing address is required when useSameAddress is false');
@@ -30,8 +28,7 @@ export const registerCustomer = async ({
       defaultBillingAddress: useSameAddress ? 0 : 1,
     };
 
-    const token = await getAdminToken();
-    const result = await fetchFromApi<CustomerSignInResult>('/customers', token, {
+    const result = await fetchFromApi<CustomerSignInResult>('/me/signup', token, {
       method: 'POST',
       body: JSON.stringify(body),
     });
@@ -46,10 +43,10 @@ export const registerCustomer = async ({
 export const loginCustomer = async (email: string, password: string) => {
   try {
     const token = await getCustomerToken(email, password);
-    const result = await fetchFromApi<CustomerSignInResult>('/me', token);
+    const result = await fetchFromApi<Customer>('/me', token);
 
     console.log('Customer logged in');
-    return { customer: result };
+    return { customer: result, customerToken: token };
   } catch (error) {
     mapApiErrorToMessage(error as ErrorResponse);
   }

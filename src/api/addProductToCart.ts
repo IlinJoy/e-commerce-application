@@ -1,7 +1,8 @@
 import { type CartUpdateAction, type Cart } from '@commercetools/platform-sdk';
-import { fetchFromApi, getAdminToken } from './platformApi';
+import { fetchFromApi } from './platformApi';
 
 type AddProductToCartParams = {
+  token: string;
   cartId: string;
   cartVersion: number;
   productId: string;
@@ -9,30 +10,22 @@ type AddProductToCartParams = {
   quantity: number;
 };
 
-export const addProductToCart = async ({
-  cartId,
-  cartVersion,
-  productId,
-  variantId,
-  quantity,
-}: AddProductToCartParams): Promise<Cart> => {
-  const token = await getAdminToken();
-
+export const addProductToCart = async (options: AddProductToCartParams): Promise<Cart> => {
   const actions: CartUpdateAction[] = [
     {
       action: 'addLineItem',
-      productId,
-      variantId,
-      quantity,
+      productId: options.productId,
+      variantId: options.variantId,
+      quantity: options.quantity,
     },
   ];
 
   const body = {
-    version: cartVersion,
+    version: options.cartVersion,
     actions,
   };
 
-  const updatedCart = await fetchFromApi<Cart>(`/carts/${cartId}`, token, {
+  const updatedCart = await fetchFromApi<Cart>(`/me/carts/${options.cartId}`, options.token, {
     method: 'POST',
     body: JSON.stringify(body),
   });

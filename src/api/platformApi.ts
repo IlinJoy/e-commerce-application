@@ -1,12 +1,8 @@
 import { CTP_API_URL, CTP_AUTH_URL, PROJECT_KEY } from '@/utils/constants/api';
 
-const CLIENT_ID = import.meta.env.VITE_CTP_CLIENT_ID;
-const CLIENT_SECRET = import.meta.env.VITE_CTP_CLIENT_SECRET;
-const SCOPES = import.meta.env.VITE_CTP_SCOPES;
-
-const CUSTOMER_CLIENT_ID = import.meta.env.VITE_CLIENT_CLIENT_ID;
-const CUSTOMER_CLIENT_SECRET = import.meta.env.VITE_CLIENT_CLIENT_SECRET;
-const CUSTOMER_SCOPES = import.meta.env.VITE_CLIENT_SCOPES;
+const CLIENT_ID = import.meta.env.VITE_CLIENT_ID;
+const CLIENT_SECRET = import.meta.env.VITE_CLIENT_SECRET;
+const CLIENT_SCOPES = import.meta.env.VITE_CLIENT_SCOPES;
 
 type ApiErrorResponse = {
   message?: string;
@@ -52,7 +48,7 @@ const fetchToken = async (
 export const getAdminToken = async () => {
   const params = new URLSearchParams();
   params.set('grant_type', 'client_credentials');
-  params.set('scope', SCOPES);
+  params.set('scope', CLIENT_SCOPES);
   return fetchToken(params, CLIENT_ID, CLIENT_SECRET);
 };
 
@@ -61,13 +57,17 @@ export const getCustomerToken = async (username: string, password: string) => {
   params.set('grant_type', 'password');
   params.set('username', username);
   params.set('password', password);
-  params.set('scope', CUSTOMER_SCOPES);
-  return fetchToken(
-    params,
-    CUSTOMER_CLIENT_ID,
-    CUSTOMER_CLIENT_SECRET,
-    `${CTP_AUTH_URL}/oauth/${PROJECT_KEY}/customers/token`
-  );
+  params.set('scope', CLIENT_SCOPES);
+  return fetchToken(params, CLIENT_ID, CLIENT_SECRET, `${CTP_AUTH_URL}/oauth/${PROJECT_KEY}/customers/token`);
+};
+
+export const getAnonymousToken = async (anonymousId: string) => {
+  const params = new URLSearchParams();
+  params.set('grant_type', 'client_credentials');
+  params.set('scope', CLIENT_SCOPES);
+  params.set('anonymous_id', anonymousId);
+
+  return fetchToken(params, CLIENT_ID, CLIENT_SECRET, `${CTP_AUTH_URL}/oauth/${PROJECT_KEY}/anonymous/token`);
 };
 
 export const fetchFromApi = async <T = unknown>(path: string, token: string, options: RequestInit = {}): Promise<T> => {

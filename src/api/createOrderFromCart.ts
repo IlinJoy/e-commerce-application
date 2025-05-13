@@ -1,21 +1,17 @@
 import type { Order } from '@commercetools/platform-sdk';
-import { getCustomerToken, fetchFromApi } from './platformApi';
+import { fetchFromApi } from './platformApi';
 
 type CreateCustomerOrderParams = {
+  token: string;
   cartId: string;
   cartVersion: number;
-  email: string;
-  password: string;
 };
 
 export const createOrderFromCart = async ({
+  token,
   cartId,
   cartVersion,
-  email,
-  password,
 }: CreateCustomerOrderParams): Promise<Order> => {
-  const token = await getCustomerToken(email, password);
-
   const body = {
     id: cartId,
     version: cartVersion,
