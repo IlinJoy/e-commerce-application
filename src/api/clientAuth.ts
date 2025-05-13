@@ -1,4 +1,4 @@
-import type { Address, Customer, CustomerDraft } from '@commercetools/platform-sdk';
+import type { Address, CustomerDraft, CustomerSignInResult } from '@commercetools/platform-sdk';
 import type { ErrorResponse } from '@commercetools/platform-sdk';
 import { getAdminToken, getCustomerToken, fetchFromApi } from '@/api/platformApi';
 import { mapApiErrorToMessage } from '@/utils/mapApiErrorToMessage';
@@ -31,7 +31,7 @@ export const registerCustomer = async ({
     };
 
     const token = await getAdminToken();
-    const result = await fetchFromApi<Customer>('/customers', token, {
+    const result = await fetchFromApi<CustomerSignInResult>('/customers', token, {
       method: 'POST',
       body: JSON.stringify(body),
     });
@@ -46,7 +46,7 @@ export const registerCustomer = async ({
 export const loginCustomer = async (email: string, password: string) => {
   try {
     const token = await getCustomerToken(email, password);
-    const result = await fetchFromApi<Customer>('/me', token);
+    const result = await fetchFromApi<CustomerSignInResult>('/me', token);
 
     console.log('Customer logged in');
     return { customer: result };
