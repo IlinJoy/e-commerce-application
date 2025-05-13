@@ -17,12 +17,19 @@
   --spacing-5: 40px;
   --spacing-6: 48px;
   --spacing-7: 56px;
+  --spacing-8: 64px;
 }
 
 main {
   @include flex(column, 0, $justify: center);
 
-  min-height: 100vh;
+  position: relative;
+  left: calc((100vw - 100%) / 2);
+  min-height: 100dvh;
+}
+
+body {
+  overflow-x: clip;
 }
 
 body.disable {
