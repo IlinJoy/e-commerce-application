@@ -5,10 +5,16 @@ const MIN_PASSWORD_LENGTH = 8;
 export const loginSchema = z.object({
   email: z.string().email('Must contain only English letters, "@" and valid domain without spaces.'),
   password: z.string().superRefine((data, ctx) => {
-    if (/\s/.test(data)) {
+    if (data.startsWith(' ')) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: 'Must not contain spaces',
+        message: 'Must not starts with whitespace',
+      });
+    }
+    if (data.endsWith(' ')) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Must not ends with whitespace',
       });
     }
     if (!/\p{Lu}/u.test(data)) {
