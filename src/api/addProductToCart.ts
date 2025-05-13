@@ -1,38 +1,34 @@
-import type { CartUpdateAction } from '@commercetools/platform-sdk';
-import { apiRoot } from './platformApi';
+import { type CartUpdateAction, type Cart } from '@commercetools/platform-sdk';
+import { fetchFromApi } from './platformApi';
 
-export const addProductToCart = async ({
-  cartId,
-  cartVersion,
-  productId,
-  variantId,
-  quantity,
-}: {
+type AddProductToCartParams = {
+  token: string;
   cartId: string;
   cartVersion: number;
   productId: string;
   variantId: number;
   quantity: number;
-}) => {
+};
+
+export const addProductToCart = async (options: AddProductToCartParams): Promise<Cart> => {
   const actions: CartUpdateAction[] = [
     {
       action: 'addLineItem',
-      productId,
-      variantId,
-      quantity,
+      productId: options.productId,
+      variantId: options.variantId,
+      quantity: options.quantity,
     },
   ];
 
-  const response = await apiRoot
-    .carts()
-    .withId({ ID: cartId })
-    .post({
-      body: {
-        version: cartVersion,
-        actions,
-      },
-    })
-    .execute();
+  const body = {
+    version: options.cartVersion,
+    actions,
+  };
 
-  return response.body;
+  const updatedCart = await fetchFromApi<Cart>(`/me/carts/${options.cartId}`, options.token, {
+    method: 'POST',
+    body: JSON.stringify(body),
+  });
+
+  return updatedCart;
 };

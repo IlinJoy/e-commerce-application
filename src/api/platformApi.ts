@@ -1,32 +1,94 @@
-import type { PasswordAuthMiddlewareOptions } from '@commercetools/ts-client';
-import { CTP_AUTH_URL, PROJECT_KEY } from '../utils/constants/api';
-import { buildCustomerClient, ctpClient } from './sdkClient';
-import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
-import { requireEnv } from '../utils/require-env';
+import { CTP_API_URL, CTP_AUTH_URL, PROJECT_KEY } from '@/utils/constants/api';
 
-export const apiRoot = createApiBuilderFromCtpClient(ctpClient).withProjectKey({ projectKey: PROJECT_KEY });
+const CLIENT_ID = import.meta.env.VITE_CLIENT_ID;
+const CLIENT_SECRET = import.meta.env.VITE_CLIENT_SECRET;
+const CLIENT_SCOPES = import.meta.env.VITE_CLIENT_SCOPES;
 
-export const getCustomerApiRoot = (email: string, password: string) => {
-  const options: PasswordAuthMiddlewareOptions = {
-    host: CTP_AUTH_URL,
-    projectKey: PROJECT_KEY,
-    credentials: {
-      clientId: requireEnv('CLIENT_CLIENT_ID'),
-      clientSecret: requireEnv('CLIENT_CLIENT_SECRET'),
-      user: {
-        username: email,
-        password,
-      },
-    },
-    scopes: requireEnv('CLIENT_SCOPES').split(' '),
-    httpClient: fetch,
-  };
-
-  return createCustomerApiRoot(options);
+type ApiErrorResponse = {
+  message?: string;
 };
 
-const createCustomerApiRoot = (options: PasswordAuthMiddlewareOptions) => {
-  const customerClient = buildCustomerClient(options);
+type TokenResponse = {
+  access_token: string;
+  error_description?: string;
+};
 
-  return createApiBuilderFromCtpClient(customerClient).withProjectKey({ projectKey: PROJECT_KEY });
+const fetchToken = async (
+  body: URLSearchParams,
+  clientId: string,
+  clientSecret: string,
+  url: string = `${CTP_AUTH_URL}/oauth/token`
+): Promise<string> => {
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization: `Basic ${btoa(`${clientId}:${clientSecret}`)}`,
+    },
+    body,
+  });
+
+  const text = await response.text();
+
+  let data: Partial<TokenResponse> = {};
+  try {
+    data = text ? (JSON.parse(text) as Partial<TokenResponse>) : {};
+  } catch {
+    // silently ignore JSON parse errors (e.g. empty 204 body)
+  }
+
+  if (!response.ok || !data.access_token) {
+    const message = typeof data.error_description === 'string' ? data.error_description : 'Failed to get token';
+    throw new Error(message);
+  }
+
+  return data.access_token;
+};
+
+export const getAdminToken = async () => {
+  const params = new URLSearchParams();
+  params.set('grant_type', 'client_credentials');
+  params.set('scope', CLIENT_SCOPES);
+  return fetchToken(params, CLIENT_ID, CLIENT_SECRET);
+};
+
+export const getCustomerToken = async (username: string, password: string) => {
+  const params = new URLSearchParams();
+  params.set('grant_type', 'password');
+  params.set('username', username);
+  params.set('password', password);
+  params.set('scope', CLIENT_SCOPES);
+  return fetchToken(params, CLIENT_ID, CLIENT_SECRET, `${CTP_AUTH_URL}/oauth/${PROJECT_KEY}/customers/token`);
+};
+
+export const getAnonymousToken = async (anonymousId: string) => {
+  const params = new URLSearchParams();
+  params.set('grant_type', 'client_credentials');
+  params.set('scope', CLIENT_SCOPES);
+  params.set('anonymous_id', anonymousId);
+
+  return fetchToken(params, CLIENT_ID, CLIENT_SECRET, `${CTP_AUTH_URL}/oauth/${PROJECT_KEY}/anonymous/token`);
+};
+
+export const fetchFromApi = async <T = unknown>(path: string, token: string, options: RequestInit = {}): Promise<T> => {
+  const sanitizedPath = path.replace(/^\/+/, '');
+  const url = `${CTP_API_URL}/${PROJECT_KEY}/${sanitizedPath}`.replace(/([^:]\/)\/+/g, '$1');
+
+  const res = await fetch(url, {
+    ...options,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      ...(options.headers || {}),
+    },
+  });
+
+  const data = (await res.json()) as T | ApiErrorResponse;
+
+  if (!res.ok) {
+    const err = data as ApiErrorResponse;
+    throw new Error(err.message ?? 'API request failed');
+  }
+
+  return data as T;
 };
