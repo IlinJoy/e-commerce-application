@@ -1,0 +1,11 @@
+@mixin heading-styles {
+  font-family: var(--font-primary);
+  font-weight: 300;
+  line-height: 1.03;
+}
+
+@mixin subtitle-styles {
+  font-family: var(--font-secondary);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
