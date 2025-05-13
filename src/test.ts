@@ -136,7 +136,7 @@ export const run = async (): Promise<void> => {
 
     console.log('Order created: ', order);
 
-    const customerOrders = await getCustomerOrders(email, password);
+    const customerOrders = await getCustomerOrders(customerToken);
 
     console.log('All customer orders: ', customerOrders);
   } catch (error) {
