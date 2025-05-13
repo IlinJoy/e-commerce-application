@@ -2,9 +2,9 @@ import { getProducts } from './api/catalog.js';
 import { registerCustomer, loginCustomer } from './api/clientAuth.js';
 import { createCartForCustomer } from './api/createCartForCustomer.js';
 import { addProductToCart } from './api/addProductToCart.js';
-import type { Customer, ProductProjection } from '@commercetools/platform-sdk';
 import { createOrderFromCart } from './api/createOrderFromCart.js';
 import { getCustomerOrders } from './api/getCustomerOrders.js';
+import { getAnonymousToken } from './api/platformApi.js';
 
 // usage example:
 // const handleClick = async () => {
@@ -17,8 +17,11 @@ export const run = async (): Promise<void> => {
     const timestamp = Date.now();
     const email = `test${timestamp}@example.com`;
     const password = 'Test123!';
+    const anonymousId = `anon-${timestamp}`;
 
-    const registered = await registerCustomer({
+    const anonymousToken = await getAnonymousToken(anonymousId);
+
+    const registered = await registerCustomer(anonymousToken, {
       customerData: {
         email,
         password,
@@ -49,7 +52,11 @@ export const run = async (): Promise<void> => {
     console.log('Customer registered:', registered);
 
     const loginRes = await loginCustomer(email, password);
-    const customer = loginRes?.customer as Customer | undefined;
+    if (!loginRes) {
+      throw new Error('Login failed');
+    }
+
+    const { customer, customerToken } = loginRes;
 
     if (!customer) {
       throw new Error('Login failed');
@@ -57,12 +64,16 @@ export const run = async (): Promise<void> => {
 
     console.log('Customer logged in:', customer);
 
-    const products = await getProducts();
+    if (!customerToken) {
+      throw new Error('Customer token is missing');
+    }
+
+    const products = await getProducts(customerToken);
     if (!products.length) {
       throw new Error('No products found');
     }
 
-    const product = products[0] as ProductProjection;
+    const product = products[0];
     const variantId = product.masterVariant?.id;
     if (!variantId) {
       throw new Error('Product is missing master variant ID');
@@ -76,14 +87,14 @@ export const run = async (): Promise<void> => {
     }
 
     const customerCart = await createCartForCustomer({
-      email,
-      password,
+      token: customerToken,
       shippingAddress,
     });
 
     console.log('Cart created: ', customerCart);
 
     const updatedCart = await addProductToCart({
+      token: customerToken,
       cartId: customerCart.id,
       cartVersion: customerCart.version,
       productId: product.id,
@@ -93,11 +104,34 @@ export const run = async (): Promise<void> => {
 
     console.log('Added product to cart:', updatedCart);
 
+    // const anonymousCart = await createCartForCustomer({
+    //   token: anonymousToken,
+    //   shippingAddress: {
+    //     country: 'US',
+    //     streetName: 'Mockingbird Lane',
+    //     streetNumber: '123',
+    //     postalCode: '10001',
+    //     city: 'New York',
+    //   },
+    // });
+
+    // console.log('Anonymous cart created: ', anonymousCart);
+
+    // const updatedAnonCart = await addProductToCart({
+    //   token: anonymousToken,
+    //   cartId: anonymousCart.id,
+    //   cartVersion: anonymousCart.version,
+    //   productId: product.id,
+    //   variantId,
+    //   quantity: 1,
+    // });
+
+    // console.log('Added product to anonymous cart:', updatedAnonCart);
+
     const order = await createOrderFromCart({
+      token: customerToken,
       cartId: updatedCart.id,
       cartVersion: updatedCart.version,
-      email,
-      password,
     });
 
     console.log('Order created: ', order);
