@@ -1,29 +1,53 @@
-import type { CustomerDraft } from '@commercetools/platform-sdk';
-import { apiRoot, getCustomerApiRoot } from './platformApi';
+import type { Address, Customer, CustomerDraft, CustomerSignInResult } from '@commercetools/platform-sdk';
+import type { ErrorResponse } from '@commercetools/platform-sdk';
+import { getCustomerToken, fetchFromApi } from '@/api/platformApi';
+import { mapApiErrorToMessage } from '@/utils/mapApiErrorToMessage';
 
-const registerCustomer = async (customerData: CustomerDraft) => {
-  const response = await apiRoot
-    .customers()
-    .post({
-      body: customerData,
-    })
-    .execute();
-
-  return response.body;
+type RegisterCustomerOptions = {
+  customerData: Omit<CustomerDraft, 'addresses'>;
+  shippingAddress: Address;
+  billingAddress?: Address;
+  useSameAddress?: boolean;
 };
 
-const loginCustomer = async (email: string, password: string) => {
+export const registerCustomer = async (
+  token: string,
+  { customerData, shippingAddress, billingAddress, useSameAddress = false }: RegisterCustomerOptions
+) => {
   try {
-    const api = getCustomerApiRoot(email, password);
-    const response = await api.me().get().execute();
+    if (!useSameAddress && !billingAddress) {
+      throw new Error('Billing address is required when useSameAddress is false');
+    }
 
-    return {
-      customer: response.body,
+    const addresses: Address[] = useSameAddress ? [shippingAddress] : [shippingAddress, billingAddress!];
+
+    const body: CustomerDraft = {
+      ...customerData,
+      addresses,
+      defaultShippingAddress: 0,
+      defaultBillingAddress: useSameAddress ? 0 : 1,
     };
+
+    const result = await fetchFromApi<CustomerSignInResult>('/me/signup', token, {
+      method: 'POST',
+      body: JSON.stringify(body),
+    });
+
+    console.log('Customer registered');
+    return result;
   } catch (error) {
-    console.error('Login failed:', error);
-    throw new Error('Login error');
+    mapApiErrorToMessage(error as ErrorResponse);
   }
 };
 
-export { registerCustomer, loginCustomer };
+export const fetchLoggedInCustomer = async (email: string, password: string) => {
+  try {
+    const token = await getCustomerToken(email, password);
+    const result = await fetchFromApi<Customer>('/me', token);
+
+    console.log('Customer logged in');
+    return { customer: result, customerToken: token };
+  } catch (error) {
+    mapApiErrorToMessage(error as ErrorResponse);
+  }
+};

@@ -1,7 +1,7 @@
-import { apiRoot } from './platformApi';
+import { fetchFromApi } from '@/api/platformApi';
+import type { ProductProjection } from '@commercetools/platform-sdk';
 
-export const getProducts = async () => {
-  const response = await apiRoot.productProjections().get().execute();
-
-  return response.body.results;
+export const getProducts = async (token: string): Promise<ProductProjection[]> => {
+  const result = await fetchFromApi<{ results: ProductProjection[] }>('/product-projections', token);
+  return result.results;
 };
