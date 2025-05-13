@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import Button from '@mui/material/Button';
 import type { BaseSyntheticEvent } from 'react';
 import type { FieldErrors, UseFormRegister } from 'react-hook-form';
 import { FormInput } from '../input/input';

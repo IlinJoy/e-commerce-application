@@ -49,7 +49,10 @@ export default tseslint.config(
         { accessibility: 'explicit', overrides: { constructors: 'off' } },
       ],
       'react/jsx-no-useless-fragment': 'error',
-      'no-restricted-imports': ['error', { paths: [{ name: 'react', importNames: ['default'] }] }],
+      'no-restricted-imports': [
+        'error',
+        { paths: [{ name: 'react', importNames: ['default'] }], patterns: [{ regex: '^@mui/[^/]+$' }] },
+      ],
     },
   }
 );
