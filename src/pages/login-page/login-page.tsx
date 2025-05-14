@@ -5,31 +5,32 @@ import type { LoginFormInputs } from '@/components/login-form/login-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import styles from './login-page.module.scss';
 import { loginSchema } from '@/validation/login-validation';
+import { useMutation } from '@tanstack/react-query';
+import { useAuth } from '@/context/auth-context';
+import { fetchLoggedInCustomer } from '@/api/clientAuth';
+import type { Customer } from '@commercetools/platform-sdk';
+
+type FetchedCustomer = { customer: Customer; customerToken: string } | undefined;
+
+//Existing customer for testing
+//testLogin@example.com
+//Test123!
 
 export function LoginPage() {
+  const { onLogin } = useAuth();
   const {
     register,
     handleSubmit,
-    // setError,
-    formState: { errors, isValid, isSubmitting }, // заменить на isPending от запроса
+    formState: { errors, isValid },
   } = useForm<LoginFormInputs>({ resolver: zodResolver(loginSchema), mode: 'onChange' });
 
-  // для вывода ошибок с инпутами,желательно еще имена полей
-  // через TanStack/кастомный??
-  // const { error, mutate, isPending} = useMutation({
-  //   mutationFn: interactionWithApi,
-  //   onSuccess: auth/redirect,
-  //   onError: (err) => {
-  //      if(field) setError(field, { message: err.message })
-  //    }else{
-  //      setGeneralError(err.message);
-  //    }
-  // });
-  // mutationFn: (variables: TVariables) => Promise<TData>;
-
-  const onSubmit = handleSubmit((data: LoginFormInputs) => {
-    console.log(data);
+  const { mutate, isPending } = useMutation<FetchedCustomer, Error, LoginFormInputs>({
+    mutationFn: ({ email, password }) => fetchLoggedInCustomer(email, password),
+    onSuccess: (data) => onLogin(data?.customerToken),
+    onError: (error) => console.log(error),
   });
+
+  const onSubmit = handleSubmit((data: LoginFormInputs) => mutate(data));
 
   return (
     <>
@@ -39,7 +40,7 @@ export function LoginPage() {
           onSubmit={onSubmit}
           register={register}
           errors={errors}
-          isSubmitting={isSubmitting}
+          isSubmitting={isPending}
           isValidForm={isValid}
         />
         {/* TODO make a component to display general errors*/}

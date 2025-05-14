@@ -1,4 +1,3 @@
-import { fetchLoggedInCustomer } from '@/api/clientAuth';
 import { ROUTES } from '@/router/routes';
 import { ERROR_MESSAGES } from '@/utils/constants/messages';
 import type { ReactNode } from 'react';
@@ -7,7 +6,7 @@ import { useNavigate } from 'react-router';
 
 interface AuthContextType {
   token: string;
-  onLogin: (email: string, password: string) => void;
+  onLogin: (token?: string) => void;
   onLogout: () => void;
 }
 
@@ -21,12 +20,11 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState('');
   const navigate = useNavigate();
 
-  const onLogin = async (email: string, password: string) => {
-    const data = await fetchLoggedInCustomer(email, password);
-    if (!data) {
+  const onLogin = (token?: string) => {
+    if (!token) {
       throw new Error(ERROR_MESSAGES.LOGIN_FAIL);
     }
-    setToken(data.customerToken);
+    setToken(token);
     navigate(ROUTES.MAIN.path);
   };
 
