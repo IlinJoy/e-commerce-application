@@ -4,7 +4,7 @@ import { createCartForCustomer } from './api/createCartForCustomer.js';
 import { addProductToCart } from './api/addProductToCart.js';
 import { createOrderFromCart } from './api/createOrderFromCart.js';
 import { getCustomerOrders } from './api/getCustomerOrders.js';
-import { getAdminToken, getAnonymousToken } from './api/platformApi.js';
+import { getAnonymousToken } from './api/platformApi.js';
 
 // usage example:
 // const handleClick = async () => {
@@ -15,12 +15,11 @@ import { getAdminToken, getAnonymousToken } from './api/platformApi.js';
 export const run = async (): Promise<void> => {
   try {
     const timestamp = Date.now();
-    // const email = `test${timestamp}@example.com`;
-    const email = `testLogin@example.com`;
+    const email = `test${timestamp}@example.com`;
     const password = 'Test123!';
     const anonymousId = `anon-${timestamp}`;
 
-    const anonymousToken = await getAdminToken();
+    const anonymousToken = await getAnonymousToken(anonymousId);
 
     const registered = await registerCustomer(anonymousToken, {
       customerData: {
@@ -65,7 +64,7 @@ export const run = async (): Promise<void> => {
       throw new Error('Login failed');
     }
 
-    console.log('Customer logged in:', customer, customerToken);
+    console.log('Customer logged in:', customer);
 
     if (!customerToken) {
       throw new Error('Customer token is missing');
