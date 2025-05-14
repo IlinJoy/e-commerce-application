@@ -2,7 +2,9 @@ import Typography from '@mui/material/Typography';
 import { useForm } from 'react-hook-form';
 import { LoginForm } from '@/components/login-form/login-form';
 import type { LoginFormInputs } from '@/components/login-form/login-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import styles from './login-page.module.scss';
+import { loginSchema } from '@/validation/login-validation';
 
 export function LoginPage() {
   const {
@@ -10,7 +12,7 @@ export function LoginPage() {
     handleSubmit,
     // setError,
     formState: { errors, isValid, isSubmitting }, // заменить на isPending от запроса
-  } = useForm<LoginFormInputs>({ mode: 'onChange' }); // + валидация resolver: resolver(schema)
+  } = useForm<LoginFormInputs>({ resolver: zodResolver(loginSchema), mode: 'onChange' });
 
   // для вывода ошибок с инпутами,желательно еще имена полей
   // через TanStack/кастомный??
