@@ -1,9 +1,9 @@
 import { ROUTES } from '@/router/routes';
 import { NavLink } from 'react-router';
 import { NAV_LINKS } from '@/utils/constants/ui';
+import { useAuth } from '@/hooks/use-auth';
 import styles from './navigation.module.scss';
 import clsx from 'clsx';
-import { useAuth } from '@/context/auth-context';
 
 type NavigationProps = {
   isOpenMenu: boolean;

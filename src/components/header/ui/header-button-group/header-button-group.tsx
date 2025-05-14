@@ -4,7 +4,7 @@ import { HeaderMenu } from '@/components/header-menu/header-menu';
 import { SpriteIcon } from '@/components/icon/icon';
 import styles from './header-button-group.module.scss';
 import clsx from 'clsx';
-import { useAuth } from '@/context/auth-context';
+import { useAuth } from '@/hooks/use-auth';
 
 type HeaderMenuProps = {
   toggleMenuHandler: () => void;
