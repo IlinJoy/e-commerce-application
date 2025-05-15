@@ -2,9 +2,9 @@ import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
 import { HeaderMenu } from '@/components/header-menu/header-menu';
 import { SpriteIcon } from '@/components/icon/icon';
+import { useToken } from '@/hooks/use-auth';
 import styles from './header-button-group.module.scss';
 import clsx from 'clsx';
-import { useAuth } from '@/hooks/use-auth';
 
 type HeaderMenuProps = {
   toggleMenuHandler: () => void;
@@ -12,7 +12,7 @@ type HeaderMenuProps = {
 };
 
 export function HeaderButtonGroup({ toggleMenuHandler, isOpenMenu }: HeaderMenuProps) {
-  const { token } = useAuth();
+  const { token } = useToken();
 
   return (
     <div className={styles.buttonGroup}>

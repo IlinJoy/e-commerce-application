@@ -4,7 +4,7 @@ import { AccountPage } from '@/pages/account-page/account-page';
 import { ROUTES } from './routes';
 import { lazy } from 'react';
 import { ProtectedRoute } from './protected-rout';
-import { useAuth } from '@/hooks/use-auth';
+import { useToken } from '@/hooks/use-auth';
 
 const AboutPage = lazy(ROUTES.ABOUT.component);
 const CatalogPage = lazy(ROUTES.CATALOG.component);
@@ -14,7 +14,7 @@ const NotFoundPage = lazy(ROUTES.NOT_FOUND.component);
 const RegistrationPage = lazy(ROUTES.REGISTRATION.component);
 
 export function AppRouter() {
-  const { token } = useAuth();
+  const { token } = useToken();
 
   return (
     <Routes>

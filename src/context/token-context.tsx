@@ -1,30 +1,25 @@
 import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 import { TokenContext } from './provider/contexts';
-import { useNavigate } from 'react-router';
-import { ROUTES } from '@/router/routes';
+import { tokenCookieHandler } from '@/services/cookies/cookie-handler';
 
 export function TokenContextProvider({ children }: { children: ReactNode }) {
-  const [token, setToken] = useState('');
-  const navigate = useNavigate();
+  const [token, setToken] = useState(tokenCookieHandler.get() || '');
+
+  useEffect(() => {
+    const tokenFromCookies = tokenCookieHandler.get() || '';
+    setToken(tokenFromCookies);
+  }, []);
 
   const handleUpdateToken = (token: string) => {
     setToken(token);
-    navigate(ROUTES.MAIN.path, { replace: true });
-    //добавить в куки
+    tokenCookieHandler.set(token);
   };
 
   const handleResetToken = () => {
     setToken('');
-    //убрать из кук
+    tokenCookieHandler.delete();
   };
-
-  useEffect(() => {
-    const tokenFromCookies = '';
-    if (tokenFromCookies) {
-      setToken(tokenFromCookies);
-    }
-  }, []);
 
   // const refreshToken=()=>{}? "expires_in": 172800,
 

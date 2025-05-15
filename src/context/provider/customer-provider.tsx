@@ -1,11 +1,11 @@
 import type { ReactNode } from 'react';
-import { AuthContextProvider } from '../user-context';
+import { UserContextProvider } from '../user-context';
 import { TokenContextProvider } from '../token-context';
 
 export function CustomerProvider({ children }: { children: ReactNode }) {
   return (
-    <AuthContextProvider>
+    <UserContextProvider>
       <TokenContextProvider>{children}</TokenContextProvider>
-    </AuthContextProvider>
+    </UserContextProvider>
   );
 }

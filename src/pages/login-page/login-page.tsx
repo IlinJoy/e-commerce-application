@@ -8,25 +8,32 @@ import { loginSchema } from '@/validation/login-validation';
 import { useMutation } from '@tanstack/react-query';
 import { fetchLoggedInCustomer } from '@/api/clientAuth';
 import { useAuth } from '@/hooks/use-auth';
+import { useNavigate } from 'react-router';
+import { ROUTES } from '@/router/routes';
 
 //Existing customer for testing
 //testLogin@example.com
 //Test123!
 
 export function LoginPage() {
+  const { onLogin } = useAuth();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<LoginFormInputs>({ resolver: zodResolver(loginSchema), mode: 'onChange' });
-  const { onLogin } = useAuth();
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: LoginFormInputs) => fetchLoggedInCustomer(data.email, data.password),
-    onSuccess: (data) => onLogin(data),
-    onError: (error) => console.log(error),
+    onSuccess: (data) => {
+      onLogin(data);
+      navigate(ROUTES.MAIN.path, { replace: true });
+      //showSuccess
+    },
+    onError: (error) => console.log(error), //showError
   });
-
+  console.info('test testLogin@example.com > Test123!');
   const onSubmit = handleSubmit((data: LoginFormInputs) => mutate(data));
 
   return (

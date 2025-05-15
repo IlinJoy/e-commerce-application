@@ -1,7 +1,7 @@
 import { ROUTES } from '@/router/routes';
 import { NavLink } from 'react-router';
 import { NAV_LINKS } from '@/utils/constants/ui';
-import { useAuth } from '@/hooks/use-auth';
+import { useToken } from '@/hooks/use-auth';
 import styles from './navigation.module.scss';
 import clsx from 'clsx';
 
@@ -11,7 +11,7 @@ type NavigationProps = {
 };
 
 export function Navigation({ isOpenMenu, closeMenu }: NavigationProps) {
-  const { token } = useAuth();
+  const { token } = useToken();
   const headerLinks = token ? NAV_LINKS.base : [...NAV_LINKS.base, ...NAV_LINKS.auth];
 
   return (

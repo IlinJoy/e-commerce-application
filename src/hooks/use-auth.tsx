@@ -5,25 +5,19 @@ import { useContext } from 'react';
 
 export type FetchedCustomer = { customer: Customer; customerToken: string };
 
+export const useToken = () => useContext(TokenContext);
+export const useUser = () => useContext(UserContext);
+
 export const useAuth = () => {
-  const { token, handleResetToken, handleUpdateToken } = useContext(TokenContext);
-  const { user, resetProfile, updateProfile, setUser } = useContext(UserContext);
+  const { handleUpdateToken, handleResetToken } = useContext(TokenContext);
+  const { resetProfile, addUser } = useUser();
 
   const onLogin = (data?: FetchedCustomer) => {
     if (!data) {
       throw new Error(ERROR_MESSAGES.LOGIN_FAIL);
     }
-    const { customerToken, customer } = data;
-    handleUpdateToken(customerToken);
-    setUser({
-      email: customer.email,
-      password: customer.password,
-      firstName: customer.firstName,
-      lastName: customer.lastName,
-      dateOfBirth: customer.dateOfBirth,
-      addresses: customer.addresses,
-    });
-    //displaySuccessMessage
+    handleUpdateToken(data.customerToken);
+    addUser(data.customer);
   };
 
   const onLogout = () => {
@@ -31,5 +25,5 @@ export const useAuth = () => {
     resetProfile();
   };
 
-  return { onLogin, onLogout, token, user, updateProfile };
+  return { onLogin, onLogout };
 };
