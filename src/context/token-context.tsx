@@ -4,26 +4,24 @@ import { TokenContext } from './provider/contexts';
 import { tokenCookieHandler } from '@/services/cookies/cookie-handler';
 
 export function TokenContextProvider({ children }: { children: ReactNode }) {
-  const [token, setToken] = useState(tokenCookieHandler.get() || '');
+  const [token, setToken] = useState('');
 
   useEffect(() => {
     const tokenFromCookies = tokenCookieHandler.get() || '';
     setToken(tokenFromCookies);
   }, []);
 
-  const handleUpdateToken = (token: string) => {
+  const updateToken = (token: string) => {
     setToken(token);
     tokenCookieHandler.set(token);
   };
 
-  const handleResetToken = () => {
+  const resetToken = () => {
     setToken('');
     tokenCookieHandler.delete();
   };
 
   // const refreshToken=()=>{}? "expires_in": 172800,
 
-  return (
-    <TokenContext.Provider value={{ token, handleResetToken, handleUpdateToken }}>{children}</TokenContext.Provider>
-  );
+  return <TokenContext.Provider value={{ token, resetToken, updateToken }}>{children}</TokenContext.Provider>;
 }

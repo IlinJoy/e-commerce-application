@@ -9,19 +9,19 @@ export const useToken = () => useContext(TokenContext);
 export const useUser = () => useContext(UserContext);
 
 export const useAuth = () => {
-  const { handleUpdateToken, handleResetToken } = useContext(TokenContext);
+  const { updateToken, resetToken } = useContext(TokenContext);
   const { resetProfile, addUser } = useUser();
 
   const onLogin = (data?: FetchedCustomer) => {
     if (!data) {
       throw new Error(ERROR_MESSAGES.LOGIN_FAIL);
     }
-    handleUpdateToken(data.customerToken);
+    updateToken(data.customerToken);
     addUser(data.customer);
   };
 
   const onLogout = () => {
-    handleResetToken();
+    resetToken();
     resetProfile();
   };
 

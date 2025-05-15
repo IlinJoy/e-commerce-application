@@ -9,8 +9,6 @@ type ProtectedRoutProps = {
 };
 
 export function ProtectedRoute({ isAllowed, redirectPath = ROUTES.MAIN.path, children }: ProtectedRoutProps) {
-  console.log(isAllowed, redirectPath);
-
   if (!isAllowed) {
     return <Navigate to={'/' + redirectPath} replace />;
   }

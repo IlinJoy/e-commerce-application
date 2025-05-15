@@ -5,14 +5,14 @@ import { createContext } from 'react';
 
 type TokenContextType = {
   token: string;
-  handleUpdateToken: (token: string) => void;
-  handleResetToken: () => void;
+  updateToken: (token: string) => void;
+  resetToken: () => void;
 };
 
 export const TokenContext = createContext<TokenContextType>({
   token: '',
-  handleResetToken: () => {},
-  handleUpdateToken: () => {},
+  resetToken: () => {},
+  updateToken: () => {},
 });
 
 export type User = Pick<Customer, 'email' | 'password' | 'firstName' | 'lastName' | 'dateOfBirth' | 'addresses'>;
