@@ -33,7 +33,7 @@ export function AppRouter() {
           path={ROUTES.ACCOUNT.path}
           element={
             <ProtectedRoute isAllowed={!!token}>
-              <AccountPage />{' '}
+              <AccountPage />
             </ProtectedRoute>
           }
         />
