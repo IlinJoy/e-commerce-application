@@ -9,7 +9,7 @@ export const useToken = () => useContext(TokenContext);
 export const useUser = () => useContext(UserContext);
 
 export const useAuth = () => {
-  const { updateToken, resetToken } = useContext(TokenContext);
+  const { updateToken, resetToken } = useToken();
   const { resetProfile, addUser } = useUser();
 
   const onLogin = (data?: FetchedCustomer) => {
