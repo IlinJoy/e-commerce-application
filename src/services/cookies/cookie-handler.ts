@@ -48,4 +48,4 @@ export class CookieHandler {
   }
 }
 
-export const tokenCookieHandler = new CookieHandler(tokenCookiesConfig.name, tokenCookiesConfig.options);
+export const tokenCookieHandler = new CookieHandler(tokenCookiesConfig.key, tokenCookiesConfig.options);

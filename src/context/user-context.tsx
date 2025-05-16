@@ -8,7 +8,7 @@ type User = Pick<Customer, 'email' | 'password' | 'firstName' | 'lastName' | 'da
 type UserContextType = {
   user: User | null;
   resetProfile: () => void;
-  updateProfile: (newData: Partial<User>) => void | null;
+  updateProfile: (newData: Partial<User>) => void;
   addUser: (customer: Customer) => void;
 };
 

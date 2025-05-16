@@ -1,9 +1,9 @@
 export const tokenCookiesConfig = {
-  name: 'token',
+  key: 'token',
   options: {
     path: '/',
     secure: true,
     samesite: 'lax',
-    maxAge: 152800,
+    maxAge: 162800,
   },
 } as const;
