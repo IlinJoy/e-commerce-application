@@ -1,7 +1,19 @@
+/* eslint-disable react-refresh/only-export-components */
 import type { ReactNode } from 'react';
-import { useEffect, useState } from 'react';
-import { TokenContext } from './provider/contexts';
+import { createContext, use, useCallback, useEffect, useState } from 'react';
 import { tokenCookieHandler } from '@/services/cookies/cookie-handler';
+
+type TokenContextType = {
+  token: string;
+  updateToken: (token: string) => void;
+  resetToken: () => void;
+};
+
+export const TokenContext = createContext<TokenContextType>({
+  token: '',
+  resetToken: () => {},
+  updateToken: () => {},
+});
 
 export function TokenContextProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState('');
@@ -11,17 +23,23 @@ export function TokenContextProvider({ children }: { children: ReactNode }) {
     setToken(tokenFromCookies);
   }, []);
 
-  const updateToken = (token: string) => {
+  const updateToken = useCallback((token: string) => {
     setToken(token);
     tokenCookieHandler.set(token);
-  };
+  }, []);
 
-  const resetToken = () => {
+  const resetToken = useCallback(() => {
     setToken('');
     tokenCookieHandler.delete();
-  };
-
-  // const refreshToken=()=>{}? "expires_in": 172800,
+  }, []);
 
   return <TokenContext.Provider value={{ token, resetToken, updateToken }}>{children}</TokenContext.Provider>;
 }
+
+export const useToken = () => {
+  const context = use(TokenContext);
+  if (!context) {
+    throw new Error('Must be used within a TokenContextProvider');
+  }
+  return context;
+};

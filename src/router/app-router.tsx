@@ -4,7 +4,7 @@ import { AccountPage } from '@/pages/account-page/account-page';
 import { ROUTES } from './routes';
 import { lazy } from 'react';
 import { ProtectedRoute } from './protected-rout';
-import { useToken } from '@/hooks/use-auth';
+import { useAuth } from '@/hooks/use-auth';
 
 const AboutPage = lazy(ROUTES.ABOUT.component);
 const CatalogPage = lazy(ROUTES.CATALOG.component);
@@ -14,7 +14,7 @@ const NotFoundPage = lazy(ROUTES.NOT_FOUND.component);
 const RegistrationPage = lazy(ROUTES.REGISTRATION.component);
 
 export function AppRouter() {
-  const { token } = useToken();
+  const { isLoggedIn } = useAuth();
 
   return (
     <Routes>
@@ -24,7 +24,7 @@ export function AppRouter() {
         <Route path={ROUTES.ABOUT.path} element={<AboutPage />} />
         <Route path={ROUTES.NOT_FOUND.path} element={<NotFoundPage />} />
 
-        <Route element={<ProtectedRoute isAllowed={!token} />}>
+        <Route element={<ProtectedRoute isAllowed={!isLoggedIn} />}>
           <Route path={ROUTES.LOGIN.path} element={<LoginPage />} />
           <Route path={ROUTES.REGISTRATION.path} element={<RegistrationPage />} />
         </Route>
@@ -32,7 +32,7 @@ export function AppRouter() {
         <Route
           path={ROUTES.ACCOUNT.path}
           element={
-            <ProtectedRoute isAllowed={!!token}>
+            <ProtectedRoute isAllowed={isLoggedIn}>
               <AccountPage />
             </ProtectedRoute>
           }
