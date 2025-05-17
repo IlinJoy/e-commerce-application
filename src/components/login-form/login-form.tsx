@@ -1,12 +1,12 @@
 import Button from '@mui/material/Button';
 import type { BaseSyntheticEvent } from 'react';
-import type { FieldErrors, UseFormRegister } from 'react-hook-form';
+import type { Control, FieldErrors } from 'react-hook-form';
 import { FormInput } from '../input/input';
 import styles from './login-form.module.scss';
 
 type LoginFormProps = {
   onSubmit: (e?: BaseSyntheticEvent<object>) => Promise<void>;
-  register: UseFormRegister<LoginFormInputs>;
+  control: Control<LoginFormInputs>;
   errors: FieldErrors<LoginFormInputs>;
   isSubmitting: boolean;
   isValidForm: boolean;
@@ -17,25 +17,25 @@ export type LoginFormInputs = {
   password: string;
 };
 
-export function LoginForm({ onSubmit, register, errors, isSubmitting, isValidForm }: LoginFormProps) {
+export function LoginForm({ onSubmit, control, errors, isSubmitting, isValidForm }: LoginFormProps) {
   return (
     <form onSubmit={onSubmit} className={styles.form}>
       <FormInput
         type={'email'}
         label="Email"
         isDisabled={isSubmitting}
-        register={register}
         name="email"
-        id="email"
+        control={control}
+        shrinkLabel
         error={errors.email?.message}
       />
       <FormInput
         type={'password'}
         label="Password"
         isDisabled={isSubmitting}
-        register={register}
         name="password"
-        id="password"
+        control={control}
+        shrinkLabel
         error={errors.password?.message}
       />
       <Button type="submit" disabled={!isValidForm} loading={isSubmitting}>

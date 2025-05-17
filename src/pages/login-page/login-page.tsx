@@ -8,8 +8,8 @@ import { loginSchema } from '@/validation/login-validation';
 
 export function LoginPage() {
   const {
-    register,
     handleSubmit,
+    control,
     // setError,
     formState: { errors, isValid, isSubmitting }, // заменить на isPending от запроса
   } = useForm<LoginFormInputs>({ resolver: zodResolver(loginSchema), mode: 'onChange' });
@@ -37,7 +37,7 @@ export function LoginPage() {
         <Typography variant="h2">Login</Typography>
         <LoginForm
           onSubmit={onSubmit}
-          register={register}
+          control={control}
           errors={errors}
           isSubmitting={isSubmitting}
           isValidForm={isValid}
