@@ -5,14 +5,33 @@ import { registrationSchema } from '@/validation/registration-validation';
 import type { RegisterFormInputs } from '@/validation/registration-validation';
 import styles from './registration-page.module.scss';
 
+const defaultValues: RegisterFormInputs = {
+  email: '',
+  password: '',
+  firstName: '',
+  lastName: '',
+  dateOfBirth: '',
+  shippingStreet: '',
+  shippingCity: '',
+  shippingCountry: '',
+  shippingPostalCode: '',
+  billingCountry: '',
+  billingCity: '',
+  billingStreet: '',
+  billingPostalCode: '',
+};
+
 export function RegistrationPage() {
   const {
-    register,
     handleSubmit,
-    formState: { errors, isValid, isSubmitting },
-    watch,
+    formState: { isValid, isSubmitting },
+    control,
     setValue,
-  } = useForm<RegisterFormInputs>({ resolver: zodResolver(registrationSchema), mode: 'onChange' });
+  } = useForm<RegisterFormInputs>({
+    resolver: zodResolver(registrationSchema),
+    mode: 'onChange',
+    defaultValues: defaultValues,
+  });
 
   const onSubmit = handleSubmit((data: RegisterFormInputs) => {
     console.log(data);
@@ -23,12 +42,10 @@ export function RegistrationPage() {
       <div className={styles.formWrapper}>
         <RegisterForm
           onSubmit={onSubmit}
-          register={register}
-          errors={errors}
           isSubmitting={isSubmitting}
           isValidForm={isValid}
-          watch={watch}
           setValue={setValue}
+          control={control}
         />
       </div>
       <div className={styles.registrationBg}></div>

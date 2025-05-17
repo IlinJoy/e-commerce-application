@@ -1,81 +1,63 @@
 /* eslint-disable no-restricted-imports */
-import { useEffect, type BaseSyntheticEvent } from 'react';
-import type { FieldErrors, UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form';
+import { useEffect, type BaseSyntheticEvent, type ChangeEvent, useState } from 'react';
+import { type UseFormSetValue, type Control, useWatch } from 'react-hook-form';
 import { FormInput } from '../input/input';
 import type { RegisterFormInputs } from '@/validation/registration-validation';
-import { Button, Checkbox, FormControlLabel, InputLabel, MenuItem, Select, Typography } from '@mui/material';
+import { Button, Checkbox, FormControlLabel, MenuItem, Typography } from '@mui/material';
 import styles from './registration-form.module.scss';
+import { SelectFormInput } from '../select/select';
 
 type RegisterFormProps = {
   onSubmit: (e?: BaseSyntheticEvent<object>) => Promise<void>;
-  register: UseFormRegister<RegisterFormInputs>;
-  errors: FieldErrors<RegisterFormInputs>;
+  setValue: UseFormSetValue<RegisterFormInputs>;
   isSubmitting: boolean;
   isValidForm: boolean;
-  watch: UseFormWatch<RegisterFormInputs>;
-  setValue: UseFormSetValue<RegisterFormInputs>;
+  control: Control<RegisterFormInputs>;
 };
 
-export function RegisterForm({
-  onSubmit,
-  register,
-  errors,
-  isSubmitting,
-  isValidForm,
-  watch,
-  setValue,
-}: RegisterFormProps) {
-  const shippingCountry = watch('shippingCountry');
-  const billingCountry = watch('billingCountry');
-  const sameAddress = watch('sameAddress');
+export function RegisterForm({ onSubmit, isSubmitting, isValidForm, setValue, control }: RegisterFormProps) {
+  //чтобы при смене страны поле с кодом очищалось
+  const [shippingCountry, billingCountry] = useWatch({
+    control,
+    name: ['shippingCountry', 'billingCountry'],
+  });
 
   useEffect(() => {
-    if (shippingCountry === 'USA') {
-      setValue('shippingCanadianCode', '');
-      setValue('shippingPostalCode', '');
-    } else if (shippingCountry === 'Canada') {
-      setValue('shippingUSACode', '');
-      setValue('shippingPostalCode', '');
-    } else {
-      setValue('shippingUSACode', '');
-      setValue('shippingCanadianCode', '');
-    }
+    setValue('shippingPostalCode', '');
   }, [shippingCountry, setValue]);
 
   useEffect(() => {
-    if (billingCountry === 'USA') {
-      setValue('billingCanadianCode', '');
-      setValue('billingPostalCode', '');
-    } else if (billingCountry === 'Canada') {
-      setValue('billingUSACode', '');
-      setValue('billingPostalCode', '');
-    } else {
-      setValue('billingUSACode', '');
-      setValue('billingCanadianCode', '');
-    }
+    setValue('billingPostalCode', '');
   }, [billingCountry, setValue]);
 
-  useEffect(() => {
-    if (sameAddress) {
-      setValue('billingStreet', watch('shippingStreet'));
-      setValue('billingCity', watch('shippingCity'));
-      setValue('billingCountry', watch('shippingCountry'));
+  //для установки того же адреса для оплаты
+  const [sameAddress, setIsSameAddress] = useState(false);
+  const watchedValues = useWatch({
+    control,
+    name: ['shippingPostalCode', 'shippingCountry', 'shippingCity', 'shippingStreet'],
+  });
 
-      if (shippingCountry === 'USA') {
-        setValue('billingUSACode', watch('shippingUSACode'));
-        setValue('billingCanadianCode', '');
-        setValue('billingPostalCode', '');
-      } else if (shippingCountry === 'Canada') {
-        setValue('billingCanadianCode', watch('shippingCanadianCode'));
-        setValue('billingUSACode', '');
-        setValue('billingPostalCode', '');
-      } else {
-        setValue('billingPostalCode', watch('shippingPostalCode'));
-        setValue('billingUSACode', '');
-        setValue('billingCanadianCode', '');
-      }
+  useEffect(() => {
+    if (!sameAddress) {
+      return;
     }
-  }, [sameAddress, watch, shippingCountry, setValue]);
+
+    const [code, country, city, street] = watchedValues;
+
+    setValue('billingStreet', street, { shouldValidate: !!street });
+    setValue('billingCity', city, { shouldValidate: !!city });
+    setValue('billingCountry', country, { shouldValidate: !!country });
+    setValue('billingPostalCode', code, { shouldValidate: !!code });
+  }, [sameAddress, watchedValues, setValue]);
+
+  const handleSameAddressChecked = () => {
+    handleChecked('sameAddress');
+    setIsSameAddress((prev) => !prev);
+  };
+
+  const handleChecked = (fieldName: keyof RegisterFormInputs) => (event: ChangeEvent<HTMLInputElement>) => {
+    setValue(fieldName, event.target.checked);
+  };
 
   return (
     <form onSubmit={onSubmit}>
@@ -85,149 +67,80 @@ export function RegisterForm({
           type="email"
           label="Email"
           isDisabled={isSubmitting}
-          register={register}
           name="email"
-          id="email"
-          error={errors.email?.message}
+          control={control}
+          shrinkLabel={true}
         />
         <FormInput
           type={'password'}
           label="Password"
           isDisabled={isSubmitting}
-          register={register}
           name="password"
-          id="password"
-          error={errors.password?.message}
+          control={control}
+          shrinkLabel={true}
         />
         <FormInput
           type={'text'}
           label="First Name"
           isDisabled={isSubmitting}
-          register={register}
           name="firstName"
-          id="firstName"
-          error={errors.firstName?.message}
+          control={control}
+          shrinkLabel={true}
         />
         <FormInput
           type={'text'}
           label="Last Name"
           isDisabled={isSubmitting}
-          register={register}
           name="lastName"
-          id="lastName"
-          error={errors.lastName?.message}
+          control={control}
+          shrinkLabel={true}
         />
         <FormInput
           type={'date'}
           label="Date of Birth"
           isDisabled={isSubmitting}
-          register={register}
           name="dateOfBirth"
-          id="dateOfBirth"
-          error={errors.dateOfBirth?.message}
+          control={control}
+          shrinkLabel={true}
         />
       </div>
 
-      <div className={styles.shippingAdress}>
+      <div className={styles.shippingAddress}>
         <Typography variant="h6">Shipping Address</Typography>
-        <FormInput
-          type={'text'}
-          label="Street"
-          isDisabled={isSubmitting}
-          register={register}
-          name="shippingStreet"
-          id="shippingStreet"
-          error={errors.shippingStreet?.message}
-        />
-        <FormInput
-          type={'text'}
-          label="City"
-          isDisabled={isSubmitting}
-          register={register}
-          name="shippingCity"
-          id="shippingCity"
-          error={errors.shippingCity?.message}
-        />
-        <InputLabel>Country</InputLabel>
-        <Select defaultValue="" {...register('shippingCountry')} disabled={isSubmitting}>
+        <FormInput name={'shippingStreet'} control={control} label="Street" isDisabled={isSubmitting} />
+        <FormInput name={'shippingCity'} control={control} label="City" isDisabled={isSubmitting} />
+        <SelectFormInput control={control} name="shippingCountry" label="Country" isDisabled={isSubmitting}>
           <MenuItem value="USA">USA</MenuItem>
           <MenuItem value="Canada">Canada</MenuItem>
-        </Select>
-        <FormInput
-          type={'text'}
-          label="Postal Code"
-          isDisabled={isSubmitting}
-          register={register}
-          name={
-            shippingCountry === 'USA'
-              ? 'shippingUSACode'
-              : shippingCountry === 'Canada'
-                ? 'shippingCanadianCode'
-                : 'shippingPostalCode'
-          }
-          id="shippingPostalCode"
-          error={
-            shippingCountry === 'USA'
-              ? errors.shippingUSACode?.message
-              : shippingCountry === 'Canada'
-                ? errors.shippingCanadianCode?.message
-                : errors.shippingPostalCode?.message
-          }
-        />
+        </SelectFormInput>
+        <FormInput name={'shippingPostalCode'} control={control} label="Postal Code" isDisabled={isSubmitting} />
         <FormControlLabel control={<Checkbox defaultChecked />} label="Set as default address" />
         <FormControlLabel
-          control={<Checkbox {...register('sameAddress')} />}
+          control={<Checkbox onClick={handleSameAddressChecked} />}
           label="Use the same address for both billing and shipping"
         />
       </div>
 
-      <div className={styles.billingAdress}>
+      <div className={styles.billingAddress}>
         <Typography variant="h6">Billing Address</Typography>
-        <FormInput
-          type={'text'}
-          label="Street"
-          isDisabled={sameAddress}
-          register={register}
-          name="billingStreet"
-          id="billingStreet"
-          error={errors.billingStreet?.message}
-        />
-        <FormInput
-          type={'text'}
-          label="City"
-          isDisabled={sameAddress}
-          register={register}
-          name="billingCity"
-          id="billingCity"
-          error={errors.billingCity?.message}
-        />
-        <InputLabel>Country</InputLabel>
-        <Select defaultValue="" {...register('billingCountry')} disabled={isSubmitting || sameAddress}>
+        <FormInput name={'billingStreet'} control={control} label="Street" isDisabled={sameAddress || isSubmitting} />
+        <FormInput name={'billingCity'} control={control} label="City" isDisabled={sameAddress || isSubmitting} />
+        <SelectFormInput
+          name="billingCountry"
+          control={control}
+          label="Country"
+          isDisabled={sameAddress || isSubmitting}
+        >
           <MenuItem value="USA">USA</MenuItem>
           <MenuItem value="Canada">Canada</MenuItem>
-        </Select>
+        </SelectFormInput>
         <FormInput
-          type={'text'}
+          name={'billingPostalCode'}
+          control={control}
           label="Postal Code"
-          isDisabled={sameAddress}
-          register={register}
-          name={
-            billingCountry === 'USA'
-              ? 'billingUSACode'
-              : billingCountry === 'Canada'
-                ? 'billingCanadianCode'
-                : 'billingPostalCode'
-          }
-          id="billingPostalCode"
-          error={
-            billingCountry === 'USA'
-              ? errors.billingUSACode?.message
-              : billingCountry === 'Canada'
-                ? errors.billingCanadianCode?.message
-                : errors.billingPostalCode?.message
-          }
+          isDisabled={sameAddress || isSubmitting}
         />
-        <FormControlLabel control={<Checkbox defaultChecked />} label="Set as default address" />
+        <FormControlLabel control={<Checkbox />} label="Set as default address" />
         <Button type="submit" disabled={!isValidForm} loading={isSubmitting}>
           Register
         </Button>
