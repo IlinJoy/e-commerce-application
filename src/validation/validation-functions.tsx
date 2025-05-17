@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 const MIN_PASSWORD_LENGTH = 8;
 const MIN_AGE = 13;
+const MAX_AGE = 130;
 
 export const validatePassword = () => {
   return z.string().superRefine((data, ctx) => {
@@ -86,37 +87,10 @@ export const validateDate = () => {
         message: 'You must be at least 13 years old.',
       });
     }
-  });
-};
-
-export const validateUSACode = () => {
-  return z.string().superRefine((data, ctx) => {
-    if (!/^\d{5}$/.test(data)) {
+    if (fullAge > MAX_AGE) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: 'Only 5 digits are required',
-      });
-    }
-  });
-};
-
-export const validateCanadianCode = () => {
-  return z.string().superRefine((data, ctx) => {
-    if (!/^[A-Za-z]\d[A-Za-z] \d[A-Za-z]\d$/.test(data)) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Must follow the format: A1B 2C3',
-      });
-    }
-  });
-};
-
-export const validateUnknownCode = () => {
-  return z.string().superRefine((data, ctx) => {
-    if (data.length > 0) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Chose your country first',
+        message: 'You must be older than 130 years. Please, enter another year of birth',
       });
     }
   });
