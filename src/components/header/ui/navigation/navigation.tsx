@@ -6,8 +6,8 @@ import styles from './navigation.module.scss';
 import clsx from 'clsx';
 
 type NavigationProps = {
-  isOpenMenu: boolean;
-  closeMenu: () => void;
+  isOpenMenu?: boolean;
+  closeMenu?: () => void;
 };
 
 export function Navigation({ isOpenMenu, closeMenu }: NavigationProps) {
