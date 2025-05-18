@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z, ZodIssueCode } from 'zod';
 
 const MIN_PASSWORD_LENGTH = 8;
 const MIN_AGE = 13;
@@ -90,8 +90,40 @@ export const validateDate = () => {
     if (fullAge > MAX_AGE) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: 'You must be older than 130 years. Please, enter another year of birth',
+        message: 'You must be younger than 130 years. Please, enter another year of birth',
       });
     }
   });
+};
+
+export const validatePostalCode = ({
+  country,
+  postalCode,
+  ctx,
+  path,
+}: {
+  country: string;
+  postalCode: string;
+  ctx: z.RefinementCtx;
+  path: string[];
+}) => {
+  if (country === 'USA' && !/^\d{5}$/.test(postalCode)) {
+    ctx.addIssue({
+      code: ZodIssueCode.custom,
+      message: 'Only 5 digits are required',
+      path,
+    });
+  } else if (country === 'Canada' && !/^[A-Z]\d[A-Z] ?\d[A-Z]\d$/.test(postalCode)) {
+    ctx.addIssue({
+      code: ZodIssueCode.custom,
+      message: 'Must follow the format: A1B 2C3',
+      path,
+    });
+  } else if (!country && postalCode.length > 0) {
+    ctx.addIssue({
+      code: ZodIssueCode.custom,
+      message: 'Select your country first',
+      path,
+    });
+  }
 };
