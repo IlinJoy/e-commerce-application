@@ -25,6 +25,39 @@ export function RegisterForm({
   control,
   resetField,
 }: RegisterFormProps) {
+  //для установки того же адреса для оплаты
+  const [sameAddress, setIsSameAddress] = useState(false);
+  const watchedValues = useWatch({
+    control,
+    name: ['shippingPostalCode', 'shippingCountry', 'shippingCity', 'shippingStreet'],
+  });
+
+  useEffect(() => {
+    if (!sameAddress) {
+      resetField('billingPostalCode');
+      resetField('billingCountry');
+      resetField('billingCity');
+      resetField('billingStreet');
+    }
+    if (sameAddress) {
+      const [code, country, city, street] = watchedValues;
+
+      setValue('billingPostalCode', code, { shouldValidate: !!code });
+      setValue('billingCountry', country, { shouldValidate: !!country });
+      setValue('billingCity', city, { shouldValidate: !!city });
+      setValue('billingStreet', street, { shouldValidate: !!street });
+    }
+  }, [sameAddress, resetField, watchedValues, setValue]);
+
+  const handleSameAddressChecked = () => {
+    handleChecked('sameAddress');
+    setIsSameAddress((prev) => !prev);
+  };
+
+  const handleChecked = (fieldName: keyof RegisterFormInputs) => (event: ChangeEvent<HTMLInputElement>) => {
+    setValue(fieldName, event.target.checked);
+  };
+
   //чтобы при смене страны поле с кодом очищалось
   const [shippingCountry, billingCountry] = useWatch({
     control,
@@ -36,37 +69,10 @@ export function RegisterForm({
   }, [shippingCountry, resetField]);
 
   useEffect(() => {
-    resetField('billingPostalCode');
-  }, [billingCountry, resetField]);
-
-  //для установки того же адреса для оплаты
-  const [sameAddress, setIsSameAddress] = useState(false);
-  const watchedValues = useWatch({
-    control,
-    name: ['shippingPostalCode', 'shippingCountry', 'shippingCity', 'shippingStreet'],
-  });
-
-  useEffect(() => {
     if (!sameAddress) {
-      return;
+      resetField('billingPostalCode');
     }
-
-    const [code, country, city, street] = watchedValues;
-
-    setValue('billingStreet', street, { shouldValidate: !!street });
-    setValue('billingCity', city, { shouldValidate: !!city });
-    setValue('billingCountry', country, { shouldValidate: !!country });
-    setValue('billingPostalCode', code, { shouldValidate: !!code });
-  }, [sameAddress, watchedValues, setValue]);
-
-  const handleSameAddressChecked = () => {
-    handleChecked('sameAddress');
-    setIsSameAddress((prev) => !prev);
-  };
-
-  const handleChecked = (fieldName: keyof RegisterFormInputs) => (event: ChangeEvent<HTMLInputElement>) => {
-    setValue(fieldName, event.target.checked);
-  };
+  }, [sameAddress, billingCountry, resetField]);
 
   return (
     <form onSubmit={onSubmit}>
@@ -130,7 +136,6 @@ export function RegisterForm({
           isDisabled={sameAddress || isSubmitting}
         />
       </div>
-
       <Button className={styles.registerBtn} type="submit" disabled={!isValidForm} loading={isSubmitting}>
         Register
       </Button>
