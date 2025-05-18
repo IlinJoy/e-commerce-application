@@ -7,13 +7,14 @@ import { loginSchema } from '@/validation/login-validation';
 import { useMutation } from '@tanstack/react-query';
 import { fetchLoggedInCustomer } from '@/api/clientAuth';
 import { useAuth } from '@/hooks/use-auth';
+
 import styles from './login-page.module.scss';
 
 export function LoginPage() {
   const { onLogin } = useAuth();
   const {
-    register,
     handleSubmit,
+    control,
     formState: { errors, isValid },
   } = useForm<LoginFormInputs>({ resolver: zodResolver(loginSchema), mode: 'onChange' });
 
@@ -35,7 +36,7 @@ export function LoginPage() {
         <Typography variant="h2">Login</Typography>
         <LoginForm
           onSubmit={onSubmit}
-          register={register}
+          control={control}
           errors={errors}
           isSubmitting={isPending}
           isValidForm={isValid}

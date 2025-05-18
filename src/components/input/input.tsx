@@ -5,50 +5,49 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormHelperText from '@mui/material/FormHelperText';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
-import type { FieldValues, Path, UseFormRegister } from 'react-hook-form';
+import { useController, type FieldValues } from 'react-hook-form';
 import { PasswordButton } from './ui/password-button';
+import type { FormSelectProps } from '../select/select';
 
-type FormInputProps<T extends FieldValues> = {
-  type: 'text' | 'password' | 'email' | 'date';
-  register: UseFormRegister<T>;
-  name: Path<T>;
-  id: string;
-  value?: string;
-  label?: string;
-  error?: string;
-  isRequired?: boolean;
-  isDisabled?: boolean;
+type FormInputProps<T extends FieldValues> = Omit<FormSelectProps<T>, 'children'> & {
+  type?: 'text' | 'password' | 'email' | 'date';
+  placeholder?: string;
   endAdornment?: ReactNode;
+  shrinkLabel?: boolean;
 };
 
 export function FormInput<T extends FieldValues>({
   type = 'text',
   isRequired = true,
-  register,
-  id,
   name,
-  value,
   label,
-  error,
+  placeholder,
   isDisabled,
+  control,
   endAdornment,
+  shrinkLabel,
 }: FormInputProps<T>) {
   const [showPassword, setShowPassword] = useState(false);
+  const {
+    field,
+    fieldState: { error },
+  } = useController({ name, control });
+
+  const shouldShrink = !!field.value || shrinkLabel;
 
   return (
-    <FormControl>
+    <FormControl error={!!error} fullWidth>
       {label && (
-        <InputLabel required={isRequired} error={!!error} htmlFor={id}>
+        <InputLabel {...(shouldShrink && { shrink: true })} required={isRequired} htmlFor={name}>
           {label}
         </InputLabel>
       )}
       <Input
-        id={id}
-        value={value}
-        {...register(name)}
+        {...field}
+        id={name}
         type={showPassword ? 'text' : type}
+        placeholder={placeholder}
         disabled={isDisabled}
-        error={!!error}
         inputProps={{
           autoComplete: type === 'password' ? 'password' : 'current-password',
         }}
@@ -59,7 +58,7 @@ export function FormInput<T extends FieldValues>({
           </InputAdornment>
         }
       />
-      {error && <FormHelperText error>{error}</FormHelperText>}
+      {error && <FormHelperText error>{error.message}</FormHelperText>}
     </FormControl>
   );
 }

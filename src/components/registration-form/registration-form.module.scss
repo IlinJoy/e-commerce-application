@@ -1,0 +1,17 @@
+@use '../../styles/mixins' as *;
+
+.form {
+  @include flex(column, $align: normal);
+}
+
+.personal-info,
+.shipping-address,
+.billing-address {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
+}
+
+.register-btn {
+  width: 100%;
+}
