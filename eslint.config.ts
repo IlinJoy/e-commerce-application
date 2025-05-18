@@ -6,6 +6,7 @@ import tseslint from 'typescript-eslint';
 import parserTypeScript from '@typescript-eslint/parser';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import reactPlugin from 'eslint-plugin-react';
+import pluginQuery from '@tanstack/eslint-plugin-query';
 
 export default tseslint.config(
   { ignores: ['dist', 'eslint.config.ts', '**/*.test.{ts,tsx}'] },
@@ -25,6 +26,7 @@ export default tseslint.config(
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
       react: reactPlugin,
+      '@tanstack/query': pluginQuery,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
