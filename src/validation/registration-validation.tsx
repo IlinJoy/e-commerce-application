@@ -26,6 +26,9 @@ export const registrationSchema = z
     billingPostalCode: z.string().nonempty(),
 
     sameAddress: z.boolean().optional(),
+
+    shippingDefaultAddress: z.boolean(),
+    billingDefaultAddress: z.boolean(),
   })
   .superRefine((data, ctx) => {
     // Shipping
