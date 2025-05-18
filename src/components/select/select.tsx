@@ -37,7 +37,7 @@ export function SelectFormInput<T extends FieldValues>({
   return (
     <FormControl error={!!error} fullWidth disabled={isDisabled}>
       {label && (
-        <InputLabel {...(shouldShrink && { shrink: field.value })} required={isRequired} htmlFor={name}>
+        <InputLabel shrink={shouldShrink} required={isRequired} htmlFor={name}>
           {label}
         </InputLabel>
       )}
