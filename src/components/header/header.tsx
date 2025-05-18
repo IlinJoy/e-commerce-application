@@ -9,8 +9,6 @@ import styles from './header.module.scss';
 import clsx from 'clsx';
 
 export function Header() {
-  //TODO заменить useContext
-  const [auth, setAuth] = useState(true);
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [isFilledHeader, setIsFilledHeader] = useState(false);
 
@@ -44,13 +42,8 @@ export function Header() {
       <Container>
         <div className={styles.bar}>
           <Logo />
-          <Navigation auth={auth} isOpenMenu={isOpenMenu} closeMenu={closeMenu} />
-          <HeaderButtonGroup
-            auth={auth}
-            setAuth={setAuth}
-            toggleMenuHandler={toggleMenuHandler}
-            isOpenMenu={isOpenMenu}
-          />
+          <Navigation isOpenMenu={isOpenMenu} closeMenu={closeMenu} />
+          <HeaderButtonGroup toggleMenuHandler={toggleMenuHandler} isOpenMenu={isOpenMenu} />
         </div>
       </Container>
     </header>
