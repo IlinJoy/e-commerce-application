@@ -1,11 +1,12 @@
 /* eslint-disable no-restricted-imports */
 import { useEffect, type BaseSyntheticEvent, type ChangeEvent, useState } from 'react';
+import type { UseFormResetField } from 'react-hook-form';
 import { type UseFormSetValue, type Control, useWatch } from 'react-hook-form';
 import { FormInput } from '../input/input';
 import type { RegisterFormInputs } from '@/validation/registration-validation';
-import { Button, Checkbox, FormControlLabel, MenuItem, Typography } from '@mui/material';
+import { Button, Checkbox, FormControlLabel, Typography } from '@mui/material';
+import { AddressForm } from './address-form';
 import styles from './registration-form.module.scss';
-import { SelectFormInput } from '../select/select';
 
 type RegisterFormProps = {
   onSubmit: (e?: BaseSyntheticEvent<object>) => Promise<void>;
@@ -13,9 +14,17 @@ type RegisterFormProps = {
   isSubmitting: boolean;
   isValidForm: boolean;
   control: Control<RegisterFormInputs>;
+  resetField: UseFormResetField<RegisterFormInputs>;
 };
 
-export function RegisterForm({ onSubmit, isSubmitting, isValidForm, setValue, control }: RegisterFormProps) {
+export function RegisterForm({
+  onSubmit,
+  isSubmitting,
+  isValidForm,
+  setValue,
+  control,
+  resetField,
+}: RegisterFormProps) {
   //чтобы при смене страны поле с кодом очищалось
   const [shippingCountry, billingCountry] = useWatch({
     control,
@@ -23,12 +32,12 @@ export function RegisterForm({ onSubmit, isSubmitting, isValidForm, setValue, co
   });
 
   useEffect(() => {
-    setValue('shippingPostalCode', '');
-  }, [shippingCountry, setValue]);
+    resetField('shippingPostalCode');
+  }, [shippingCountry, resetField]);
 
   useEffect(() => {
-    setValue('billingPostalCode', '');
-  }, [billingCountry, setValue]);
+    resetField('billingPostalCode');
+  }, [billingCountry, resetField]);
 
   //для установки того же адреса для оплаты
   const [sameAddress, setIsSameAddress] = useState(false);
@@ -106,15 +115,7 @@ export function RegisterForm({ onSubmit, isSubmitting, isValidForm, setValue, co
       </div>
 
       <div className={styles.shippingAddress}>
-        <Typography variant="h6">Shipping Address</Typography>
-        <FormInput name={'shippingStreet'} control={control} label="Street" isDisabled={isSubmitting} />
-        <FormInput name={'shippingCity'} control={control} label="City" isDisabled={isSubmitting} />
-        <SelectFormInput control={control} name="shippingCountry" label="Country" isDisabled={isSubmitting}>
-          <MenuItem value="USA">USA</MenuItem>
-          <MenuItem value="Canada">Canada</MenuItem>
-        </SelectFormInput>
-        <FormInput name={'shippingPostalCode'} control={control} label="Postal Code" isDisabled={isSubmitting} />
-        <FormControlLabel control={<Checkbox defaultChecked />} label="Set as default address" />
+        <AddressForm prefix="shipping" title="Shipping Address" control={control} isDisabled={isSubmitting} />
         <FormControlLabel
           control={<Checkbox onClick={handleSameAddressChecked} />}
           label="Use the same address for both billing and shipping"
@@ -122,29 +123,17 @@ export function RegisterForm({ onSubmit, isSubmitting, isValidForm, setValue, co
       </div>
 
       <div className={styles.billingAddress}>
-        <Typography variant="h6">Billing Address</Typography>
-        <FormInput name={'billingStreet'} control={control} label="Street" isDisabled={sameAddress || isSubmitting} />
-        <FormInput name={'billingCity'} control={control} label="City" isDisabled={sameAddress || isSubmitting} />
-        <SelectFormInput
-          name="billingCountry"
+        <AddressForm
+          prefix="billing"
+          title="Billing Address"
           control={control}
-          label="Country"
-          isDisabled={sameAddress || isSubmitting}
-        >
-          <MenuItem value="USA">USA</MenuItem>
-          <MenuItem value="Canada">Canada</MenuItem>
-        </SelectFormInput>
-        <FormInput
-          name={'billingPostalCode'}
-          control={control}
-          label="Postal Code"
           isDisabled={sameAddress || isSubmitting}
         />
-        <FormControlLabel control={<Checkbox />} label="Set as default address" />
-        <Button type="submit" disabled={!isValidForm} loading={isSubmitting}>
-          Register
-        </Button>
       </div>
+
+      <Button className={styles.registerBtn} type="submit" disabled={!isValidForm} loading={isSubmitting}>
+        Register
+      </Button>
     </form>
   );
 }

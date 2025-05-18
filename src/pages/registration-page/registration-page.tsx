@@ -27,6 +27,7 @@ export function RegistrationPage() {
     formState: { isValid, isSubmitting },
     control,
     setValue,
+    resetField,
   } = useForm<RegisterFormInputs>({
     resolver: zodResolver(registrationSchema),
     mode: 'onChange',
@@ -46,6 +47,7 @@ export function RegistrationPage() {
           isValidForm={isValid}
           setValue={setValue}
           control={control}
+          resetField={resetField}
         />
       </div>
       <div className={styles.registrationBg}></div>
