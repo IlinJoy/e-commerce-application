@@ -9,9 +9,12 @@ import { fetchLoggedInCustomer } from '@/api/clientAuth';
 import { useAuth } from '@/hooks/use-auth';
 
 import styles from './login-page.module.scss';
+import { useToast } from '@/context/toast-provider';
+import { SUCCESS_MESSAGES } from '@/utils/constants/messages';
 
 export function LoginPage() {
   const { onLogin } = useAuth();
+  const { showToast } = useToast();
   const {
     handleSubmit,
     control,
@@ -22,12 +25,11 @@ export function LoginPage() {
     mutationFn: (data: LoginFormInputs) => fetchLoggedInCustomer(data.email, data.password),
     onSuccess: (data) => {
       onLogin(data);
-      //showSuccess
+      showToast({ message: SUCCESS_MESSAGES.LOGIN });
     },
-    onError: (error) => console.log(error), //showError
+    onError: (error) => showToast({ message: error.message, isError: true }),
   });
 
-  console.info('test testLogin@example.com > Test123!');
   const onSubmit = handleSubmit((data: LoginFormInputs) => mutate(data));
 
   return (

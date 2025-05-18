@@ -23,6 +23,6 @@ export const mapApiErrorToMessage = (error: ErrorResponse): never => {
     case 'invalid_token':
       throw new Error('Token invalid.');
     default:
-      throw new Error(`Unknown Error: ${error.errors?.[0]?.message || error.message}`);
+      throw new Error(`${error.errors?.[0]?.message || error.message}`);
   }
 };
