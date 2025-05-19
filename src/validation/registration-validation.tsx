@@ -17,12 +17,12 @@ export const registrationSchema = z
 
     shippingStreet: z.string().trim().nonempty(),
     shippingCity: validateName(),
-    shippingCountry: z.enum(['USA', 'Canada', '']),
+    shippingCountry: z.enum(['US', 'CN', '']),
     shippingPostalCode: z.string().nonempty(),
 
     billingStreet: z.string().trim().nonempty(),
     billingCity: validateName(),
-    billingCountry: z.enum(['USA', 'Canada', '']),
+    billingCountry: z.enum(['US', 'CN', '']),
     billingPostalCode: z.string().nonempty(),
 
     sameAddress: z.boolean().optional(),

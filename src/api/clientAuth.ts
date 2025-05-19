@@ -3,11 +3,13 @@ import type { ErrorResponse } from '@commercetools/platform-sdk';
 import { getCustomerToken, fetchFromApi } from '@/api/platformApi';
 import { mapApiErrorToMessage } from '@/utils/mapApiErrorToMessage';
 
-type RegisterCustomerOptions = {
+export type RegisterCustomerOptions = {
   customerData: Omit<CustomerDraft, 'addresses'>;
   shippingAddress: Address;
   billingAddress?: Address;
   useSameAddress?: boolean;
+  billingDefaultAddress?: boolean;
+  shippingDefaultAddress?: boolean;
 };
 
 export const registerCustomer = async (

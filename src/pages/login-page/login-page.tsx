@@ -12,6 +12,11 @@ import styles from './login-page.module.scss';
 import { useToast } from '@/context/toast-provider';
 import { SUCCESS_MESSAGES } from '@/utils/constants/messages';
 
+const defaultValues: LoginFormInputs = {
+  email: '',
+  password: '',
+};
+
 export function LoginPage() {
   const { onLogin } = useAuth();
   const { showToast } = useToast();
@@ -19,7 +24,7 @@ export function LoginPage() {
     handleSubmit,
     control,
     formState: { errors, isValid },
-  } = useForm<LoginFormInputs>({ resolver: zodResolver(loginSchema), mode: 'onChange' });
+  } = useForm<LoginFormInputs>({ resolver: zodResolver(loginSchema), mode: 'onChange', defaultValues });
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: LoginFormInputs) => fetchLoggedInCustomer(data.email, data.password),
