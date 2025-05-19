@@ -42,10 +42,10 @@ export function RegisterForm({
     if (sameAddress) {
       const [code, country, city, street] = watchedValues;
 
-      setValue('billingPostalCode', code);
-      setValue('billingCountry', country);
-      setValue('billingCity', city);
-      setValue('billingStreet', street);
+      setValue('billingPostalCode', code, { shouldValidate: true });
+      setValue('billingCountry', country, { shouldValidate: true });
+      setValue('billingCity', city, { shouldValidate: true });
+      setValue('billingStreet', street, { shouldValidate: true });
     }
   }, [sameAddress, resetField, watchedValues, setValue]);
 

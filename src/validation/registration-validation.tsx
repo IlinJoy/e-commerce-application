@@ -40,6 +40,7 @@ export const registrationSchema = z
     });
 
     // Billing
+
     validatePostalCode({
       country: data.billingCountry,
       postalCode: data.billingPostalCode,
