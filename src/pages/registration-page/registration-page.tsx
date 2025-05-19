@@ -12,6 +12,9 @@ import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/utils/constants/messages';
 import { useToast } from '@/context/toast-provider';
 import { useMutation } from '@tanstack/react-query';
 import { useToken } from '@/context/token-context';
+import { ROUTES } from '@/router/routes';
+import Typography from '@mui/material/Typography';
+import { useNavigate } from 'react-router';
 
 const defaultValues: RegisterFormInputs = {
   email: '',
@@ -46,6 +49,7 @@ export function RegistrationPage() {
   const { onRegistration, onLogout } = useAuth();
   const { showToast } = useToast();
   const { updateToken } = useToken();
+  const navigate = useNavigate();
 
   const handleRegistration = async (data: RegisterFormInputs) => {
     const token = await getAnonymousToken(data.email);
@@ -95,6 +99,9 @@ export function RegistrationPage() {
           control={control}
           resetField={resetField}
         />
+        <Typography className={styles.signin}>
+          Already have an account? <span onClick={() => navigate(`/${ROUTES.LOGIN.path}`)}>Sign In</span>
+        </Typography>
       </div>
       <div className={styles.registrationBg}></div>
     </>

@@ -33,3 +33,18 @@
     }
   }
 }
+
+@mixin form-link-redirection() {
+  margin-top: var(--spacing-3);
+  color: var(--mui-palette-primary-main);
+
+  & span {
+    cursor: pointer;
+    color: var(--mui-palette-error-main);
+    @include transition;
+
+    &:hover {
+      opacity: 0.85;
+    }
+  }
+}

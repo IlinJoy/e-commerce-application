@@ -7,10 +7,11 @@ import { loginSchema } from '@/validation/login-validation';
 import { useMutation } from '@tanstack/react-query';
 import { fetchLoggedInCustomer } from '@/api/clientAuth';
 import { useAuth } from '@/hooks/use-auth';
-
 import styles from './login-page.module.scss';
 import { useToast } from '@/context/toast-provider';
 import { SUCCESS_MESSAGES } from '@/utils/constants/messages';
+import { useNavigate } from 'react-router';
+import { ROUTES } from '@/router/routes';
 
 const defaultValues: LoginFormInputs = {
   email: '',
@@ -25,6 +26,7 @@ export function LoginPage() {
     control,
     formState: { errors, isValid },
   } = useForm<LoginFormInputs>({ resolver: zodResolver(loginSchema), mode: 'onChange', defaultValues });
+  const navigate = useNavigate();
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: LoginFormInputs) => fetchLoggedInCustomer(data.email, data.password),
@@ -48,6 +50,9 @@ export function LoginPage() {
           isSubmitting={isPending}
           isValidForm={isValid}
         />
+        <Typography className={styles.signup}>
+          Don’t have an account? <span onClick={() => navigate(`/${ROUTES.REGISTRATION.path}`)}>Sign Up</span>
+        </Typography>
       </div>
       <div className={styles.loginBg}></div>
     </>

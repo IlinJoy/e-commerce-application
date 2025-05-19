@@ -31,3 +31,7 @@
     text-align: center;
   }
 }
+
+.signin {
+  @include form-link-redirection;
+}
