@@ -2,8 +2,7 @@ import { useToken } from '@/context/token-context';
 import { useUser } from '@/context/user-context';
 import { ERROR_MESSAGES } from '@/utils/constants/messages';
 import type { Customer } from '@commercetools/platform-sdk';
-
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 
 export type FetchedCustomer = { customer: Customer; customerToken: string };
 
