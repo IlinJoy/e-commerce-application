@@ -58,7 +58,7 @@ export function FormInput<T extends FieldValues>({
           </InputAdornment>
         }
       />
-      {error && !isDisabled && <FormHelperText error>{error.message}</FormHelperText>}
+      {error && <FormHelperText error>{error.message}</FormHelperText>}
     </FormControl>
   );
 }

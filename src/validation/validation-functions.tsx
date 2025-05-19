@@ -1,4 +1,5 @@
 import { z, ZodIssueCode } from 'zod';
+import type { Addresses } from './registration-validation';
 
 const MIN_PASSWORD_LENGTH = 8;
 const MIN_AGE = 13;
@@ -96,34 +97,70 @@ export const validateDate = () => {
   });
 };
 
-export const validatePostalCode = ({
-  country,
-  postalCode,
-  ctx,
-  path,
-}: {
-  country: string;
-  postalCode: string;
+// export const validatePostalCode = ({
+//   country,
+//   postalCode,
+//   ctx,
+//   path,
+// }: {
+//   country: string;
+//   postalCode: string;
+//   ctx: z.RefinementCtx;
+//   path: string[];
+// }) => {
+//   if (country === 'US' && !/^\d{5}$/.test(postalCode)) {
+//     console.log(country, !/^\d{5}$/.test(postalCode));
+//     ctx.addIssue({
+//       code: ZodIssueCode.custom,
+//       message: 'Only 5 digits are required',
+//       path,
+
+//     });
+//     return z.NEVER;
+//   }
+//   if (country === 'CN' && !/^[A-Z]\d[A-Z] ?\d[A-Z]\d$/.test(postalCode)) {
+//     ctx.addIssue({
+//       code: ZodIssueCode.custom,
+//       message: 'Must follow the format: A1B 2C3',
+//       path,
+//     });
+//   }
+//   if (!country && postalCode.length > 0) {
+//     ctx.addIssue({
+//       code: ZodIssueCode.custom,
+//       message: 'Select your country first',
+//       path,
+//     });
+//   }
+// }
+type ValidatePostalCodeProps = {
+  data: Addresses;
   ctx: z.RefinementCtx;
-  path: string[];
-}) => {
+};
+
+export const validatePostalCode = ({ data, ctx }: ValidatePostalCodeProps) => {
+  const country = data.country;
+  const postalCode = data.postalCode;
+
   if (country === 'US' && !/^\d{5}$/.test(postalCode)) {
     ctx.addIssue({
       code: ZodIssueCode.custom,
       message: 'Only 5 digits are required',
-      path,
+      path: ['postalCode'],
     });
-  } else if (country === 'CN' && !/^[A-Z]\d[A-Z] ?\d[A-Z]\d$/.test(postalCode)) {
+  }
+  if (country === 'CN' && !/^[A-Z]\d[A-Z] ?\d[A-Z]\d$/.test(postalCode)) {
     ctx.addIssue({
       code: ZodIssueCode.custom,
       message: 'Must follow the format: A1B 2C3',
-      path,
+      path: ['postalCode'],
     });
-  } else if (!country && postalCode.length > 0) {
+  }
+  if (!country && postalCode.length > 0) {
     ctx.addIssue({
       code: ZodIssueCode.custom,
       message: 'Select your country first',
-      path,
+      path: ['postalCode'],
     });
   }
 };

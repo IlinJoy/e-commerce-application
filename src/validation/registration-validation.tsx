@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z, ZodIssueCode } from 'zod';
 import {
   validateDate,
   validateEmail,
@@ -7,46 +7,35 @@ import {
   validatePostalCode,
 } from './validation-functions';
 
-export const registrationSchema = z
+const addressSchema = z
   .object({
+    country: z.enum(['US', 'CN', '']),
+    streetName: z.string().trim().nonempty(),
+    postalCode: z.string().nonempty(),
+    city: validateName(),
+  })
+  .superRefine((data, ctx) => {
+    validatePostalCode({
+      data,
+      ctx,
+    });
+  });
+
+export type Addresses = z.infer<typeof addressSchema>;
+
+export const registrationSchema = z.object({
+  customerData: z.object({
     email: validateEmail(),
     password: validatePassword(),
     firstName: validateName(),
     lastName: validateName(),
     dateOfBirth: validateDate(),
-
-    shippingStreet: z.string().trim().nonempty(),
-    shippingCity: validateName(),
-    shippingCountry: z.enum(['US', 'CN', '']),
-    shippingPostalCode: z.string().nonempty(),
-
-    billingStreet: z.string().trim().nonempty(),
-    billingCity: validateName(),
-    billingCountry: z.enum(['US', 'CN', '']),
-    billingPostalCode: z.string().nonempty(),
-
-    sameAddress: z.boolean().optional(),
-
-    shippingDefaultAddress: z.boolean(),
-    billingDefaultAddress: z.boolean(),
-  })
-  .superRefine((data, ctx) => {
-    // Shipping
-    validatePostalCode({
-      country: data.shippingCountry,
-      postalCode: data.shippingPostalCode,
-      ctx,
-      path: ['shippingPostalCode'],
-    });
-
-    // Billing
-
-    validatePostalCode({
-      country: data.billingCountry,
-      postalCode: data.billingPostalCode,
-      ctx,
-      path: ['billingPostalCode'],
-    });
-  });
+  }),
+  shippingAddress: addressSchema,
+  billingAddress: addressSchema,
+  sameAddress: z.boolean().optional(),
+  shippingDefaultAddress: z.boolean().optional(),
+  billingDefaultAddress: z.boolean().optional(),
+});
 
 export type RegisterFormInputs = z.infer<typeof registrationSchema>;
