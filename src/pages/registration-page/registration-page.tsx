@@ -4,6 +4,17 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { registrationSchema } from '@/validation/registration-validation';
 import type { RegisterFormInputs } from '@/validation/registration-validation';
 import styles from './registration-page.module.scss';
+import { getAnonymousToken, getCustomerToken } from '@/api/platformApi';
+import { mapRegistrationFormData } from '@/utils/map-form-data';
+import { registerCustomer } from '@/api/clientAuth';
+import { useAuth } from '@/hooks/use-auth';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/utils/constants/messages';
+import { useToast } from '@/context/toast-provider';
+import { useMutation } from '@tanstack/react-query';
+import { useToken } from '@/context/token-context';
+import { ROUTES } from '@/router/routes';
+import Typography from '@mui/material/Typography';
+import { useNavigate } from 'react-router';
 
 const defaultValues: RegisterFormInputs = {
   email: '',
@@ -19,12 +30,14 @@ const defaultValues: RegisterFormInputs = {
   billingCity: '',
   billingStreet: '',
   billingPostalCode: '',
+  shippingDefaultAddress: false,
+  billingDefaultAddress: false,
 };
 
 export function RegistrationPage() {
   const {
     handleSubmit,
-    formState: { isValid, isSubmitting },
+    formState: { isValid },
     control,
     setValue,
     resetField,
@@ -33,9 +46,46 @@ export function RegistrationPage() {
     mode: 'onChange',
     defaultValues: defaultValues,
   });
+  const { onRegistration, onLogout } = useAuth();
+  const { showToast } = useToast();
+  const { updateToken } = useToken();
+  const navigate = useNavigate();
+
+  const handleRegistration = async (data: RegisterFormInputs) => {
+    const token = await getAnonymousToken(data.email);
+    const customerInfo = await registerCustomer(token, mapRegistrationFormData(data));
+    if (!customerInfo?.customer.id) {
+      throw new Error(ERROR_MESSAGES.REGISTRATION_FAIL);
+    }
+    return { customer: customerInfo.customer, password: data.password };
+  };
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: handleRegistration,
+    onSuccess: (data) => {
+      onRegistration(data.customer);
+      showToast({ message: SUCCESS_MESSAGES.REGISTRATION });
+    },
+    onError: (error) => showToast({ message: error.message, isError: true }),
+  });
+
+  const { mutate: mutateToken } = useMutation({
+    mutationFn: (data: { email: string; password: string }) => getCustomerToken(data.email, data.password),
+    onSuccess: (token) => updateToken(token),
+    onError: () => {
+      showToast({ message: ERROR_MESSAGES.UPDATE_INFO, isError: true });
+      onLogout();
+    },
+    retry: 5,
+    retryDelay: (attempt) => {
+      const retryRequestDelay = 2000;
+      return retryRequestDelay * (attempt + 1);
+    },
+  });
 
   const onSubmit = handleSubmit((data: RegisterFormInputs) => {
-    console.log(data);
+    mutate(data);
+    mutateToken(data);
   });
 
   return (
@@ -43,12 +93,15 @@ export function RegistrationPage() {
       <div className={styles.formWrapper}>
         <RegisterForm
           onSubmit={onSubmit}
-          isSubmitting={isSubmitting}
+          isSubmitting={isPending}
           isValidForm={isValid}
           setValue={setValue}
           control={control}
           resetField={resetField}
         />
+        <Typography className={styles.signin}>
+          Already have an account? <span onClick={() => navigate(`/${ROUTES.LOGIN.path}`)}>Sign In</span>
+        </Typography>
       </div>
       <div className={styles.registrationBg}></div>
     </>

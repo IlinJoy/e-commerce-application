@@ -107,13 +107,13 @@ export const validatePostalCode = ({
   ctx: z.RefinementCtx;
   path: string[];
 }) => {
-  if (country === 'USA' && !/^\d{5}$/.test(postalCode)) {
+  if (country === 'US' && !/^\d{5}$/.test(postalCode)) {
     ctx.addIssue({
       code: ZodIssueCode.custom,
       message: 'Only 5 digits are required',
       path,
     });
-  } else if (country === 'Canada' && !/^[A-Z]\d[A-Z] ?\d[A-Z]\d$/.test(postalCode)) {
+  } else if (country === 'CN' && !/^[A-Z]\d[A-Z] ?\d[A-Z]\d$/.test(postalCode)) {
     ctx.addIssue({
       code: ZodIssueCode.custom,
       message: 'Must follow the format: A1B 2C3',

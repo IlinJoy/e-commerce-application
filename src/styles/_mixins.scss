@@ -24,12 +24,27 @@
       @content;
     }
   } @else if $size == tablet {
-    @media (width >= 768px) {
+    @media (width <= 768px) {
       @content;
     }
   } @else if $size == desktop {
     @media (width >= 1024px) {
       @content;
+    }
+  }
+}
+
+@mixin form-link-redirection() {
+  margin-top: var(--spacing-3);
+  color: var(--mui-palette-primary-main);
+
+  & span {
+    cursor: pointer;
+    color: var(--mui-palette-error-main);
+    @include transition;
+
+    &:hover {
+      opacity: 0.85;
     }
   }
 }

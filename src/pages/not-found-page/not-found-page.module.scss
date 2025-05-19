@@ -1,0 +1,40 @@
+@use '../../styles/mixins' as *;
+
+body:has(.not-found) {
+  background-image: linear-gradient(326deg, var(--mui-palette-error-dark), var(--mui-palette-background-default));
+}
+
+.not-found {
+  position: relative;
+
+  &-content {
+    @include flex(column, var(--spacing-5), $justify: center);
+
+    min-height: 100dvh;
+    text-align: center;
+  }
+
+  &-image {
+    position: fixed;
+    z-index: -1;
+    right: 0;
+    bottom: -5rem;
+
+    width: 95vw;
+    height: 80%;
+
+    background-image: url('/images/404.webp');
+    background-repeat: no-repeat;
+    background-position: right;
+    background-size: contain;
+
+    @include media(tablet) {
+      bottom: -10rem;
+      width: 150vw;
+    }
+  }
+}
+
+.description {
+  max-width: 75%;
+}

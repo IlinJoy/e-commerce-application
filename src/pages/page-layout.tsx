@@ -7,7 +7,7 @@ export function PageLayout() {
     <>
       <Header />
       <main>
-        <Suspense fallback={<div>Loader</div>}>
+        <Suspense fallback={<div>Loading...</div>}>
           <Outlet />
         </Suspense>
       </main>
