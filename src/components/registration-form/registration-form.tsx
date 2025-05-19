@@ -1,4 +1,4 @@
-import { useEffect, type BaseSyntheticEvent, useState, useRef } from 'react';
+import { useEffect, type BaseSyntheticEvent, useState } from 'react';
 import type { UseFormClearErrors, UseFormResetField, UseFormTrigger, UseFormWatch } from 'react-hook-form';
 import { type UseFormSetValue, type Control, useWatch } from 'react-hook-form';
 import { FormInput } from '../input/input';
