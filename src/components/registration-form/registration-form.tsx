@@ -112,6 +112,7 @@ export function RegisterForm({
           control={control}
           name="sameAddress"
           label="Use the same address for both billing and shipping"
+          className={styles.sameAddress}
         />
       </div>
 
