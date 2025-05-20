@@ -64,7 +64,7 @@ export function RegistrationPage() {
     return { customer: customerInfo.customer };
   };
 
-  const { mutate, isPending } = useMutation({
+  const { mutate, isPending, isSuccess } = useMutation({
     mutationFn: handleRegistration,
     onSuccess: (data) => {
       onRegistration(data.customer);
@@ -89,7 +89,9 @@ export function RegistrationPage() {
 
   const onSubmit = handleSubmit((data: RegisterFormInputs) => {
     mutate(data);
-    mutateToken({ email: data.customerData.email, password: data.customerData.password });
+    if (isSuccess) {
+      mutateToken({ email: data.customerData.email, password: data.customerData.password });
+    }
   });
 
   return (

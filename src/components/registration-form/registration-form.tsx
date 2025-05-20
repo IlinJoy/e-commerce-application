@@ -1,4 +1,4 @@
-import { useEffect, type BaseSyntheticEvent, useState } from 'react';
+import { useEffect, type BaseSyntheticEvent, useState, useRef } from 'react';
 import type { UseFormClearErrors, UseFormResetField, UseFormTrigger, UseFormWatch } from 'react-hook-form';
 import { type UseFormSetValue, type Control, useWatch } from 'react-hook-form';
 import { FormInput } from '../input/input';
@@ -37,35 +37,41 @@ export function RegisterForm({
     name: ['billingAddress.country', 'shippingAddress.country'],
   });
   const [shippingAddress] = useWatch({ control, name: ['shippingAddress'] });
+  const shouldReset = useRef(true);
 
   useEffect(() => {
-    if (!sameAddress) {
-      resetField('billingAddress');
-    } else {
+    if (sameAddress) {
       setValue('billingAddress', shippingAddress, { shouldValidate: true });
     }
-  }, [sameAddress, resetField, setValue, shippingAddress, trigger]);
+  }, [sameAddress, resetField, setValue, shippingAddress]);
 
   useEffect(() => {
-    resetField('shippingAddress.postalCode');
-  }, [shippingCountry, resetField]);
-
-  useEffect(() => {
-    if (!sameAddress) {
-      resetField('billingAddress.postalCode');
+    if (shouldReset.current) {
+      resetField('shippingAddress.postalCode');
     }
-  }, [sameAddress, billingCountry, resetField]);
+    if (sameAddress) {
+      trigger('shippingAddress.postalCode');
+    }
+    shouldReset.current = true;
+  }, [shippingCountry, sameAddress, resetField, trigger]);
+
+  useEffect(() => {
+    resetField('billingAddress.postalCode');
+    clearErrors('billingAddress.postalCode');
+  }, [billingCountry, resetField, clearErrors]);
 
   const handleSameAddressChecked = () => {
     if (!sameAddress) {
       trigger(['shippingAddress']);
     } else {
+      resetField('billingAddress');
       (Object.keys(shippingAddress) as (keyof typeof shippingAddress)[]).forEach((key) => {
         if (shippingAddress[key] === '') {
           clearErrors(`shippingAddress.${key}`);
         }
       });
     }
+    shouldReset.current = false;
     setSameAddress((prev) => !prev);
   };
 
