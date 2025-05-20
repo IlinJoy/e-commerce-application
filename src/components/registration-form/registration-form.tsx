@@ -73,7 +73,7 @@ export function RegisterForm({
     <form onSubmit={onSubmit}>
       <div className={styles.personalInfo}>
         <Typography variant="h6">Personal Info</Typography>
-        <FormInput type="email" label="Email" isDisabled={isSubmitting} name="customerData.email" control={control} />
+        <FormInput type="text" label="Email" isDisabled={isSubmitting} name="customerData.email" control={control} />
         <FormInput
           type={'password'}
           label="Password"
