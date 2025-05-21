@@ -19,6 +19,11 @@ export function HeaderMenu() {
     navigate(route.path);
   };
 
+  const handleLogout = () => {
+    onLogout();
+    handleNavigate(ROUTES.MAIN);
+  };
+
   return (
     <>
       <IconButton ref={anchorElRef} color="primary" onClick={() => setIsOpen(true)}>
@@ -26,7 +31,7 @@ export function HeaderMenu() {
       </IconButton>
       <Menu anchorEl={anchorElRef.current} onClose={() => setIsOpen(false)} open={isOpen}>
         <MenuItem onClick={() => handleNavigate(ROUTES.ACCOUNT)}>Account</MenuItem>
-        <MenuItem onClick={onLogout}>Logout ➜</MenuItem>
+        <MenuItem onClick={handleLogout}>Logout ➜</MenuItem>
       </Menu>
     </>
   );
