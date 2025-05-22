@@ -29,7 +29,7 @@ export function LoginForm({ onSubmit, control, errors, isSubmitting, isValidForm
         error={errors.email?.message}
       />
       <FormInput
-        type={'password'}
+        type="password"
         label="Password"
         isDisabled={isSubmitting}
         name="password"

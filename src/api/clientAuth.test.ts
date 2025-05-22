@@ -17,10 +17,6 @@ describe('fetchLoggedInCustomer', () => {
   const mockedGetCustomerToken = vi.mocked(getCustomerToken);
   const mockedFetchFromApi = vi.mocked(fetchFromApi);
 
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
   it('should log in customer', async () => {
     mockedGetCustomerToken.mockResolvedValue(mockToken);
     mockedFetchFromApi.mockResolvedValue(mockCustomer);

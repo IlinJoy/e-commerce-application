@@ -1,5 +1,5 @@
 import { useEffect, type BaseSyntheticEvent, useState, useRef } from 'react';
-import type { UseFormClearErrors, UseFormResetField, UseFormTrigger, UseFormWatch } from 'react-hook-form';
+import type { UseFormClearErrors, UseFormResetField, UseFormTrigger } from 'react-hook-form';
 import { type UseFormSetValue, type Control, useWatch } from 'react-hook-form';
 import { FormInput } from '../input/input';
 import type { RegisterFormInputs } from '@/validation/registration-validation';
@@ -16,7 +16,6 @@ type RegisterFormProps = {
   isValidForm: boolean;
   control: Control<RegisterFormInputs>;
   trigger: UseFormTrigger<RegisterFormInputs>;
-  watch: UseFormWatch<RegisterFormInputs>;
   resetField: UseFormResetField<RegisterFormInputs>;
   clearErrors: UseFormClearErrors<RegisterFormInputs>;
 };
@@ -79,35 +78,35 @@ export function RegisterForm({
     <form onSubmit={onSubmit}>
       <div className={styles.personalInfo}>
         <Typography variant="h6">Personal Info</Typography>
-        <FormInput type="text" label="Email" isDisabled={isSubmitting} name="customerData.email" control={control} />
+        <FormInput type="email" label="Email" isDisabled={isSubmitting} name="customerData.email" control={control} />
         <FormInput
-          type={'password'}
+          type="password"
           label="Password"
           isDisabled={isSubmitting}
           name="customerData.password"
           control={control}
         />
         <FormInput
-          type={'text'}
+          type="text"
           label="First Name"
           isDisabled={isSubmitting}
           name="customerData.firstName"
           control={control}
         />
         <FormInput
-          type={'text'}
+          type="text"
           label="Last Name"
           isDisabled={isSubmitting}
           name="customerData.lastName"
           control={control}
         />
         <FormInput
-          type={'date'}
+          type="date"
           label="Date of Birth"
           isDisabled={isSubmitting}
           name="customerData.dateOfBirth"
           control={control}
-          shrinkLabel={true}
+          shrinkLabel
         />
       </div>
 

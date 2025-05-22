@@ -52,34 +52,8 @@ export const validatePassword = () => {
   });
 };
 
-// вернем после кроссчека
-// export const validateEmail = () => {
-//   return z.string().email('Must contain only English letters, "@" and valid domain without spaces.');
-// };
-
 export const validateEmail = () => {
-  return z.string().superRefine((data, ctx) => {
-    if (data.startsWith(' ')) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Must not starts with whitespace',
-      });
-    }
-    if (data.endsWith(' ')) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Must not ends with whitespace',
-      });
-    }
-    //https://regexr.com/3e48o
-    const emailRegex = /^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/;
-    if (!emailRegex.test(data)) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Must contain only English letters, "@" and valid domain without spaces.',
-      });
-    }
-  });
+  return z.string().email('Must contain only English letters, "@" and valid domain without spaces.');
 };
 
 export const validateName = () => {

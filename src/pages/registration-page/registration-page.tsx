@@ -42,7 +42,6 @@ export function RegistrationPage() {
     control,
     setValue,
     resetField,
-    watch,
     trigger,
     clearErrors,
   } = useForm<RegisterFormInputs>({
@@ -105,7 +104,6 @@ export function RegistrationPage() {
           control={control}
           resetField={resetField}
           trigger={trigger}
-          watch={watch}
           clearErrors={clearErrors}
         />
         <Typography className={styles.signin}>
