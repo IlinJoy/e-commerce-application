@@ -20,9 +20,3 @@
 
   @include flex(column);
 }
-
-.temp {
-  padding: var(--spacing-2);
-  border-radius: var(--spacing-2);
-  background-color: var(--mui-palette-background-default);
-}

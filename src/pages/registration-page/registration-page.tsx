@@ -2,10 +2,9 @@ import { RegisterForm } from '@/components/registration-form/registration-form';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { registrationSchema } from '@/validation/registration-validation';
-import type { RegisterFormInputs } from '@/validation/registration-validation';
+import type { Addresses, RegisterFormInputs } from '@/validation/registration-validation';
 import styles from './registration-page.module.scss';
 import { getAnonymousToken, getCustomerToken } from '@/api/platformApi';
-import { mapRegistrationFormData } from '@/utils/map-form-data';
 import { registerCustomer } from '@/api/clientAuth';
 import { useAuth } from '@/hooks/use-auth';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/utils/constants/messages';
@@ -16,22 +15,24 @@ import { ROUTES } from '@/router/routes';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router';
 
+const defaultAddress: Addresses = {
+  country: '',
+  streetName: '',
+  postalCode: '',
+  city: '',
+};
+
 const defaultValues: RegisterFormInputs = {
-  email: '',
-  password: '',
-  firstName: '',
-  lastName: '',
-  dateOfBirth: '',
-  shippingStreet: '',
-  shippingCity: '',
-  shippingCountry: '',
-  shippingPostalCode: '',
-  billingCountry: '',
-  billingCity: '',
-  billingStreet: '',
-  billingPostalCode: '',
-  shippingDefaultAddress: false,
-  billingDefaultAddress: false,
+  customerData: {
+    email: '',
+    password: '',
+    firstName: '',
+    lastName: '',
+    dateOfBirth: '',
+  },
+  shippingAddress: defaultAddress,
+  billingAddress: defaultAddress,
+  sameAddress: false,
 };
 
 export function RegistrationPage() {
@@ -41,6 +42,8 @@ export function RegistrationPage() {
     control,
     setValue,
     resetField,
+    trigger,
+    clearErrors,
   } = useForm<RegisterFormInputs>({
     resolver: zodResolver(registrationSchema),
     mode: 'onChange',
@@ -52,15 +55,15 @@ export function RegistrationPage() {
   const navigate = useNavigate();
 
   const handleRegistration = async (data: RegisterFormInputs) => {
-    const token = await getAnonymousToken(data.email);
-    const customerInfo = await registerCustomer(token, mapRegistrationFormData(data));
+    const token = await getAnonymousToken(data.customerData.email);
+    const customerInfo = await registerCustomer(token, data);
     if (!customerInfo?.customer.id) {
       throw new Error(ERROR_MESSAGES.REGISTRATION_FAIL);
     }
-    return { customer: customerInfo.customer, password: data.password };
+    return { customer: customerInfo.customer };
   };
 
-  const { mutate, isPending } = useMutation({
+  const { mutate, isPending, isSuccess } = useMutation({
     mutationFn: handleRegistration,
     onSuccess: (data) => {
       onRegistration(data.customer);
@@ -85,7 +88,9 @@ export function RegistrationPage() {
 
   const onSubmit = handleSubmit((data: RegisterFormInputs) => {
     mutate(data);
-    mutateToken(data);
+    if (isSuccess) {
+      mutateToken({ email: data.customerData.email, password: data.customerData.password });
+    }
   });
 
   return (
@@ -98,6 +103,8 @@ export function RegistrationPage() {
           setValue={setValue}
           control={control}
           resetField={resetField}
+          trigger={trigger}
+          clearErrors={clearErrors}
         />
         <Typography className={styles.signin}>
           Already have an account? <span onClick={() => navigate(`/${ROUTES.LOGIN.path}`)}>Sign In</span>
