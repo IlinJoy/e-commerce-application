@@ -29,6 +29,11 @@ export const ROUTES = {
     component: () =>
       import('../pages/not-found-page/not-found-page').then((module) => ({ default: module.NotFoundPage })),
   },
+  CATALOG_LIST: {
+    path: ':category',
+    component: () =>
+      import('../components/catalog-list/catalog-list').then((module) => ({ default: module.CatalogList })),
+  },
 } as const;
 
 export type RoutePath = (typeof ROUTES)[keyof typeof ROUTES];
