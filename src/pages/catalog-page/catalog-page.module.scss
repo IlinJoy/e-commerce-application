@@ -1,0 +1,18 @@
+@use '../../styles/mixins' as *;
+
+.layout {
+  position: relative;
+
+  @include flex($align: top);
+
+  & aside {
+    min-width: 300px;
+  }
+}
+
+.list-wrapper {
+  width: 100%;
+  min-height: 100vh;
+
+  @include flex($justify: center, $align: center);
+}

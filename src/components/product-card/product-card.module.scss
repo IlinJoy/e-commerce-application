@@ -1,0 +1,76 @@
+@use '../../styles/mixins' as *;
+
+.card-wrapper {
+  flex: 1 1 300px;
+  max-width: 500px;
+  background-color: var(--mui-palette-background-default);
+
+  & img {
+    transform-origin: center bottom;
+
+    @include transition;
+  }
+
+  &:hover img {
+    transform: scale(1.1);
+  }
+}
+
+.discount {
+  position: absolute;
+  z-index: 5;
+
+  padding: var(--spacing-1) var(--spacing-2);
+
+  font-size: 1rem;
+
+  background-color: var(--mui-palette-error-main);
+}
+
+.description {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+
+  min-height: 3em;
+
+  text-overflow: ellipsis;
+
+  opacity: 0.75;
+}
+
+.footer {
+  margin-top: var(--spacing-2);
+
+  @include flex(row, var(--spacing-2), $justify: start, $align: start);
+
+  & span {
+    font-size: 1rem;
+  }
+}
+
+.price {
+  position: relative;
+
+  &.old {
+    opacity: 0.6;
+  }
+
+  &.old::after {
+    content: '';
+
+    position: absolute;
+    right: 0;
+    bottom: 50%;
+    transform: rotate(35deg);
+
+    display: block;
+
+    width: 40px;
+    height: 3px;
+
+    background-color: var(--mui-palette-error-main);
+  }
+}
