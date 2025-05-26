@@ -74,27 +74,30 @@ export const validateName = () => {
 };
 
 export const validateDate = () => {
-  return z.string().superRefine((data, ctx) => {
-    const today = new Date();
-    const enteredDate = new Date(data);
-    const age = today.getFullYear() - enteredDate.getFullYear();
-    const isBeforeBirthday =
-      today.getMonth() < enteredDate.getMonth() ||
-      (today.getMonth() === enteredDate.getMonth() && today.getDate() < enteredDate.getDate());
-    const fullAge = isBeforeBirthday ? age - 1 : age;
-    if (fullAge < MIN_AGE) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'You must be at least 13 years old.',
-      });
-    }
-    if (fullAge > MAX_AGE) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'You must be younger than 130 years. Please, enter another year of birth',
-      });
-    }
-  });
+  return z
+    .string()
+    .nonempty()
+    .superRefine((data, ctx) => {
+      const today = new Date();
+      const enteredDate = new Date(data);
+      const age = today.getFullYear() - enteredDate.getFullYear();
+      const isBeforeBirthday =
+        today.getMonth() < enteredDate.getMonth() ||
+        (today.getMonth() === enteredDate.getMonth() && today.getDate() < enteredDate.getDate());
+      const fullAge = isBeforeBirthday ? age - 1 : age;
+      if (fullAge < MIN_AGE) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'You must be at least 13 years old.',
+        });
+      }
+      if (fullAge > MAX_AGE) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'You must be younger than 130 years. Please, enter another year of birth',
+        });
+      }
+    });
 };
 
 type ValidatePostalCodeProps = {
