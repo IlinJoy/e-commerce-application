@@ -1,4 +1,4 @@
-import { tokenCookiesConfig } from './token-cookie-config';
+import { anonTokenCookiesConfig, tokenCookiesConfig } from './token-cookie-config';
 
 type CookieOptions = {
   path?: string;
@@ -49,3 +49,4 @@ export class CookieHandler {
 }
 
 export const tokenCookieHandler = new CookieHandler(tokenCookiesConfig.key, tokenCookiesConfig.options);
+export const anonCookieHandler = new CookieHandler(anonTokenCookiesConfig.key, tokenCookiesConfig.options);

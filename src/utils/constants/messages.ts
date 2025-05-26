@@ -3,6 +3,7 @@ export const ERROR_MESSAGES = {
   LOGIN_FAIL: 'Something went wrong. Please attempt to log in again later.',
   REGISTRATION_FAIL: 'An error occurred during registration. Please try later.',
   UPDATE_INFO: 'Could not update information. Please login to proceed.',
+  TOKEN_NOT_FOUND: 'Could not found your personal access token, please register.',
 };
 
 export const SUCCESS_MESSAGES = {

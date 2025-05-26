@@ -1,7 +1,8 @@
 /* eslint-disable react-refresh/only-export-components */
 import type { ReactNode } from 'react';
 import { createContext, use, useCallback, useEffect, useState } from 'react';
-import { tokenCookieHandler } from '@/services/cookies/cookie-handler';
+import { anonCookieHandler, tokenCookieHandler } from '@/services/cookies/cookie-handler';
+import { getAnonymousToken } from '@/api/platformApi';
 
 type TokenContextType = {
   token: string;
@@ -21,6 +22,18 @@ export function TokenContextProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const tokenFromCookies = tokenCookieHandler.get() || '';
     setToken(tokenFromCookies);
+
+    if (!tokenFromCookies) {
+      const handleAnonToken = async () => {
+        const isExist = anonCookieHandler.get();
+        if (!isExist) {
+          const id = crypto.randomUUID();
+          const anonToken = await getAnonymousToken(id);
+          anonCookieHandler.set(anonToken);
+        }
+      };
+      handleAnonToken();
+    }
   }, []);
 
   const updateToken = useCallback((token: string) => {
