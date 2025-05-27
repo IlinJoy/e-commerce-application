@@ -32,6 +32,7 @@ export function CategoryListItem({ id, name, slug, level, children, selectedCate
           {children.map((subCategory) => (
             <CategoryListItem
               id={subCategory.id}
+              key={subCategory.id}
               selectedCategoryId={selectedCategoryId}
               slug={`${slug}/${subCategory.slug['en-US']}`}
               onClick={onClick}

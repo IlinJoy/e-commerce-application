@@ -1,9 +1,9 @@
 @use '../../styles/mixins' as *;
 
-.layout {
+.catalog-layout {
   position: relative;
 
-  @include flex($align: top);
+  @include flex(row, var(--spacing-3), $align: top);
 
   & aside {
     min-width: 300px;
@@ -15,4 +15,11 @@
   min-height: 100vh;
 
   @include flex($justify: center, $align: center);
+}
+
+.breadcrumbs-wrapper {
+  height: 3rem;
+  margin-bottom: var(--spacing-2);
+
+  @include flex;
 }

@@ -1,22 +1,27 @@
-import { getProducts } from '@/api/catalog';
-import { useCatalogFilters } from '@/hooks/use-catalog-filters';
+import { getProductsWithFilters } from '@/api/catalog';
 import { useQuery } from '@tanstack/react-query';
 import { ProductCard } from '../product-card/product-card';
 import styles from './catalog-list.module.scss';
+import { useOutletContext } from 'react-router';
+import { createFilterString } from '@/utils/catalog-utils';
 
 export function CatalogList() {
-  const { filterParams } = useCatalogFilters();
+  const activeCategoryId = useOutletContext<string>();
+  const shouldFetch = activeCategoryId !== null;
+  const filterString = createFilterString({ category: activeCategoryId });
 
   const { data, isFetching } = useQuery({
-    queryKey: ['products', filterParams],
-    queryFn: getProducts,
+    queryKey: ['products', filterString],
+    queryFn: () => getProductsWithFilters(filterString),
+    enabled: shouldFetch,
+    retry: 1,
   });
 
   if (isFetching) {
     return <div>Loading...</div>;
   }
 
-  if (!data) {
+  if (!data?.length) {
     return <div>Nothing here</div>;
   }
 

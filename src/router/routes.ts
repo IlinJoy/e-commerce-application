@@ -30,7 +30,7 @@ export const ROUTES = {
       import('../pages/not-found-page/not-found-page').then((module) => ({ default: module.NotFoundPage })),
   },
   CATALOG_LIST: {
-    path: ':category*',
+    path: ':category/:subcategory?',
     component: () =>
       import('../components/catalog-list/catalog-list').then((module) => ({ default: module.CatalogList })),
   },

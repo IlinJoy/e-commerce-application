@@ -21,7 +21,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
   const image = images?.[0];
   const itemDescription = description?.['en-US'];
-  const { itemPrice, hasDiscount, ...discountInfo } = mapPrices(prices!);
+  const { itemPrice, hasDiscount, ...discountInfo } = mapPrices(prices);
 
   return (
     <Card className={styles.cardWrapper} variant="outlined">
