@@ -12,11 +12,11 @@ import 'yet-another-react-lightbox/styles.css';
 import Lightbox from 'yet-another-react-lightbox';
 import Inline from 'yet-another-react-lightbox/plugins/inline';
 import clsx from 'clsx';
+import { getProductKeyFromUrl } from '@/utils/getProductKeyFromUrl';
 
 export const ProductPage = () => {
   const { token } = useToken();
-  const pathSegments = window.location.pathname.split('/');
-  const key = pathSegments[pathSegments.length - 1];
+  const key = getProductKeyFromUrl() || '';
 
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
