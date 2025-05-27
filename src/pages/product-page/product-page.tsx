@@ -84,6 +84,12 @@ export const ProductPage = () => {
                 backgroundColor: '#000',
               },
             }}
+            render={{
+              ...(images.length <= 1 && {
+                buttonPrev: () => null,
+                buttonNext: () => null,
+              }),
+            }}
           />
 
           <Lightbox
