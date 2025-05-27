@@ -55,8 +55,7 @@ export const ProductPage = () => {
         </span>
         {discount && (
           <span className={styles.newPrice}>
-            {' '}
-            {discount} {data?.masterVariant?.prices?.[0]?.value?.currencyCode}{' '}
+            {` ${discount} ${data?.masterVariant?.prices?.[0]?.value?.currencyCode} `}
           </span>
         )}
       </p>
