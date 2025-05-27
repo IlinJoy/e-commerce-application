@@ -22,7 +22,7 @@ export const ProductPage = () => {
   const [index, setIndex] = useState(0);
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['product', id, token],
+    queryKey: ['product', id],
     queryFn: () => {
       console.log('Fetching product...');
       return getProductByKey(id, token);
