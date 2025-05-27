@@ -6,7 +6,7 @@
 import { getProductByKey } from '@/api/catalog';
 import { useToken } from '@/context/token-context';
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styles from './product-page.module.scss';
 import 'yet-another-react-lightbox/styles.css';
 import Lightbox from 'yet-another-react-lightbox';
@@ -30,10 +30,6 @@ export const ProductPage = () => {
     enabled: !!key,
   });
 
-  useEffect(() => {
-    console.log(token);
-  }, [token]);
-
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -42,7 +38,6 @@ export const ProductPage = () => {
     return <div>Error when fetching product</div>;
   }
 
-  console.log(data);
   const images = data?.masterVariant?.images;
   const discount = data?.masterVariant?.prices?.[0]?.discounted?.value?.centAmount;
 
