@@ -102,6 +102,3 @@ export const ProductPage = () => {
     </article>
   );
 };
-
-// test: open http://localhost:5173/catalog/tabby-cat
-// mock token manually
