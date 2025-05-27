@@ -1,4 +1,4 @@
-export function getProductKeyFromUrl(): string | null {
+export function getProductIdFromUrl(): string | null {
   if (typeof window === 'undefined') {
     return null;
   }

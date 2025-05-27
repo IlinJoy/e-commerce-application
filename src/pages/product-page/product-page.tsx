@@ -12,22 +12,22 @@ import 'yet-another-react-lightbox/styles.css';
 import Lightbox from 'yet-another-react-lightbox';
 import Inline from 'yet-another-react-lightbox/plugins/inline';
 import clsx from 'clsx';
-import { getProductKeyFromUrl } from '@/utils/getProductKeyFromUrl';
+import { getProductIdFromUrl } from '@/utils/getProductKeyFromUrl';
 
 export const ProductPage = () => {
   const { token } = useToken();
-  const key = getProductKeyFromUrl() || '';
+  const id = getProductIdFromUrl() || '';
 
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['product', key, token],
+    queryKey: ['product', id, token],
     queryFn: () => {
       console.log('Fetching product...');
-      return getProductByKey(key, token);
+      return getProductByKey(id, token);
     },
-    enabled: !!key,
+    enabled: !!id,
   });
 
   if (isLoading) {
