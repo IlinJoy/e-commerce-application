@@ -11,6 +11,7 @@ import styles from './product-page.module.scss';
 import 'yet-another-react-lightbox/styles.css';
 import Lightbox from 'yet-another-react-lightbox';
 import Inline from 'yet-another-react-lightbox/plugins/inline';
+import clsx from 'clsx';
 
 export const ProductPage = () => {
   const { token } = useToken();
@@ -44,13 +45,12 @@ export const ProductPage = () => {
   console.log(data);
   const images = data?.masterVariant?.images;
   const discount = data?.masterVariant?.prices?.[0]?.discounted?.value?.centAmount;
-  const discountClassName = discount ? styles.discount : '';
 
   return (
     <article className={styles.product}>
       <h2>{data?.name['en-US']}</h2>
       <p>
-        <span className={discountClassName}>
+        <span className={clsx(discount && styles.discount)}>
           {data?.masterVariant?.prices?.[0]?.value?.centAmount} {data?.masterVariant?.prices?.[0]?.value?.currencyCode}
         </span>
         {discount && (
