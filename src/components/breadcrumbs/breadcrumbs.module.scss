@@ -1,0 +1,28 @@
+@use '../../styles/mixins' as *;
+
+.breadcrumbs {
+  font-size: var(--subtitle-size);
+  text-transform: uppercase;
+
+  @include flex;
+
+  .segment {
+    color: var(--mui-palette-primary-main);
+    text-decoration: none;
+    opacity: 0.8;
+
+    @include transition;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &:visited {
+      color: inherit;
+    }
+  }
+
+  .last {
+    color: var(--mui-palette-primary-main);
+  }
+}
