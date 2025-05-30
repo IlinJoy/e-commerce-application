@@ -4,6 +4,7 @@ export const ERROR_MESSAGES = {
   REGISTRATION_FAIL: 'An error occurred during registration. Please try later.',
   UPDATE_INFO: 'Could not update information. Please login to proceed.',
   TOKEN_NOT_FOUND: 'Could not found your personal access token, please register.',
+  INVALID_DATA: `Not a valid format for data`,
 };
 
 export const SUCCESS_MESSAGES = {

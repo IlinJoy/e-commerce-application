@@ -7,10 +7,10 @@ import { SpriteIcon } from '../icon/icon';
 type FilterAccordionProps = {
   children: ReactNode;
   title: string;
-  isDefaultExpanded: boolean;
+  isDefaultExpanded?: boolean;
 };
 
-export function FilterAccordion({ isDefaultExpanded, title, children }: FilterAccordionProps) {
+export function FilterAccordion({ isDefaultExpanded = true, title, children }: FilterAccordionProps) {
   return (
     <Accordion defaultExpanded={isDefaultExpanded}>
       <AccordionSummary expandIcon={<SpriteIcon id="chevron" />}>

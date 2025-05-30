@@ -17,7 +17,7 @@ export function CatalogPage() {
         <CatalogFilters activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
         <div className={styles.listWrapper}>
           <Suspense fallback={<div>Loading...</div>}>
-            <Outlet context={activeCategory} />
+            <Outlet context={{ activeCategory }} />
           </Suspense>
         </div>
       </div>

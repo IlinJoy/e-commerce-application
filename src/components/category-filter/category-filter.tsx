@@ -5,14 +5,16 @@ import { getCategoryIdFromPath, mapCategories } from '@/utils/catalog-utils';
 import List from '@mui/material/List';
 import { CategoryListItem } from './category-filter-item';
 import { FilterAccordion } from '../accordion/accordion';
+import type { Dispatch, SetStateAction } from 'react';
 import { useEffect } from 'react';
 
 type CategoryFilterProps = {
   handleCategoryChange: (categoryId: string | null) => void;
   activeCategory: string | null;
+  setActiveCategory: Dispatch<SetStateAction<string | null>>;
 };
 
-export function CategoryFilter({ handleCategoryChange, activeCategory }: CategoryFilterProps) {
+export function CategoryFilter({ handleCategoryChange, setActiveCategory, activeCategory }: CategoryFilterProps) {
   const navigate = useNavigate();
   const { data: categories } = useQuery({ queryKey: ['categories'], queryFn: getCategories });
   const categoriesMap = mapCategories(categories);
@@ -31,12 +33,14 @@ export function CategoryFilter({ handleCategoryChange, activeCategory }: Categor
         navigate('/404', { replace: true });
         return;
       }
-      handleCategoryChange(currentCategoryId);
+      if (currentCategoryId !== activeCategory) {
+        setActiveCategory(currentCategoryId);
+      }
     }
-  }, [categories, handleCategoryChange, navigate]);
+  }, [activeCategory, categories, navigate, setActiveCategory]);
 
   return (
-    <FilterAccordion isDefaultExpanded title="Category">
+    <FilterAccordion isDefaultExpanded title="Categories">
       <List>
         {Object.values(categoriesMap).map(({ id, slug, name, children }) => (
           <CategoryListItem

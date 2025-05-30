@@ -1,33 +1,40 @@
-import { getProductsWithFilters } from '@/api/catalog';
+import { getProductsWithFilters, getProductType } from '@/api/catalog';
 import { useQuery } from '@tanstack/react-query';
 import { ProductCard } from '../product-card/product-card';
 import styles from './catalog-list.module.scss';
 import { useOutletContext } from 'react-router';
-import { createFilterString } from '@/utils/catalog-utils';
+import { createQueryString } from '@/utils/query-utils';
+
+type OutletContext = {
+  activeCategory: string | null;
+};
 
 export function CatalogList() {
-  const activeCategoryId = useOutletContext<string>();
-  const shouldFetch = activeCategoryId !== null;
-  const filterString = createFilterString({ category: activeCategoryId });
+  const { activeCategory } = useOutletContext<OutletContext>();
+  const shouldFetch = activeCategory !== null;
 
-  const { data, isFetching } = useQuery({
-    queryKey: ['products', filterString],
-    queryFn: () => getProductsWithFilters(filterString),
+  const { data, isPending } = useQuery({
+    queryKey: ['products', activeCategory],
+    queryFn: async () => {
+      const queryString = createQueryString({
+        category: activeCategory,
+      });
+      return await getProductsWithFilters(queryString);
+    },
     enabled: shouldFetch,
-    retry: 1,
   });
 
-  if (isFetching) {
+  if (isPending) {
     return <div>Loading...</div>;
   }
 
-  if (!data?.length) {
+  if (!data?.result.length) {
     return <div>Nothing here</div>;
   }
 
   return (
     <div className={styles.cardsWrapper}>
-      {data.map((product) => (
+      {data.result.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}
     </div>
