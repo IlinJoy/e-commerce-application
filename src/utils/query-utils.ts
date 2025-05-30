@@ -1,4 +1,7 @@
+import type { FilterParams } from '@/hooks/use-catalog-filters';
 import type { AttributeDefinition } from '@commercetools/platform-sdk';
+import type { FilterKey } from './constants/filters';
+import { switchPrice } from './catalog-utils';
 
 export type Attributes = {
   name?: string;
@@ -19,11 +22,13 @@ export type Attributes = {
     | 'time';
 }[];
 
-type QueryParams = { attributes?: AttributeDefinition[]; category: string | null };
+const LANG = 'en-US';
 
-export const createFacetsQueryString = ({ attributes, category }: QueryParams) => {
+type FacetsQueryParams = { attributes?: AttributeDefinition[]; category: string | null };
+
+export const createFacetsQueryString = ({ attributes, category }: FacetsQueryParams) => {
   const FACET_BASE = 'facet=variants.';
-  const lang = 'en-US';
+
   const result = [];
 
   attributes?.forEach((attribute) => {
@@ -34,7 +39,7 @@ export const createFacetsQueryString = ({ attributes, category }: QueryParams) =
 
     switch (attribute.type.name) {
       case 'ltext':
-        result.push(`attributes.${name}.${lang}`);
+        result.push(`attributes.${name}.${LANG}`);
         break;
       case 'number':
         result.push(`attributes.${name}:range(0 to *)`);
@@ -57,7 +62,8 @@ export const createFacetsQueryString = ({ attributes, category }: QueryParams) =
   );
 };
 
-export const createQueryString = ({ category }: QueryParams) => {
+type QueryParams = { category: string | null; filterParams: Partial<FilterParams> };
+export const createQueryString = ({ category, filterParams }: QueryParams) => {
   const result = [];
 
   const FILTER_BASE = 'filter=';
@@ -66,5 +72,26 @@ export const createQueryString = ({ category }: QueryParams) => {
     result.push(`categories.id:"${category}"`);
   }
 
-  return result.length > 0 ? `/search?${FILTER_BASE}${result.join(' AND ')}` : '';
+  Object.entries(filterParams).forEach(([key, values]) => {
+    if (values.length > 0) {
+      switch (key as FilterKey) {
+        case 'price': {
+          const [min, max] = values.map((value) => switchPrice(Number(value), { switchToCents: true }));
+          result.push(`variants.price.centAmount:range(${min} to ${max})`);
+          break;
+        }
+        case 'brand':
+          result.push(`variants.attributes.brand.${LANG}:"${values.join('","')}"`);
+          break;
+        case 'color':
+          result.push(`variants.attributes.color.key:"${values.join('","')}"`);
+          break;
+        default:
+          result.push(`variants.attributes.${key}:range(${values[0]} to ${values[1]})`);
+          break;
+      }
+    }
+  });
+
+  return result.length > 0 ? `/search?${FILTER_BASE}${result.join(`&${FILTER_BASE}`)}` : '';
 };

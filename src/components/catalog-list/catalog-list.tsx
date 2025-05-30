@@ -1,9 +1,10 @@
-import { getProductsWithFilters, getProductType } from '@/api/catalog';
+import { getProductsWithFilters } from '@/api/catalog';
 import { useQuery } from '@tanstack/react-query';
 import { ProductCard } from '../product-card/product-card';
 import styles from './catalog-list.module.scss';
 import { useOutletContext } from 'react-router';
 import { createQueryString } from '@/utils/query-utils';
+import { useCatalogFilters } from '@/hooks/use-catalog-filters';
 
 type OutletContext = {
   activeCategory: string | null;
@@ -11,17 +12,21 @@ type OutletContext = {
 
 export function CatalogList() {
   const { activeCategory } = useOutletContext<OutletContext>();
+  const { filterParams } = useCatalogFilters();
   const shouldFetch = activeCategory !== null;
 
   const { data, isPending } = useQuery({
-    queryKey: ['products', activeCategory],
+    queryKey: ['products', activeCategory, filterParams],
     queryFn: async () => {
       const queryString = createQueryString({
         category: activeCategory,
+        filterParams,
       });
+      console.log(queryString);
       return await getProductsWithFilters(queryString);
     },
     enabled: shouldFetch,
+    staleTime: 2000,
   });
 
   if (isPending) {

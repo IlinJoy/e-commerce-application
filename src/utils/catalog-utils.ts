@@ -3,10 +3,13 @@ import type { FilterAttribute, FilterKey } from './constants/filters';
 
 export type CategoryWithChildren = Category & { children: CategoryWithChildren[] };
 
-export const convertCentsToPrice = (cents: number, fractionDigits?: number) => {
+type TogglePriceOptions = { switchToCents?: boolean; fractionDigits?: number };
+export const switchPrice = (amount: number, { switchToCents = false, fractionDigits }: TogglePriceOptions) => {
   const POW_BASE = 10;
   const DEFAULT_FRACTION_DIGITS = 2;
-  return cents / POW_BASE ** (fractionDigits || DEFAULT_FRACTION_DIGITS);
+  const conversionFactor = POW_BASE ** (fractionDigits || DEFAULT_FRACTION_DIGITS);
+
+  return switchToCents ? amount * conversionFactor : amount / conversionFactor;
 };
 
 export const mapCategories = (categories?: Category[]) => {
@@ -42,7 +45,7 @@ const mapAttributesWithValues = (attributes?: AttributeDefinition[], facets?: Fa
       key: attribute?.name || 'price',
       label: attribute?.label['en-US'] || 'Price',
       ...(value.type === 'range' && {
-        max: attribute?.name ? value.ranges[0].max : convertCentsToPrice(value.ranges[0].max),
+        max: attribute?.name ? value.ranges[0].max : switchPrice(value.ranges[0].max, {}),
       }),
       ...(value.type === 'terms' && { terms: [...value.terms] }),
     };
@@ -93,12 +96,12 @@ export const mapPrices = (prices?: Price[]) => {
   const { value, discounted } = prices[0];
   const MULTIPLIER = 100;
 
-  const itemPrice = convertCentsToPrice(value.centAmount, value.fractionDigits);
+  const itemPrice = switchPrice(value.centAmount, { fractionDigits: value.fractionDigits });
   let itemDiscountedPrice;
   let discountPercent;
 
   if (discounted) {
-    itemDiscountedPrice = convertCentsToPrice(discounted.value.centAmount, discounted.value.fractionDigits);
+    itemDiscountedPrice = switchPrice(discounted.value.centAmount, { fractionDigits: discounted.value.fractionDigits });
     discountPercent = Math.round(((itemPrice - itemDiscountedPrice) / itemPrice) * MULTIPLIER);
   }
 

@@ -3,7 +3,7 @@ import { FILTER_KEYS } from '@/utils/constants/filters';
 import { useCallback } from 'react';
 import { useSearchParams } from 'react-router';
 
-type FilterParams = Record<FilterKey, string[]>;
+export type FilterParams = Record<FilterKey, string[]>;
 
 export function useCatalogFilters() {
   const [searchParams, setSearchParams] = useSearchParams();
