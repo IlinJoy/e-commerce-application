@@ -7,6 +7,7 @@ import { CategoryListItem } from './category-filter-item';
 import { FilterAccordion } from '../accordion/accordion';
 import type { Dispatch, SetStateAction } from 'react';
 import { useEffect } from 'react';
+import { LANG } from '@/utils/constants/filters';
 
 type CategoryFilterProps = {
   handleCategoryChange: (categoryId: string | null) => void;
@@ -47,9 +48,9 @@ export function CategoryFilter({ handleCategoryChange, setActiveCategory, active
             id={id}
             key={id}
             selectedCategoryId={activeCategory}
-            slug={slug['en-US']}
+            slug={slug[LANG]}
             onClick={handleClick}
-            name={name['en-US']}
+            name={name[LANG]}
             children={children}
             level={0}
           />

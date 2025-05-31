@@ -14,7 +14,7 @@
   width: 100%;
   min-height: 100vh;
 
-  @include flex($justify: center, $align: center);
+  @include flex(column, $justify: center, $align: center);
 }
 
 .breadcrumbs-wrapper {

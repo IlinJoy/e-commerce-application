@@ -7,6 +7,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import styles from './product-card.module.scss';
 import clsx from 'clsx';
+import { LANG } from '@/utils/constants/filters';
 
 type ProductCardProps = {
   product: ProductProjection;
@@ -20,7 +21,7 @@ export function ProductCard({ product }: ProductCardProps) {
   } = product;
 
   const image = images?.[0];
-  const itemDescription = description?.['en-US'];
+  const itemDescription = description?.[LANG];
   const { itemPrice, hasDiscount, ...discountInfo } = mapPrices(prices);
 
   return (
@@ -34,7 +35,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            {name['en-US']}
+            {name[LANG]}
           </Typography>
           <Typography variant="body1" className={styles.description}>
             {itemDescription}

@@ -1,4 +1,5 @@
 import type { CategoryWithChildren } from '@/utils/catalog-utils';
+import { LANG } from '@/utils/constants/filters';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
@@ -34,9 +35,9 @@ export function CategoryListItem({ id, name, slug, level, children, selectedCate
               id={subCategory.id}
               key={subCategory.id}
               selectedCategoryId={selectedCategoryId}
-              slug={`${slug}/${subCategory.slug['en-US']}`}
+              slug={`${slug}/${subCategory.slug[LANG]}`}
               onClick={onClick}
-              name={`> ${subCategory.name['en-US']}`}
+              name={`> ${subCategory.name[LANG]}`}
               children={subCategory.children}
               level={level + 1}
             />

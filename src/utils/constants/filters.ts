@@ -8,3 +8,5 @@ export type FilterAttribute = {
   key: FilterKey;
   label: string;
 };
+
+export const LANG = 'en-US';

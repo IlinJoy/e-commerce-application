@@ -1,5 +1,5 @@
 import type { AttributeDefinition, Category, FacetResults, Price, ProductType } from '@commercetools/platform-sdk';
-import type { FilterAttribute, FilterKey } from './constants/filters';
+import { LANG, type FilterAttribute, type FilterKey } from './constants/filters';
 
 export type CategoryWithChildren = Category & { children: CategoryWithChildren[] };
 
@@ -43,7 +43,7 @@ const mapAttributesWithValues = (attributes?: AttributeDefinition[], facets?: Fa
     const attribute = attributes.find((attribute) => attribute.name && key.includes(attribute.name));
     return {
       key: attribute?.name || 'price',
-      label: attribute?.label['en-US'] || 'Price',
+      label: attribute?.label[LANG] || 'Price',
       ...(value.type === 'range' && {
         max: attribute?.name ? value.ranges[0].max : switchPrice(value.ranges[0].max, {}),
       }),

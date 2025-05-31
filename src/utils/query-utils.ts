@@ -1,6 +1,6 @@
 import type { FilterParams } from '@/hooks/use-catalog-filters';
 import type { AttributeDefinition } from '@commercetools/platform-sdk';
-import type { FilterKey } from './constants/filters';
+import { LANG } from './constants/filters';
 import { switchPrice } from './catalog-utils';
 
 export type Attributes = {
@@ -22,76 +22,77 @@ export type Attributes = {
     | 'time';
 }[];
 
-const LANG = 'en-US';
-
 type FacetsQueryParams = { attributes?: AttributeDefinition[]; category: string | null };
 
 export const createFacetsQueryString = ({ attributes, category }: FacetsQueryParams) => {
-  const FACET_BASE = 'facet=variants.';
-
-  const result = [];
+  const params = new URLSearchParams();
+  const appendFacet = (value: string) => params.append('facet', value);
 
   attributes?.forEach((attribute) => {
     if (!attribute.name || !attribute.type) {
       return;
     }
     const name = attribute.name;
-
     switch (attribute.type.name) {
       case 'ltext':
-        result.push(`attributes.${name}.${LANG}`);
+        appendFacet(`variants.attributes.${name}.${LANG}`);
         break;
       case 'number':
-        result.push(`attributes.${name}:range(0 to *)`);
+        appendFacet(`variants.attributes.${name}:range(0 to *)`);
         break;
       case 'enum':
       case 'lenum':
-        result.push(`attributes.${name}.key`);
+        appendFacet(`variants.attributes.${name}.key`);
         break;
       default:
-        result.push(`attributes.${name}`);
+        appendFacet(`variants.attributes.${name}`);
         break;
     }
   });
-  result.push(`price.centAmount:range(0 to *)`);
+  appendFacet(`variants.price.centAmount:range(0 to *)`);
 
-  return (
-    `/search?${FACET_BASE}${result.join(`&${FACET_BASE}`)}` +
-    (category ? `&filter.facets=categories.id:"${category}"` : '') +
-    '&limit=0'
-  );
+  if (category) {
+    params.append('filter.facets', `categories.id:"${category}"`);
+  }
+
+  return `/search?${params.toString()}&limit=0`;
 };
 
 type QueryParams = { category: string | null; filterParams: Partial<FilterParams> };
-export const createQueryString = ({ category, filterParams }: QueryParams) => {
-  const result = [];
+type FilterParamsEntries = [keyof FilterParams, string[] | string][];
 
-  const FILTER_BASE = 'filter=';
+export const createQueryString = ({ category, filterParams }: QueryParams) => {
+  const params = new URLSearchParams();
+  const appendFilter = (value: string) => params.append('filter', value);
 
   if (category) {
-    result.push(`categories.id:"${category}"`);
+    appendFilter(`categories.id:"${category}"`);
   }
 
-  Object.entries(filterParams).forEach(([key, values]) => {
-    if (values.length > 0) {
-      switch (key as FilterKey) {
+  (Object.entries(filterParams) as FilterParamsEntries).forEach(([key, value]) => {
+    if (Array.isArray(value) && value.length > 0) {
+      switch (key) {
         case 'price': {
-          const [min, max] = values.map((value) => switchPrice(Number(value), { switchToCents: true }));
-          result.push(`variants.price.centAmount:range(${min} to ${max})`);
+          const [min, max] = value.map((value) => switchPrice(Number(value), { switchToCents: true }));
+          appendFilter(`variants.price.centAmount:range(${min} to ${max})`);
           break;
         }
         case 'brand':
-          result.push(`variants.attributes.brand.${LANG}:"${values.join('","')}"`);
+          appendFilter(`variants.attributes.brand.${LANG}:"${value.join('","')}"`);
           break;
         case 'color':
-          result.push(`variants.attributes.color.key:"${values.join('","')}"`);
+          appendFilter(`variants.attributes.color.key:"${value.join('","')}"`);
           break;
         default:
-          result.push(`variants.attributes.${key}:range(${values[0]} to ${values[1]})`);
+          appendFilter(`variants.attributes.${key}:range(${value[0]} to ${value[1]})`);
           break;
       }
     }
+    if (!Array.isArray(value) && value) {
+      params.append(key, value);
+    }
   });
+  const shouldSetFilters = params.size > 0 || !!filterParams.sort;
 
-  return result.length > 0 ? `/search?${FILTER_BASE}${result.join(`&${FILTER_BASE}`)}` : '';
+  return shouldSetFilters ? `/search?${params.toString()}` : '';
 };

@@ -1,28 +1,44 @@
-import type { FilterKey } from '@/utils/constants/filters';
 import { FILTER_KEYS } from '@/utils/constants/filters';
 import { useCallback } from 'react';
 import { useSearchParams } from 'react-router';
 
-export type FilterParams = Record<FilterKey, string[]>;
+export type FilterParams = {
+  height: string[];
+  width: string[];
+  color: string[];
+  price: string[];
+  brand: string[];
+  depth: string[];
+  sort: string;
+  search: string;
+};
 
 export function useCatalogFilters() {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const getParam = (key: string): (string | number)[] => searchParams.get(key)?.split(',') || [];
+  const getParam = (key: string) => searchParams.get(key)?.split(',') || [];
 
   const getFilterParams = () => {
-    return Object.fromEntries(FILTER_KEYS.map((key) => [key, getParam(key)])) as Partial<FilterParams>;
+    const attributesFilters = Object.fromEntries(FILTER_KEYS.map((key) => [key, getParam(key)]));
+    return {
+      ...attributesFilters,
+      sort: searchParams.get('sort'),
+      search: searchParams.get('search'),
+    } as Partial<FilterParams>;
   };
 
   const filterParams = getFilterParams();
 
   const setFilterParams = useCallback(
-    (newValues: { [k: string]: string[] }) => {
+    (newValues: Partial<FilterParams>) => {
       setSearchParams(
         (params) => {
           Object.entries(newValues).forEach(([key, value]) => {
-            if (value.length > 0) {
+            console.log(value);
+            if (Array.isArray(value) && value.length > 0) {
               params.set(key, value.join(','));
+            } else if (value && !Array.isArray(value)) {
+              params.set(key, value);
             } else {
               params.delete(key);
             }
