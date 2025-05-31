@@ -3,8 +3,9 @@ import { Suspense, useState } from 'react';
 import { Outlet } from 'react-router';
 import Container from '@mui/material/Container';
 import { CatalogBreadcrumbs } from '@/components/breadcrumbs/breadcrumbs';
-import styles from './catalog-page.module.scss';
 import { SortFilter } from '@/components/sort-filter/sort-filter';
+import { SearchInput } from '@/components/search-filter/search-filter';
+import styles from './catalog-page.module.scss';
 
 export function CatalogPage() {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
@@ -13,8 +14,8 @@ export function CatalogPage() {
     <Container component={'section'}>
       <div className={styles.breadcrumbsWrapper}>
         <CatalogBreadcrumbs />
-        <div>
-          {/* <SearchInput /> */}
+        <div className={styles.catalogLayout}>
+          <SearchInput />
           <SortFilter />
         </div>
       </div>

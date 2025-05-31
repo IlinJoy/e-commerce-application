@@ -1,6 +1,6 @@
 import type { FilterParams } from '@/hooks/use-catalog-filters';
 import type { AttributeDefinition } from '@commercetools/platform-sdk';
-import { LANG } from './constants/filters';
+import { LANG, minSymbolsToSearch } from './constants/filters';
 import { switchPrice } from './catalog-utils';
 
 export type Attributes = {
@@ -62,7 +62,7 @@ type QueryParams = { category: string | null; filterParams: Partial<FilterParams
 type FilterParamsEntries = [keyof FilterParams, string[] | string][];
 
 export const createQueryString = ({ category, filterParams }: QueryParams) => {
-  const params = new URLSearchParams();
+  const params = new URLSearchParams({ markMatchingVariants: 'true' });
   const appendFilter = (value: string) => params.append('filter', value);
 
   if (category) {
@@ -70,7 +70,11 @@ export const createQueryString = ({ category, filterParams }: QueryParams) => {
   }
 
   (Object.entries(filterParams) as FilterParamsEntries).forEach(([key, value]) => {
-    if (Array.isArray(value) && value.length > 0) {
+    if (!value || value.length === 0) {
+      return;
+    }
+
+    if (Array.isArray(value)) {
       switch (key) {
         case 'price': {
           const [min, max] = value.map((value) => switchPrice(Number(value), { switchToCents: true }));
@@ -87,9 +91,11 @@ export const createQueryString = ({ category, filterParams }: QueryParams) => {
           appendFilter(`variants.attributes.${key}:range(${value[0]} to ${value[1]})`);
           break;
       }
-    }
-    if (!Array.isArray(value) && value) {
+    } else if (key !== 'text') {
       params.append(key, value);
+    } else {
+      params.append(`text.${LANG}`, value);
+      params.append('fuzzy', 'true');
     }
   });
   const shouldSetFilters = params.size > 0 || !!filterParams.sort;

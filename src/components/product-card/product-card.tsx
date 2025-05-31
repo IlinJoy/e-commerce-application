@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import styles from './product-card.module.scss';
 import clsx from 'clsx';
 import { LANG } from '@/utils/constants/filters';
+import { HighlightedText } from '../highlighted-text/highlighted-text';
 
 type ProductCardProps = {
   product: ProductProjection;
@@ -21,7 +22,7 @@ export function ProductCard({ product }: ProductCardProps) {
   } = product;
 
   const image = images?.[0];
-  const itemDescription = description?.[LANG];
+  const itemDescription = description?.[LANG] || '';
   const { itemPrice, hasDiscount, ...discountInfo } = mapPrices(prices);
 
   return (
@@ -34,13 +35,8 @@ export function ProductCard({ product }: ProductCardProps) {
         <CardMedia component="img" height="380" image={image?.url} alt={image?.label} />
 
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            {name[LANG]}
-          </Typography>
-          <Typography variant="body1" className={styles.description}>
-            {itemDescription}
-          </Typography>
-
+          <HighlightedText text={name[LANG]} isHeading />
+          <HighlightedText text={itemDescription} />
           <div className={styles.footer}>
             <Typography
               className={clsx(styles.price, { [styles.old]: hasDiscount })}

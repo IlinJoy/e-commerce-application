@@ -10,7 +10,7 @@ export type FilterParams = {
   brand: string[];
   depth: string[];
   sort: string;
-  search: string;
+  text: string;
 };
 
 export function useCatalogFilters() {
@@ -23,7 +23,7 @@ export function useCatalogFilters() {
     return {
       ...attributesFilters,
       sort: searchParams.get('sort'),
-      search: searchParams.get('search'),
+      text: searchParams.get('text'),
     } as Partial<FilterParams>;
   };
 
@@ -34,7 +34,6 @@ export function useCatalogFilters() {
       setSearchParams(
         (params) => {
           Object.entries(newValues).forEach(([key, value]) => {
-            console.log(value);
             if (Array.isArray(value) && value.length > 0) {
               params.set(key, value.join(','));
             } else if (value && !Array.isArray(value)) {

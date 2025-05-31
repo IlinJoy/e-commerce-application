@@ -9,4 +9,5 @@ export type FilterAttribute = {
   label: string;
 };
 
-export const LANG = 'en-US';
+export const LANG = 'en-US' as const;
+export const minSymbolsToSearch = 3;

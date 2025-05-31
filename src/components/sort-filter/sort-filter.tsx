@@ -10,7 +10,6 @@ export function SortFilter() {
 
   const handleChange = (event: SelectChangeEvent) => {
     setFilterParams({ sort: event.target.value });
-    console.log(event.target.value);
   };
 
   return (

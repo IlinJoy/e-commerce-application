@@ -22,7 +22,6 @@ export function CatalogList() {
         category: activeCategory,
         filterParams,
       });
-      console.log(queryString);
       return await getProductsWithFilters(queryString);
     },
     enabled: shouldFetch,

@@ -2,8 +2,8 @@ import type { AttributeDefinition, Category, FacetResults, Price, ProductType } 
 import { LANG, type FilterAttribute, type FilterKey } from './constants/filters';
 
 export type CategoryWithChildren = Category & { children: CategoryWithChildren[] };
-
 type TogglePriceOptions = { switchToCents?: boolean; fractionDigits?: number };
+
 export const switchPrice = (amount: number, { switchToCents = false, fractionDigits }: TogglePriceOptions) => {
   const POW_BASE = 10;
   const DEFAULT_FRACTION_DIGITS = 2;

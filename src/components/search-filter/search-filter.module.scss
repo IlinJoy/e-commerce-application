@@ -1,0 +1,50 @@
+@use '../../styles/mixins' as *;
+
+.inputBlock {
+  @include flex($align: start);
+
+  & .hint {
+    max-width: 300px;
+    font-size: 0.8rem;
+    opacity: 0.8;
+  }
+}
+
+.search {
+  overflow: hidden;
+
+  height: var(--filter-input-height);
+  padding: 0 var(--spacing-1) 0;
+  border: 1px solid var(--mui-palette-grey-800);
+  border-radius: var(--border-radius-1);
+
+  color: var(--mui-palette-primary-main);
+
+  @include flex;
+
+  &:hover {
+    border: 1px solid var(--mui-palette-primary-main);
+  }
+
+  & input {
+    width: 120px;
+
+    @include transition;
+  }
+
+  & input:focus {
+    width: 200px;
+  }
+}
+
+.mark {
+  display: inline-block;
+
+  width: 15px;
+  height: 15px;
+  border-radius: var(--spacing-1);
+
+  vertical-align: text-bottom;
+
+  background-color: var(--palette-accent-dark);
+}
