@@ -14,14 +14,14 @@ export function CatalogPage() {
     <Container component={'section'}>
       <div className={styles.breadcrumbsWrapper}>
         <CatalogBreadcrumbs />
-        <div className={styles.catalogLayout}>
-          <SearchInput />
-          <SortFilter />
-        </div>
       </div>
       <div className={styles.catalogLayout}>
         <CatalogFilters activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
         <div className={styles.listWrapper}>
+          <div className={styles.topRow}>
+            <SearchInput />
+            <SortFilter />
+          </div>
           <Suspense fallback={<div>Loading...</div>}>
             <Outlet context={{ activeCategory }} />
           </Suspense>

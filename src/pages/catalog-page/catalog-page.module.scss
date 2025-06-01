@@ -6,7 +6,7 @@
   @include flex(row, var(--spacing-3), $align: top);
 
   & aside {
-    min-width: 300px;
+    min-width: 250px;
   }
 }
 
@@ -14,12 +14,15 @@
   width: 100%;
   min-height: 100vh;
 
-  @include flex(column, $justify: center, $align: center);
+  @include flex(column, var(--spacing-3), $justify: start, $align: start);
 }
 
 .breadcrumbs-wrapper {
-  height: 3rem;
-  margin-bottom: var(--spacing-2);
+  margin: var(--spacing-3) 0 var(--spacing-4);
+}
+
+.top-row {
+  width: 100%;
 
   @include flex;
 }

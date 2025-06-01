@@ -1,0 +1,17 @@
+@use '../../styles/mixins' as *;
+
+.nothingFound {
+  position: sticky;
+  top: 60%;
+  transform: translateY(-50%);
+
+  width: 100%;
+  min-height: 50vh;
+  margin-top: var(--spacing-8);
+  border: 1px solid var(--mui-palette-grey-800);
+  border-radius: var(--spacing-1);
+
+  text-align: center;
+
+  @include flex(column, var(--spacing-4), $justify: center);
+}

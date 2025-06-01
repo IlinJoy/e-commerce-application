@@ -5,6 +5,7 @@ import styles from './catalog-list.module.scss';
 import { useOutletContext } from 'react-router';
 import { createQueryString } from '@/utils/query-utils';
 import { useCatalogFilters } from '@/hooks/use-catalog-filters';
+import { NothingFound } from '../nothing-found/nothing-found';
 
 type OutletContext = {
   activeCategory: string | null;
@@ -33,7 +34,7 @@ export function CatalogList() {
   }
 
   if (!data?.result.length) {
-    return <div>Nothing here</div>;
+    return <NothingFound />;
   }
 
   return (
