@@ -30,7 +30,7 @@ export function TermItem({ attribute: { key, terms } }: TermItemItemProps) {
   return (
     <ListItem className={styles.list}>
       {terms!.map(({ term }) => (
-        <ListItemButton key={term} component="li" onClick={() => handleToggle(term)} dense>
+        <ListItemButton className={styles.listButton} key={term} onClick={() => handleToggle(term)} dense>
           <ListItemIcon>
             <Checkbox edge="start" checked={isChecked(term)} disableRipple size="small" />
           </ListItemIcon>

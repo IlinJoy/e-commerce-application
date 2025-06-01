@@ -13,17 +13,14 @@ type CatalogFiltersProps = {
 };
 
 export function CatalogFilters({ activeCategory, setActiveCategory }: CatalogFiltersProps) {
-  const { resetFiltersParams } = useCatalogFilters();
-  const navigate = useNavigate();
+  const { resetOnlyAttributesFilters } = useCatalogFilters();
 
   const handleCategoryChange = (categoryId: string | null) => {
     setActiveCategory(categoryId);
-    resetFiltersParams();
   };
 
   const handleReset = () => {
-    setActiveCategory('');
-    navigate('');
+    resetOnlyAttributesFilters();
   };
 
   return (
@@ -38,7 +35,7 @@ export function CatalogFilters({ activeCategory, setActiveCategory }: CatalogFil
       </Typography>
       <AttributesFilter activeCategory={activeCategory} />
       <Button className={styles.reset} onClick={handleReset}>
-        Reset All
+        Reset Filters
       </Button>
     </aside>
   );

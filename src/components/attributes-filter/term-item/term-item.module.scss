@@ -6,7 +6,7 @@
 
   @include flex(column);
 
-  & li {
+  & .list-button {
     width: 100%;
   }
 }

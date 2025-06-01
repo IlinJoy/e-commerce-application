@@ -50,9 +50,9 @@ export function useCatalogFilters() {
     [setSearchParams]
   );
 
-  const resetFiltersParams = useCallback(() => {
-    setSearchParams(new URLSearchParams(), { replace: true });
-  }, []);
+  const resetOnlyAttributesFilters = useCallback(() => {
+    setFilterParams(Object.fromEntries(FILTER_KEYS.map((key) => [key, undefined])));
+  }, [setFilterParams]);
 
-  return { filterParams, setFilterParams, resetFiltersParams };
+  return { filterParams, setFilterParams, resetOnlyAttributesFilters };
 }

@@ -21,10 +21,10 @@ export function RangeItem({ attribute: { key, max }, measurement }: RangeItemPro
   const [filter, setFilter] = useState(defaultValue);
 
   useEffect(() => {
-    if (searchParams.size === 0) {
+    if (!searchParams.has(key)) {
       setFilter([0, max!]);
     }
-  }, [max, searchParams]);
+  }, [key, max, searchParams]);
 
   const debouncedSetFilterParams = debounce(
     (newFilter: { [key: string]: string[] }) => setFilterParams(newFilter),

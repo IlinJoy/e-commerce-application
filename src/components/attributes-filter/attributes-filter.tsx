@@ -32,19 +32,19 @@ export function AttributesFilter({ activeCategory }: AttributesFilterProps) {
 
   return (
     <List>
-      <FilterAccordion title={attributes.price.label} component="li">
+      <FilterAccordion title={attributes.price.label}>
         <RangeItem attribute={attributes.price} measurement="$" />
       </FilterAccordion>
 
-      <FilterAccordion title={attributes.brand.label} component="li">
+      <FilterAccordion title={attributes.brand.label}>
         <TermItem attribute={attributes.brand} />
       </FilterAccordion>
 
-      <FilterAccordion title={attributes.color.label} component="li">
+      <FilterAccordion title={attributes.color.label}>
         <TermItem attribute={attributes.color} />
       </FilterAccordion>
 
-      <FilterAccordion title="Dimension" component="li">
+      <FilterAccordion title="Dimension">
         {attributes.dimension.map((attribute) => (
           <div key={attribute.key} className={styles.dimension}>
             <Typography>{attribute.label}</Typography>
