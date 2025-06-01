@@ -1,7 +1,7 @@
 @use '../../styles/mixins' as *;
 
 .inputBlock {
-  @include flex($align: start);
+  @include flex;
 
   & .hint {
     max-width: 300px;
@@ -42,6 +42,7 @@
 
   width: 15px;
   height: 15px;
+  margin-left: var(--spacing-1);
   border-radius: var(--spacing-1);
 
   vertical-align: text-bottom;

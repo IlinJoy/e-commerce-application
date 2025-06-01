@@ -16,7 +16,6 @@ export function HighlightedText({ text, isHeading = false }: HighlightedTextPara
   const textParts = partToHighlight ? text.split(regex) : text;
 
   const variant = isHeading ? 'h5' : 'body1';
-  console.log(text, textParts, partToHighlight);
 
   return (
     <Typography variant={variant} component={'div'} className={clsx({ [styles.description]: !isHeading })}>

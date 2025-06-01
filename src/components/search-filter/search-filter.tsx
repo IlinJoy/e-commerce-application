@@ -3,14 +3,22 @@ import { SpriteIcon } from '../icon/icon';
 import styles from './search-filter.module.scss';
 import { useCatalogFilters } from '@/hooks/use-catalog-filters';
 import type { ChangeEvent } from 'react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { debounce } from '@/utils/debounce';
 import Typography from '@mui/material/Typography';
+import { useSearchParams } from 'react-router';
 
 export function SearchInput() {
   const { filterParams, setFilterParams } = useCatalogFilters();
+  const [searchParams] = useSearchParams();
   const [search, setSearch] = useState(filterParams.text || '');
   const timeoutIdRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+  useEffect(() => {
+    if (!searchParams.has('text')) {
+      setSearch('');
+    }
+  }, [searchParams]);
 
   const debouncedSetFilterParams = debounce((value: { [key: string]: string }) => setFilterParams(value), timeoutIdRef);
 
@@ -28,7 +36,7 @@ export function SearchInput() {
       </div>
       {search && (
         <Typography className={styles.hint}>
-          List of partial match suggestions based on your input. The full equivalent is marked by:
+          List of partial match suggestions based on your input. The full equivalent is marked by
           <span className={styles.mark}></span>
         </Typography>
       )}
