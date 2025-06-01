@@ -1,0 +1,10 @@
+@use '../../styles/mixins' as *;
+
+.sort-filter {
+  @include flex;
+
+  & .select {
+    width: 200px;
+    height: var(--filter-input-height);
+  }
+}
