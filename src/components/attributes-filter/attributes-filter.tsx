@@ -8,12 +8,14 @@ import { TermItem } from './term-item/term-item';
 import { FilterAccordion } from '../accordion/accordion';
 import Typography from '@mui/material/Typography';
 import styles from './attributes-filter.module.scss';
+import { useSearchParams } from 'react-router';
 
 type AttributesFilterProps = {
   activeCategory: string | null;
 };
 
 export function AttributesFilter({ activeCategory }: AttributesFilterProps) {
+  const [searchParams] = useSearchParams();
   const { data: rawAttributes } = useQuery({ queryKey: ['types'], queryFn: getProductType, select: flatAttributes });
 
   const { data: attributes, isPending } = useQuery({
@@ -30,22 +32,25 @@ export function AttributesFilter({ activeCategory }: AttributesFilterProps) {
     return <div>Updating...</div>;
   }
 
+  const shouldExpand = (keys: string[]) => keys.some((key) => !!searchParams.get(key));
+  const { price, dimension, color, brand } = attributes;
+
   return (
     <List>
-      <FilterAccordion title={attributes.price.label}>
-        <RangeItem attribute={attributes.price} measurement="$" />
+      <FilterAccordion title={price.label} isExpanded={shouldExpand([price.key])}>
+        <RangeItem attribute={price} measurement="$" />
       </FilterAccordion>
 
-      <FilterAccordion title={attributes.brand.label}>
-        <TermItem attribute={attributes.brand} />
+      <FilterAccordion title={brand.label} isExpanded={shouldExpand([brand.key])}>
+        <TermItem attribute={brand} />
       </FilterAccordion>
 
-      <FilterAccordion title={attributes.color.label}>
-        <TermItem attribute={attributes.color} />
+      <FilterAccordion title={color.label} isExpanded={shouldExpand([color.key])}>
+        <TermItem attribute={color} />
       </FilterAccordion>
 
-      <FilterAccordion title="Dimension">
-        {attributes.dimension.map((attribute) => (
+      <FilterAccordion title="Dimension" isExpanded={shouldExpand(dimension.map((entry) => entry.key))}>
+        {dimension.map((attribute) => (
           <div key={attribute.key} className={styles.dimension}>
             <Typography>{attribute.label}</Typography>
             <RangeItem attribute={attribute} measurement="cm" />

@@ -1,6 +1,5 @@
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { useNavigate } from 'react-router';
 import { type Dispatch, type SetStateAction } from 'react';
 import { CategoryFilter } from '../category-filter/category-filter';
 import { AttributesFilter } from '../attributes-filter/attributes-filter';
