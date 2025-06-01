@@ -17,3 +17,9 @@
     background-color: var(--mui-palette-background-default);
   }
 }
+
+.MuiButtonBase-root {
+  & .MuiListItemIcon-root {
+    min-width: var(--spacing-5);
+  }
+}

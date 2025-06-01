@@ -1,11 +1,13 @@
 import { flatAttributes, mapAttributes } from '@/utils/catalog-utils';
 import List from '@mui/material/List';
-import { RangeItem } from './range-item';
+import { RangeItem } from './range-item/range-item';
 import { useQuery } from '@tanstack/react-query';
 import { createFacetsQueryString } from '@/utils/query-utils';
 import { getProductsWithFilters, getProductType } from '@/api/catalog';
-import { TermItem } from './term-item';
+import { TermItem } from './term-item/term-item';
 import { FilterAccordion } from '../accordion/accordion';
+import Typography from '@mui/material/Typography';
+import styles from './attributes-filter.module.scss';
 
 type AttributesFilterProps = {
   activeCategory: string | null;
@@ -30,21 +32,24 @@ export function AttributesFilter({ activeCategory }: AttributesFilterProps) {
 
   return (
     <List>
-      <FilterAccordion title="Price">
-        <RangeItem attribute={attributes.price} />
+      <FilterAccordion title={attributes.price.label} component="li">
+        <RangeItem attribute={attributes.price} measurement="$" />
       </FilterAccordion>
 
-      <FilterAccordion title="Brands">
+      <FilterAccordion title={attributes.brand.label} component="li">
         <TermItem attribute={attributes.brand} />
       </FilterAccordion>
 
-      <FilterAccordion title="Colors">
+      <FilterAccordion title={attributes.color.label} component="li">
         <TermItem attribute={attributes.color} />
       </FilterAccordion>
 
-      <FilterAccordion title="Dimension">
+      <FilterAccordion title="Dimension" component="li">
         {attributes.dimension.map((attribute) => (
-          <RangeItem key={attribute.key} attribute={attribute} />
+          <div key={attribute.key} className={styles.dimension}>
+            <Typography>{attribute.label}</Typography>
+            <RangeItem attribute={attribute} measurement="cm" />
+          </div>
         ))}
       </FilterAccordion>
     </List>

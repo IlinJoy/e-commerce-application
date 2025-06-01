@@ -27,6 +27,24 @@ const theme = createTheme({
     MuiFormControl: {
       defaultProps: { variant: 'standard' },
     },
+    MuiAccordion: {
+      styleOverrides: {
+        root: () => ({
+          boxShadow: 'none',
+          backgroundColor: 'transparent',
+        }),
+      },
+    },
+    MuiAccordionSummary: {
+      styleOverrides: {
+        content: {
+          margin: 0,
+          '&.Mui-expanded': {
+            margin: 0,
+          },
+        },
+      },
+    },
     MuiContainer: {
       defaultProps: {
         maxWidth: false,

@@ -1,17 +1,19 @@
 import { useCatalogFilters } from '@/hooks/use-catalog-filters';
 import type { FilterAttribute } from '@/utils/constants/filters';
 import { debounce } from '@/utils/debounce';
+import Typography from '@mui/material/Typography';
 import ListItem from '@mui/material/ListItem';
 import Slider from '@mui/material/Slider';
-import Typography from '@mui/material/Typography';
 import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router';
+import styles from './range-item.module.scss';
 
 type RangeItemProps = {
   attribute: FilterAttribute;
+  measurement: string;
 };
 
-export function RangeItem({ attribute: { key, label, max } }: RangeItemProps) {
+export function RangeItem({ attribute: { key, max }, measurement }: RangeItemProps) {
   const { filterParams, setFilterParams } = useCatalogFilters();
   const [searchParams] = useSearchParams();
   const defaultValue = filterParams[key]?.length ? filterParams[key].map(Number) : [0, max!];
@@ -35,19 +37,19 @@ export function RangeItem({ attribute: { key, label, max } }: RangeItemProps) {
   };
 
   return (
-    <ListItem>
-      <Typography>{label}</Typography>
+    <ListItem className={styles.range}>
       <Slider
         value={filter}
+        size="small"
         onChange={(_, newValue) => handleSliderChange(_, newValue)}
         valueLabelDisplay="auto"
         min={0}
         max={max}
-        marks={[
-          { value: 0, label: 0 },
-          { value: max!, label: max },
-        ]}
       />
+      <div className={styles.measurement}>
+        <Typography component="span">{`${measurement} 0`}</Typography>
+        <Typography component="span">{`${measurement} ${max}`}</Typography>
+      </div>
     </ListItem>
   );
 }

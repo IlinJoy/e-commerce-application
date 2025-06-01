@@ -1,17 +1,17 @@
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItem from '@mui/material/ListItem';
-import Typography from '@mui/material/Typography';
 import Checkbox from '@mui/material/Checkbox';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { useCatalogFilters } from '@/hooks/use-catalog-filters';
 import type { FilterAttribute } from '@/utils/constants/filters';
+import styles from './term-item.module.scss';
 
 type TermItemItemProps = {
   attribute: FilterAttribute;
 };
 
-export function TermItem({ attribute: { key, label, terms } }: TermItemItemProps) {
+export function TermItem({ attribute: { key, terms } }: TermItemItemProps) {
   const { filterParams, setFilterParams } = useCatalogFilters();
   const currentValues = filterParams?.[key];
   const isChecked = (term: string) => currentValues?.includes(term) || false;
@@ -28,12 +28,11 @@ export function TermItem({ attribute: { key, label, terms } }: TermItemItemProps
   };
 
   return (
-    <ListItem>
-      <Typography>{label}</Typography>
+    <ListItem className={styles.list}>
       {terms!.map(({ term }) => (
-        <ListItemButton key={term} onClick={() => handleToggle(term)} dense>
+        <ListItemButton key={term} component="li" onClick={() => handleToggle(term)} dense>
           <ListItemIcon>
-            <Checkbox edge="start" checked={isChecked(term)} disableRipple />
+            <Checkbox edge="start" checked={isChecked(term)} disableRipple size="small" />
           </ListItemIcon>
           <ListItemText id={term} primary={term} />
         </ListItemButton>

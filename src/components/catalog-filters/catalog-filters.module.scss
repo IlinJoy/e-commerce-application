@@ -1,0 +1,11 @@
+.filters-wrapper {
+  width: 400px;
+
+  & .heading {
+    margin: var(--spacing-2) 0;
+  }
+
+  & .reset {
+    margin-top: var(--spacing-2);
+  }
+}

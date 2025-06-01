@@ -41,7 +41,7 @@ export function CategoryFilter({ handleCategoryChange, setActiveCategory, active
   }, [activeCategory, categories, navigate, setActiveCategory]);
 
   return (
-    <FilterAccordion isDefaultExpanded title="Categories">
+    <FilterAccordion title="Categories">
       <List>
         {Object.values(categoriesMap).map(({ id, slug, name, children }) => (
           <CategoryListItem

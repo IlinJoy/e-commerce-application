@@ -25,12 +25,12 @@
 
 
 <symbol id="chevron" viewBox="0 0 24 24" fill="none">
-<path d="M18 15L12 9L6 15" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M7.69922 9.84961L12 14.1504L16.3008 9.84961" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </symbol>
 
 <symbol id="search" viewBox="0 0 24 24" fill="none">
-<path d="M21.0002 21.0002L16.6602 16.6602" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M18.4088 18.4093L15.3184 15.3188" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M11.2884 16.9846C14.4346 16.9846 16.9851 14.4341 16.9851 11.2879C16.9851 8.14178 14.4346 5.59131 11.2884 5.59131C8.14226 5.59131 5.5918 8.14178 5.5918 11.2879C5.5918 14.4341 8.14226 16.9846 11.2884 16.9846Z" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </symbol>
 
 </svg>
