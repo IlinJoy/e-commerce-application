@@ -34,6 +34,9 @@ export const ROUTES = {
     component: () =>
       import('../components/catalog-list/catalog-list').then((module) => ({ default: module.CatalogList })),
   },
+  PRODUCT: {
+    path: 'product',
+  },
 } as const;
 
 export type RoutePath = (typeof ROUTES)[keyof typeof ROUTES];
