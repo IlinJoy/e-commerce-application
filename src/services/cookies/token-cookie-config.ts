@@ -1,9 +1,21 @@
+const baseOptions = {
+  path: '/',
+  secure: true,
+  samesite: 'lax',
+} as const;
+
 export const tokenCookiesConfig = {
   key: 'token',
   options: {
-    path: '/',
-    secure: true,
-    samesite: 'lax',
+    ...baseOptions,
     maxAge: 162800,
   },
 } as const;
+
+export const anonTokenCookiesConfig = {
+  key: 'anonToken',
+  options: {
+    ...baseOptions,
+    maxAge: 10000,
+  },
+};

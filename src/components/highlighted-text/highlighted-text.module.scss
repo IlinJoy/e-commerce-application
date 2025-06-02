@@ -1,0 +1,20 @@
+.description {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+
+  min-height: 3em;
+  margin-top: var(--spacing-2);
+
+  text-overflow: ellipsis;
+
+  opacity: 0.75;
+}
+
+.highlight {
+  padding: 2px;
+  border-radius: 2px;
+  background-color: var(--palette-accent-dark);
+}

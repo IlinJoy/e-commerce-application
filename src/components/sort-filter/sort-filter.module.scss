@@ -1,0 +1,18 @@
+@use '../../styles/mixins' as *;
+
+.sort-filter {
+  @include flex;
+
+  & .select {
+    width: 200px;
+    height: var(--filter-input-height);
+
+    @include media(tablet) {
+      width: 80%;
+    }
+  }
+
+  @include media(tablet) {
+    width: 100%;
+  }
+}

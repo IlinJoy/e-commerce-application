@@ -1,0 +1,8 @@
+@use '../../styles/mixins' as *;
+
+.cards-wrapper {
+  flex-wrap: wrap;
+  min-height: 100vh;
+
+  @include flex($justify: center, $align: start);
+}

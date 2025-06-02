@@ -1,0 +1,11 @@
+@use '../../../styles/mixins' as *;
+
+.range {
+  @include flex(column);
+}
+
+.measurement {
+  width: 105%;
+
+  @include flex;
+}

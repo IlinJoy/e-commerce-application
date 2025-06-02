@@ -2,6 +2,7 @@
 import type { ReactNode } from 'react';
 import { createContext, use, useCallback, useEffect, useState } from 'react';
 import { tokenCookieHandler } from '@/services/cookies/cookie-handler';
+import { handleAnonToken } from '@/utils/request-token-handler';
 
 type TokenContextType = {
   token: string;
@@ -21,6 +22,10 @@ export function TokenContextProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const tokenFromCookies = tokenCookieHandler.get() || '';
     setToken(tokenFromCookies);
+
+    if (!tokenFromCookies) {
+      handleAnonToken();
+    }
   }, []);
 
   const updateToken = useCallback((token: string) => {
