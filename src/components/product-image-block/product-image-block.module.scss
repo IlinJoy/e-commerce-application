@@ -1,0 +1,59 @@
+@use '../../styles/mixins' as *;
+
+.imageWrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  height: 70vh;
+
+  @include flex(row, var(--spacing-3), $justify: end, $align: start);
+}
+
+.imageTrack {
+  overflow: hidden;
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: 150px;
+
+  @include transition;
+
+  & .smallImage {
+    overflow: hidden;
+
+    width: 100%;
+    height: 200px;
+    border-radius: var(--spacing-1);
+
+    object-fit: cover;
+    filter: brightness(0.3);
+  }
+}
+
+.lightbox-wrapper {
+  position: relative;
+
+  @include flex(column);
+}
+
+.stepsWrapper {
+  position: absolute;
+  z-index: 2;
+  bottom: 8px;
+
+  overflow: visible;
+
+  width: 50%;
+
+  @include flex;
+
+  .steps {
+    display: block;
+    flex-grow: 1;
+    height: 2px;
+    background-color: var(--mui-palette-grey-800);
+
+    &.active {
+      background-color: var(--mui-palette-error-main);
+    }
+  }
+}
