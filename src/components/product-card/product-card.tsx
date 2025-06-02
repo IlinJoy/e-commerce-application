@@ -31,7 +31,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
   return (
     <Card className={styles.cardWrapper} variant="outlined">
-      <CardActionArea onClick={() => navigate(`/${ROUTES.PRODUCT.path}/${key}`)}>
+      <CardActionArea onClick={() => navigate(`/${ROUTES.PRODUCT.base}/${key}`)}>
         {hasDiscount && (
           <Typography className={styles.discount} component="span">{`-${discountInfo.discountPercent}%`}</Typography>
         )}

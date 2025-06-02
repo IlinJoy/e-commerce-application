@@ -13,6 +13,11 @@ export const getProducts = async (): Promise<ProductProjection[]> => {
   return result.results;
 };
 
+export const getProductByKey = async (key: string, token: string): Promise<ProductProjection> => {
+  const result = await fetchFromApi<ProductProjection>(`/product-projections/key=${key}`, token);
+  return result;
+};
+
 export const getCategories = async () => {
   const token = await getRequestToken();
   const result = await fetchFromApi<{ results: Category[] }>('/categories', token);

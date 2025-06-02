@@ -16,6 +16,11 @@ export const ROUTES = {
     path: 'catalog',
     component: () => import('../pages/catalog-page/catalog-page').then((module) => ({ default: module.CatalogPage })),
   },
+  PRODUCT: {
+    path: 'product/:id',
+    base: 'product',
+    component: () => import('../pages/product-page/product-page').then((module) => ({ default: module.ProductPage })),
+  },
   ABOUT: {
     path: 'about',
     component: () => import('../pages/about-page/about-page').then((module) => ({ default: module.AboutPage })),
@@ -33,9 +38,6 @@ export const ROUTES = {
     path: ':category/:subcategory?',
     component: () =>
       import('../components/catalog-list/catalog-list').then((module) => ({ default: module.CatalogList })),
-  },
-  PRODUCT: {
-    path: 'product',
   },
 } as const;
 
