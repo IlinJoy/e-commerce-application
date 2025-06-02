@@ -21,21 +21,19 @@ export function LoginForm({ onSubmit, control, errors, isSubmitting, isValidForm
   return (
     <form onSubmit={onSubmit} className={styles.form}>
       <FormInput
-        type={'email'}
+        type="text"
         label="Email"
         isDisabled={isSubmitting}
         name="email"
         control={control}
-        shrinkLabel
         error={errors.email?.message}
       />
       <FormInput
-        type={'password'}
+        type="password"
         label="Password"
         isDisabled={isSubmitting}
         name="password"
         control={control}
-        shrinkLabel
         error={errors.password?.message}
       />
       <Button type="submit" disabled={!isValidForm} loading={isSubmitting}>

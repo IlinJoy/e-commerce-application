@@ -3,16 +3,25 @@ import type { ErrorResponse } from '@commercetools/platform-sdk';
 import { getCustomerToken, fetchFromApi } from '@/api/platformApi';
 import { mapApiErrorToMessage } from '@/utils/mapApiErrorToMessage';
 
-type RegisterCustomerOptions = {
+export type RegisterCustomerOptions = {
   customerData: Omit<CustomerDraft, 'addresses'>;
   shippingAddress: Address;
   billingAddress?: Address;
   useSameAddress?: boolean;
+  billingDefaultAddress?: boolean;
+  shippingDefaultAddress?: boolean;
 };
 
 export const registerCustomer = async (
   token: string,
-  { customerData, shippingAddress, billingAddress, useSameAddress = false }: RegisterCustomerOptions
+  {
+    customerData,
+    shippingAddress,
+    billingAddress,
+    useSameAddress = false,
+    billingDefaultAddress,
+    shippingDefaultAddress,
+  }: RegisterCustomerOptions
 ) => {
   try {
     if (!useSameAddress && !billingAddress) {
@@ -24,8 +33,10 @@ export const registerCustomer = async (
     const body: CustomerDraft = {
       ...customerData,
       addresses,
-      defaultShippingAddress: 0,
-      defaultBillingAddress: useSameAddress ? 0 : 1,
+      shippingAddresses: [0],
+      billingAddresses: [1],
+      ...(shippingDefaultAddress && { defaultShippingAddress: 0 }),
+      ...(billingDefaultAddress && { defaultBillingAddress: useSameAddress ? 0 : 1 }),
     };
 
     const result = await fetchFromApi<CustomerSignInResult>('/me/signup', token, {

@@ -1,12 +1,13 @@
-/* eslint-disable no-restricted-imports */
-import { useEffect, type BaseSyntheticEvent, type ChangeEvent, useState } from 'react';
-import type { UseFormResetField } from 'react-hook-form';
+import { useEffect, type BaseSyntheticEvent, useState, useRef } from 'react';
+import type { UseFormClearErrors, UseFormResetField, UseFormTrigger } from 'react-hook-form';
 import { type UseFormSetValue, type Control, useWatch } from 'react-hook-form';
 import { FormInput } from '../input/input';
 import type { RegisterFormInputs } from '@/validation/registration-validation';
-import { Button, Checkbox, FormControlLabel, Typography } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 import { AddressForm } from './address-form';
 import styles from './registration-form.module.scss';
+import { CheckBox } from '../checkbox/checkbox';
 
 type RegisterFormProps = {
   onSubmit: (e?: BaseSyntheticEvent<object>) => Promise<void>;
@@ -14,7 +15,9 @@ type RegisterFormProps = {
   isSubmitting: boolean;
   isValidForm: boolean;
   control: Control<RegisterFormInputs>;
+  trigger: UseFormTrigger<RegisterFormInputs>;
   resetField: UseFormResetField<RegisterFormInputs>;
+  clearErrors: UseFormClearErrors<RegisterFormInputs>;
 };
 
 export function RegisterForm({
@@ -23,114 +26,104 @@ export function RegisterForm({
   isValidForm,
   setValue,
   control,
+  trigger,
+  clearErrors,
   resetField,
 }: RegisterFormProps) {
-  //для установки того же адреса для оплаты
-  const [sameAddress, setIsSameAddress] = useState(false);
-  const watchedValues = useWatch({
+  const [sameAddress, setSameAddress] = useState(false);
+  const [billingCountry, shippingCountry] = useWatch({
     control,
-    name: ['shippingPostalCode', 'shippingCountry', 'shippingCity', 'shippingStreet'],
+    name: ['billingAddress.country', 'shippingAddress.country'],
   });
+  const [shippingAddress] = useWatch({ control, name: ['shippingAddress'] });
+  const shouldReset = useRef(true);
 
   useEffect(() => {
-    if (!sameAddress) {
-      resetField('billingPostalCode');
-      resetField('billingCountry');
-      resetField('billingCity');
-      resetField('billingStreet');
+    if (sameAddress) {
+      setValue('billingAddress', shippingAddress, { shouldValidate: true });
+    }
+  }, [sameAddress, resetField, setValue, shippingAddress]);
+
+  useEffect(() => {
+    if (shouldReset.current) {
+      resetField('shippingAddress.postalCode');
     }
     if (sameAddress) {
-      const [code, country, city, street] = watchedValues;
-
-      setValue('billingPostalCode', code, { shouldValidate: !!code });
-      setValue('billingCountry', country, { shouldValidate: !!country });
-      setValue('billingCity', city, { shouldValidate: !!city });
-      setValue('billingStreet', street, { shouldValidate: !!street });
+      trigger('shippingAddress.postalCode');
     }
-  }, [sameAddress, resetField, watchedValues, setValue]);
+    shouldReset.current = true;
+  }, [shippingCountry, sameAddress, resetField, trigger]);
+
+  useEffect(() => {
+    resetField('billingAddress.postalCode');
+    clearErrors('billingAddress.postalCode');
+  }, [billingCountry, resetField, clearErrors]);
 
   const handleSameAddressChecked = () => {
-    handleChecked('sameAddress');
-    setIsSameAddress((prev) => !prev);
-  };
-
-  const handleChecked = (fieldName: keyof RegisterFormInputs) => (event: ChangeEvent<HTMLInputElement>) => {
-    setValue(fieldName, event.target.checked);
-  };
-
-  //чтобы при смене страны поле с кодом очищалось
-  const [shippingCountry, billingCountry] = useWatch({
-    control,
-    name: ['shippingCountry', 'billingCountry'],
-  });
-
-  useEffect(() => {
-    resetField('shippingPostalCode');
-  }, [shippingCountry, resetField]);
-
-  useEffect(() => {
     if (!sameAddress) {
-      resetField('billingPostalCode');
+      trigger(['shippingAddress']);
+    } else {
+      resetField('billingAddress');
+      (Object.keys(shippingAddress) as (keyof typeof shippingAddress)[]).forEach((key) => {
+        if (shippingAddress[key] === '') {
+          clearErrors(`shippingAddress.${key}`);
+        }
+      });
     }
-  }, [sameAddress, billingCountry, resetField]);
+    shouldReset.current = false;
+    setSameAddress((prev) => !prev);
+  };
 
   return (
     <form onSubmit={onSubmit}>
       <div className={styles.personalInfo}>
         <Typography variant="h6">Personal Info</Typography>
+        <FormInput type="email" label="Email" isDisabled={isSubmitting} name="customerData.email" control={control} />
         <FormInput
-          type="email"
-          label="Email"
-          isDisabled={isSubmitting}
-          name="email"
-          control={control}
-          shrinkLabel={true}
-        />
-        <FormInput
-          type={'password'}
+          type="password"
           label="Password"
           isDisabled={isSubmitting}
-          name="password"
+          name="customerData.password"
           control={control}
-          shrinkLabel={true}
         />
         <FormInput
-          type={'text'}
+          type="text"
           label="First Name"
           isDisabled={isSubmitting}
-          name="firstName"
+          name="customerData.firstName"
           control={control}
-          shrinkLabel={true}
         />
         <FormInput
-          type={'text'}
+          type="text"
           label="Last Name"
           isDisabled={isSubmitting}
-          name="lastName"
+          name="customerData.lastName"
           control={control}
-          shrinkLabel={true}
         />
         <FormInput
-          type={'date'}
+          type="date"
           label="Date of Birth"
           isDisabled={isSubmitting}
-          name="dateOfBirth"
+          name="customerData.dateOfBirth"
           control={control}
-          shrinkLabel={true}
+          shrinkLabel
         />
       </div>
 
       <div className={styles.shippingAddress}>
-        <AddressForm prefix="shipping" title="Shipping Address" control={control} isDisabled={isSubmitting} />
-        <FormControlLabel
-          control={<Checkbox onClick={handleSameAddressChecked} />}
+        <AddressForm prefix="shippingAddress" title="Shipping Address" control={control} isDisabled={isSubmitting} />
+        <CheckBox
+          onClick={handleSameAddressChecked}
+          control={control}
+          name="sameAddress"
           label="Use the same address for both billing and shipping"
+          className={styles.sameAddress}
         />
       </div>
 
       <div className={styles.billingAddress}>
         <AddressForm
-          prefix="billing"
+          prefix="billingAddress"
           title="Billing Address"
           control={control}
           isDisabled={sameAddress || isSubmitting}

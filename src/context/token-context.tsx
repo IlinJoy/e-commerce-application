@@ -39,7 +39,7 @@ export function TokenContextProvider({ children }: { children: ReactNode }) {
 export const useToken = () => {
   const context = use(TokenContext);
   if (!context) {
-    throw new Error('Must be used within a TokenContextProvider');
+    throw new Error('Must be used within a TokenContext.Provider');
   }
   return context;
 };

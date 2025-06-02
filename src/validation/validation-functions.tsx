@@ -1,4 +1,5 @@
 import { z, ZodIssueCode } from 'zod';
+import type { Addresses } from './registration-validation';
 
 const MIN_PASSWORD_LENGTH = 8;
 const MIN_AGE = 13;
@@ -73,57 +74,60 @@ export const validateName = () => {
 };
 
 export const validateDate = () => {
-  return z.string().superRefine((data, ctx) => {
-    const today = new Date();
-    const enteredDate = new Date(data);
-    const age = today.getFullYear() - enteredDate.getFullYear();
-    const isBeforeBirthday =
-      today.getMonth() < enteredDate.getMonth() ||
-      (today.getMonth() === enteredDate.getMonth() && today.getDate() < enteredDate.getDate());
-    const fullAge = isBeforeBirthday ? age - 1 : age;
-    if (fullAge < MIN_AGE) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'You must be at least 13 years old.',
-      });
-    }
-    if (fullAge > MAX_AGE) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'You must be younger than 130 years. Please, enter another year of birth',
-      });
-    }
-  });
+  return z
+    .string()
+    .nonempty()
+    .superRefine((data, ctx) => {
+      const today = new Date();
+      const enteredDate = new Date(data);
+      const age = today.getFullYear() - enteredDate.getFullYear();
+      const isBeforeBirthday =
+        today.getMonth() < enteredDate.getMonth() ||
+        (today.getMonth() === enteredDate.getMonth() && today.getDate() < enteredDate.getDate());
+      const fullAge = isBeforeBirthday ? age - 1 : age;
+      if (fullAge < MIN_AGE) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'You must be at least 13 years old.',
+        });
+      }
+      if (fullAge > MAX_AGE) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'You must be younger than 130 years. Please, enter another year of birth',
+        });
+      }
+    });
 };
 
-export const validatePostalCode = ({
-  country,
-  postalCode,
-  ctx,
-  path,
-}: {
-  country: string;
-  postalCode: string;
+type ValidatePostalCodeProps = {
+  data: Addresses;
   ctx: z.RefinementCtx;
-  path: string[];
-}) => {
-  if (country === 'USA' && !/^\d{5}$/.test(postalCode)) {
+};
+
+export const validatePostalCode = ({ data, ctx }: ValidatePostalCodeProps) => {
+  const country = data.country;
+  const postalCode = data.postalCode;
+
+  if (country === 'US' && !/^\d{5}$/.test(postalCode)) {
     ctx.addIssue({
       code: ZodIssueCode.custom,
       message: 'Only 5 digits are required',
-      path,
+      path: ['postalCode'],
     });
-  } else if (country === 'Canada' && !/^[A-Z]\d[A-Z] ?\d[A-Z]\d$/.test(postalCode)) {
+  }
+  if (country === 'CN' && !/^[A-Z]\d[A-Z] ?\d[A-Z]\d$/.test(postalCode)) {
     ctx.addIssue({
       code: ZodIssueCode.custom,
       message: 'Must follow the format: A1B 2C3',
-      path,
+      path: ['postalCode'],
     });
-  } else if (!country && postalCode.length > 0) {
+  }
+  if (!country && postalCode.length > 0) {
     ctx.addIssue({
       code: ZodIssueCode.custom,
       message: 'Select your country first',
-      path,
+      path: ['postalCode'],
     });
   }
 };

@@ -48,7 +48,7 @@ export function UserContextProvider({ children }: { children: ReactNode }) {
 export const useUser = () => {
   const context = use(UserContext);
   if (!context) {
-    throw new Error('Must be used within a UserContextProvider');
+    throw new Error('Must be used within a UserContext.Provider');
   }
   return context;
 };

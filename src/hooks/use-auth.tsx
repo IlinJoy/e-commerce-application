@@ -8,9 +8,16 @@ export type FetchedCustomer = { customer: Customer; customerToken: string };
 
 export const useAuth = () => {
   const { updateToken, resetToken, token } = useToken();
-  const { resetProfile, addUser } = useUser();
+  const { resetProfile, addUser, user } = useUser();
 
-  const isLoggedIn = !!token;
+  const isLoggedIn = !!token || !!user;
+
+  const onRegistration = useCallback(
+    (customer: Customer) => {
+      addUser(customer);
+    },
+    [addUser]
+  );
 
   const onLogin = useCallback(
     (data?: FetchedCustomer) => {
@@ -28,5 +35,5 @@ export const useAuth = () => {
     resetProfile();
   }, [resetProfile, resetToken]);
 
-  return { onLogin, onLogout, isLoggedIn };
+  return { onLogin, onLogout, onRegistration, isLoggedIn };
 };
