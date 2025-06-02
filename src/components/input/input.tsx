@@ -14,6 +14,7 @@ type FormInputProps<T extends FieldValues> = Omit<FormSelectProps<T>, 'children'
   placeholder?: string;
   endAdornment?: ReactNode;
   shrinkLabel?: boolean;
+  fullWidth?: boolean;
 };
 
 export function FormInput<T extends FieldValues>({
@@ -26,6 +27,7 @@ export function FormInput<T extends FieldValues>({
   control,
   endAdornment,
   shrinkLabel,
+  fullWidth,
 }: FormInputProps<T>) {
   const [showPassword, setShowPassword] = useState(false);
   const {
@@ -36,7 +38,7 @@ export function FormInput<T extends FieldValues>({
   const shouldShrink = !!field.value || shrinkLabel;
 
   return (
-    <FormControl error={!!error} fullWidth>
+    <FormControl error={!!error} fullWidth={fullWidth}>
       {label && (
         <InputLabel {...(shouldShrink && { shrink: true })} required={isRequired} htmlFor={name}>
           {label}
