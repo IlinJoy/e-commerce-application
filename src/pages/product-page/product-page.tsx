@@ -1,5 +1,4 @@
 import { getProductByKey } from '@/api/catalog';
-import { useToken } from '@/context/token-context';
 import { useQuery } from '@tanstack/react-query';
 import styles from './product-page.module.scss';
 import clsx from 'clsx';
@@ -12,14 +11,13 @@ import type { Image } from '@commercetools/platform-sdk';
 import { smallCardOffset } from '@/utils/constants/ui';
 
 export const ProductPage = () => {
-  const { token } = useToken();
   const id = getProductIdFromUrl() || '';
   const [slideIndex, setSlideIndex] = useState(0);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['product', id],
     queryFn: () => {
-      return getProductByKey(id, token);
+      return getProductByKey(id);
     },
     enabled: !!id,
     retry: 1,
