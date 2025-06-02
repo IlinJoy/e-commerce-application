@@ -17,7 +17,8 @@ export const ROUTES = {
     component: () => import('../pages/catalog-page/catalog-page').then((module) => ({ default: module.CatalogPage })),
   },
   PRODUCT: {
-    path: 'catalog/:id',
+    path: 'product/:id',
+    base: 'product',
     component: () => import('../pages/product-page/product-page').then((module) => ({ default: module.ProductPage })),
   },
   ABOUT: {

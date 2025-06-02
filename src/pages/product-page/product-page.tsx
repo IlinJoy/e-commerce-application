@@ -35,6 +35,7 @@ export const ProductPage = () => {
   }
 
   if (error) {
+    console.log(error);
     return <div>Error when fetching product</div>;
   }
 
