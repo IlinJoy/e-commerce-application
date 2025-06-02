@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router';
 import { AccountPage } from '@/pages/account-page/account-page';
 import { ROUTES } from './routes';
 import { lazy } from 'react';
-import { ProtectedRoute } from './protected-rout';
+import { ProtectedRoute } from './protected-route';
 import { useAuth } from '@/hooks/use-auth';
 
 const AboutPage = lazy(ROUTES.ABOUT.component);
