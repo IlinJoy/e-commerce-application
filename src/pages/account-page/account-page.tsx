@@ -13,9 +13,11 @@ import styles from './account-page.module.scss';
 import type { ProfileFormInputs } from '@/validation/profile-validation';
 import { profileSchema } from '@/validation/profile-validation';
 import { useEffect } from 'react';
+import { useToken } from '@/context/token-context';
 
 export function AccountPage() {
-  const { user, updateProfile } = useUser();
+  const { token } = useToken();
+  const { updateProfile } = useUser();
   const { showToast } = useToast();
 
   const {
@@ -40,11 +42,6 @@ export function AccountPage() {
   });
 
   useEffect(() => {
-    const token = localStorage.getItem('customerToken');
-    if (!token) {
-      throw new Error('The user is not authorized');
-    }
-
     const fetchCustomer = async () => {
       try {
         const data = await fetchFromApi<Customer>('/me', token);
@@ -90,14 +87,9 @@ export function AccountPage() {
     };
 
     fetchCustomer();
-  }, [reset, user?.password]);
+  }, [reset, token]);
 
   const handleProfileUpdate = async (data: ProfileFormInputs) => {
-    const token = localStorage.getItem('customerToken');
-    if (!token) {
-      throw new Error('The user is not authorized');
-    }
-
     const freshCustomer = await fetchFromApi<Customer>('/me', token);
 
     const actions: CustomerUpdateAction[] = [
@@ -117,9 +109,6 @@ export function AccountPage() {
   const { mutate, isPending } = useMutation({
     mutationFn: handleProfileUpdate,
     onSuccess: (updatedCustomer) => {
-      if (!updatedCustomer) {
-        return;
-      }
       updateProfile(updatedCustomer);
       showToast({ message: 'The profile updated' });
       clearErrors();

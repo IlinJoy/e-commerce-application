@@ -17,16 +17,14 @@ export const TokenContext = createContext<TokenContextType>({
 });
 
 export function TokenContextProvider({ children }: { children: ReactNode }) {
-  const [token, setToken] = useState('');
+  const tokenFromCookies = tokenCookieHandler.get() || '';
+  const [token, setToken] = useState(tokenFromCookies);
 
   useEffect(() => {
-    const tokenFromCookies = tokenCookieHandler.get() || '';
-    setToken(tokenFromCookies);
-
     if (!tokenFromCookies) {
       handleAnonToken();
     }
-  }, []);
+  }, [tokenFromCookies]);
 
   const updateToken = useCallback((token: string) => {
     setToken(token);

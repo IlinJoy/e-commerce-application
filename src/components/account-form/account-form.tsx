@@ -26,6 +26,8 @@ type AccountFormProps = {
 export const AccountForm = ({ onSubmit, control }: AccountFormProps) => {
   const [editableSections, setEditableSections] = useState<Record<string, boolean>>({});
   const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const { token, updateToken } = useToken();
+  const { showToast } = useToast();
 
   const enableSection = (section: string) => {
     setEditableSections((prev) => ({ ...prev, [section]: true }));
@@ -63,16 +65,8 @@ export const AccountForm = ({ onSubmit, control }: AccountFormProps) => {
     mode: 'onChange',
   });
 
-  const { showToast } = useToast();
-  const { updateToken } = useToken();
-
   const handlePasswordUpdate = async (data: PasswordChangeInputs) => {
     try {
-      const token = localStorage.getItem('customerToken');
-      if (!token) {
-        throw new Error('No token');
-      }
-
       const customer = await fetchFromApi<Customer>('/me', token);
 
       await fetchFromApi<Customer>('/me/password', token, {
