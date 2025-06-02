@@ -13,8 +13,12 @@ export const getRequestToken = async () => {
 export const handleAnonToken = async () => {
   const isExist = anonCookieHandler.get();
   if (!isExist) {
-    const id = crypto.randomUUID();
-    const anonToken = await getAnonymousToken(id);
-    anonCookieHandler.set(anonToken);
+    try {
+      const id = crypto.randomUUID();
+      const anonToken = await getAnonymousToken(id);
+      anonCookieHandler.set(anonToken);
+    } catch (error) {
+      console.log(error);
+    }
   }
 };
