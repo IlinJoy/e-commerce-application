@@ -6,7 +6,15 @@
   @include flex(row, var(--spacing-3), $align: top);
 
   & aside {
-    min-width: 250px;
+    min-width: 300px;
+  }
+
+  @include media(tablet) {
+    @include flex(column);
+
+    & aside {
+      width: 100%;
+    }
   }
 }
 
@@ -22,6 +30,7 @@
 }
 
 .top-row {
+  flex-wrap: wrap;
   width: 100%;
 
   @include flex;

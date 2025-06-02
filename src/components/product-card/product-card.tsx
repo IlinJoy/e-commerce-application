@@ -9,15 +9,19 @@ import styles from './product-card.module.scss';
 import clsx from 'clsx';
 import { LANG } from '@/utils/constants/filters';
 import { HighlightedText } from '../highlighted-text/highlighted-text';
+import { useNavigate } from 'react-router';
+import { ROUTES } from '@/router/routes';
 
 type ProductCardProps = {
   product: ProductProjection;
 };
 
 export function ProductCard({ product }: ProductCardProps) {
+  const navigate = useNavigate();
   const {
     description,
     name,
+    key,
     masterVariant: { images, prices },
   } = product;
 
@@ -27,7 +31,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
   return (
     <Card className={styles.cardWrapper} variant="outlined">
-      <CardActionArea>
+      <CardActionArea onClick={() => navigate(`/${ROUTES.CATALOG.path}/${key}`)}>
         {hasDiscount && (
           <Typography className={styles.discount} component="span">{`-${discountInfo.discountPercent}%`}</Typography>
         )}

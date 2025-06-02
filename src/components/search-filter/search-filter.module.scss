@@ -3,10 +3,8 @@
 .inputBlock {
   @include flex;
 
-  & .hint {
-    max-width: 300px;
-    font-size: 0.8rem;
-    opacity: 0.8;
+  @include media(tablet) {
+    width: 100%;
   }
 }
 
@@ -33,7 +31,19 @@
   }
 
   & input:focus {
-    width: 200px;
+    width: 170px;
+  }
+
+  @include media(tablet) {
+    width: 100%;
+
+    & input {
+      width: 100%;
+    }
+
+    & input:focus {
+      width: 100%;
+    }
   }
 }
 
@@ -45,7 +55,13 @@
   margin-left: var(--spacing-1);
   border-radius: var(--spacing-1);
 
+  font-size: 0.8rem;
+  text-align: center;
   vertical-align: text-bottom;
 
-  background-color: var(--palette-accent-dark);
+  background-color: var(--mui-palette-success-main);
+
+  @include media(tablet) {
+    display: none;
+  }
 }

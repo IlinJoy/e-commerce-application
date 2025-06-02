@@ -1,11 +1,16 @@
-.filters-wrapper {
-  //   width: 320px;
+@use '../../styles/mixins' as *;
 
+.filters-wrapper {
   & .heading {
     margin: var(--spacing-2) 0;
   }
 
   & .reset {
-    margin-top: var(--spacing-2);
+    margin: var(--spacing-2) 0;
+
+    @include media(tablet) {
+      width: 100%;
+      padding: var(--spacing-1);
+    }
   }
 }

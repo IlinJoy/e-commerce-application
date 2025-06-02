@@ -1,3 +1,14 @@
+@use '../../styles/mixins' as *;
+
+.attributes {
+  @include flex(column, 0);
+
+  @include media(tablet) {
+    flex-flow: row wrap;
+    align-items: start;
+  }
+}
+
 .dimension {
   & p {
     margin-top: var(--spacing-1);

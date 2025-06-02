@@ -32,6 +32,9 @@ const theme = createTheme({
         root: () => ({
           boxShadow: 'none',
           backgroundColor: 'transparent',
+          backgroundImage: 'none',
+          '--Paper-shadow': 'none',
+          '--Paper-overlay': 'none',
         }),
       },
     },

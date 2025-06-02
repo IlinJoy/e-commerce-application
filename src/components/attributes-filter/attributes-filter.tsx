@@ -36,7 +36,7 @@ export function AttributesFilter({ activeCategory }: AttributesFilterProps) {
   const { price, dimension, color, brand } = attributes;
 
   return (
-    <List>
+    <List className={styles.attributes}>
       <FilterAccordion title={price.label} isExpanded={shouldExpand([price.key])}>
         <RangeItem attribute={price} measurement="$" />
       </FilterAccordion>

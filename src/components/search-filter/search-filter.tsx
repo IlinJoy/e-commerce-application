@@ -5,8 +5,9 @@ import { useCatalogFilters } from '@/hooks/use-catalog-filters';
 import type { ChangeEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { debounce } from '@/utils/debounce';
-import Typography from '@mui/material/Typography';
 import { useSearchParams } from 'react-router';
+import Tooltip from '@mui/material/Tooltip';
+import { SUCCESS_MESSAGES } from '@/utils/constants/messages';
 
 export function SearchInput() {
   const { filterParams, setFilterParams } = useCatalogFilters();
@@ -35,10 +36,9 @@ export function SearchInput() {
         <SpriteIcon id="search" />
       </div>
       {search && (
-        <Typography className={styles.hint}>
-          List of partial match suggestions based on your input. The full equivalent is marked by
-          <span className={styles.mark}></span>
-        </Typography>
+        <Tooltip title={SUCCESS_MESSAGES.SEARCHING} arrow>
+          <span className={styles.mark}>?</span>
+        </Tooltip>
       )}
     </div>
   );
