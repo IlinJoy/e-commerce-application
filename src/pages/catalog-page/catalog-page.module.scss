@@ -1,0 +1,37 @@
+@use '../../styles/mixins' as *;
+
+.catalog-layout {
+  position: relative;
+
+  @include flex(row, var(--spacing-3), $align: top);
+
+  & aside {
+    min-width: 300px;
+  }
+
+  @include media(tablet) {
+    @include flex(column);
+
+    & aside {
+      width: 100%;
+    }
+  }
+}
+
+.list-wrapper {
+  width: 100%;
+  min-height: 100vh;
+
+  @include flex(column, var(--spacing-3), $justify: start, $align: start);
+}
+
+.breadcrumbs-wrapper {
+  margin: var(--spacing-3) 0 var(--spacing-4);
+}
+
+.top-row {
+  flex-wrap: wrap;
+  width: 100%;
+
+  @include flex;
+}

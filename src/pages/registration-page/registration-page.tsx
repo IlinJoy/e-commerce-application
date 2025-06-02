@@ -60,13 +60,14 @@ export function RegistrationPage() {
     if (!customerInfo?.customer.id) {
       throw new Error(ERROR_MESSAGES.REGISTRATION_FAIL);
     }
-    return { customer: customerInfo.customer };
+    return { customer: customerInfo.customer, password: data.customerData.password };
   };
 
-  const { mutate, isPending, isSuccess } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: handleRegistration,
     onSuccess: (data) => {
       onRegistration(data.customer);
+      mutateToken({ email: data.customer.email, password: data.password });
       showToast({ message: SUCCESS_MESSAGES.REGISTRATION });
     },
     onError: (error) => showToast({ message: error.message, isError: true }),
@@ -88,9 +89,6 @@ export function RegistrationPage() {
 
   const onSubmit = handleSubmit((data: RegisterFormInputs) => {
     mutate(data);
-    if (isSuccess) {
-      mutateToken({ email: data.customerData.email, password: data.customerData.password });
-    }
   });
 
   return (
