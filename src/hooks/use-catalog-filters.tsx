@@ -9,8 +9,8 @@ export type FilterParams = {
   price: string[];
   brand: string[];
   depth: string[];
-  sort: string;
-  text: string;
+  sort: string | null;
+  text: string | null;
 };
 
 export function useCatalogFilters() {
@@ -22,9 +22,9 @@ export function useCatalogFilters() {
     const attributesFilters = Object.fromEntries(FILTER_KEYS.map((key) => [key, getParam(key)]));
     return {
       ...attributesFilters,
-      sort: searchParams.get('sort'),
       text: searchParams.get('text'),
-    } as Partial<FilterParams>;
+      sort: searchParams.get('sort'),
+    } as FilterParams;
   };
 
   const filterParams = getFilterParams();

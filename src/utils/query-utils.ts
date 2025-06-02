@@ -1,26 +1,7 @@
 import type { FilterParams } from '@/hooks/use-catalog-filters';
 import type { AttributeDefinition } from '@commercetools/platform-sdk';
-import { LANG, minSymbolsToSearch } from './constants/filters';
+import { LANG } from './constants/filters';
 import { switchPrice } from './catalog-utils';
-
-export type Attributes = {
-  name?: string;
-  label?: string;
-  type?:
-    | 'number'
-    | 'boolean'
-    | 'datetime'
-    | 'date'
-    | 'enum'
-    | 'ltext'
-    | 'lenum'
-    | 'money'
-    | 'nested'
-    | 'reference'
-    | 'set'
-    | 'text'
-    | 'time';
-}[];
 
 type FacetsQueryParams = { attributes?: AttributeDefinition[]; category: string | null };
 
@@ -29,11 +10,8 @@ export const createFacetsQueryString = ({ attributes, category }: FacetsQueryPar
   const appendFacet = (value: string) => params.append('facet', value);
 
   attributes?.forEach((attribute) => {
-    if (!attribute.name || !attribute.type) {
-      return;
-    }
-    const name = attribute.name;
-    switch (attribute.type.name) {
+    const { name, type } = attribute;
+    switch (type.name) {
       case 'ltext':
         appendFacet(`variants.attributes.${name}.${LANG}`);
         break;
@@ -58,47 +36,57 @@ export const createFacetsQueryString = ({ attributes, category }: FacetsQueryPar
   return `/search?${params.toString()}&limit=0`;
 };
 
-type QueryParams = { category: string | null; filterParams: Partial<FilterParams> };
-type FilterParamsEntries = [keyof FilterParams, string[] | string][];
+type QueryParams = { category: string | null; filterParams: FilterParams };
+type FilterParamsEntries<T> = { [K in keyof T]: [K, T[K]] }[keyof T][];
+type FilterEntries = FilterParamsEntries<FilterParams>;
 
-export const createQueryString = ({ category, filterParams }: QueryParams) => {
-  const params = new URLSearchParams({ markMatchingVariants: 'true' });
+const getFilterParams = ({ category, filterParams }: QueryParams) => {
+  const params = new URLSearchParams();
   const appendFilter = (value: string) => params.append('filter', value);
 
   if (category) {
     appendFilter(`categories.id:"${category}"`);
   }
 
-  (Object.entries(filterParams) as FilterParamsEntries).forEach(([key, value]) => {
+  (Object.entries(filterParams) as FilterEntries).forEach(([key, value]) => {
     if (!value || value.length === 0) {
       return;
     }
-
-    if (Array.isArray(value)) {
-      switch (key) {
-        case 'price': {
-          const [min, max] = value.map((value) => switchPrice(Number(value), { switchToCents: true }));
-          appendFilter(`variants.price.centAmount:range(${min} to ${max})`);
-          break;
-        }
-        case 'brand':
-          appendFilter(`variants.attributes.brand.${LANG}:"${value.join('","')}"`);
-          break;
-        case 'color':
-          appendFilter(`variants.attributes.color.key:"${value.join('","')}"`);
-          break;
-        default:
-          appendFilter(`variants.attributes.${key}:range(${value[0]} to ${value[1]})`);
-          break;
+    switch (key) {
+      case 'price': {
+        const [min, max] = value.map((value) => switchPrice(Number(value), { switchToCents: true }));
+        appendFilter(`variants.price.centAmount:range(${min} to ${max})`);
+        break;
       }
-    } else if (key !== 'text') {
-      params.append(key, value);
-    } else {
-      params.append(`text.${LANG}`, value);
-      params.append('fuzzy', 'true');
+      case 'brand':
+        appendFilter(`variants.attributes.brand.${LANG}:"${value.join('","')}"`);
+        break;
+      case 'color':
+        appendFilter(`variants.attributes.color.key:"${value.join('","')}"`);
+        break;
+      case 'text': {
+        params.append(`text.${LANG}`, value);
+        params.append('fuzzy', 'true');
+        break;
+      }
+      case 'sort':
+        params.append(key, value);
+        break;
+      default:
+        appendFilter(`variants.attributes.${key}:range(${value[0]} to ${value[1]})`);
+        break;
     }
   });
-  const shouldSetFilters = params.size > 0 || !!filterParams.sort;
 
-  return shouldSetFilters ? `/search?${params.toString()}` : '';
+  params.append('markMatchingVariants', 'true');
+  return params;
+};
+
+export const createQueryString = ({ category, filterParams }: QueryParams) => {
+  const baseParams = new URLSearchParams();
+  const filterUrlParams = getFilterParams({ category, filterParams });
+  const filters = filterUrlParams.size > 0 ? filterUrlParams.toString() + '&' : '';
+
+  baseParams.append('sort', 'createdAt asc');
+  return `/search?${filters}${baseParams.toString()}`;
 };
