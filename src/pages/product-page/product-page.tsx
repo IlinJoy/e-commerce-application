@@ -36,14 +36,14 @@ export const ProductPage = () => {
 
   const images = data?.masterVariant?.images;
   const discount = data?.masterVariant?.prices?.[0]?.discounted?.value?.centAmount;
-  const combineImagesForVerticalSlider = (images: Image[]) => [...images, ...images, ...images];
+  const combineImagesForPreview = (images: Image[]) => [...images, ...images, ...images];
 
   return (
     <article className={styles.product}>
       {images && (
         <div className={styles.imageWrapper}>
           <div className={styles.imageTrack} style={{ transform: `translateY(-${slideIndex * smallCardOffset}px)` }}>
-            {combineImagesForVerticalSlider(images).map((image) => (
+            {combineImagesForPreview(images).map((image) => (
               <img key={image.url} src={image.url} alt={image.label} className={styles.smallImage} />
             ))}
           </div>
