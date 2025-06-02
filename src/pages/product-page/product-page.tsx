@@ -1,8 +1,3 @@
-// expecting the key coming from url
-// expecting token for anonymous user to be set somewhere else and be available here through context
-// do we have a component Loader/Spinner/smth similar & same for "Something went wrong" (error)? At the moment, it's mocked
-// !!!LAYOUT BUG: height of the main container doesn't take header height into account and therefore the content inside the main container is colliding with the header
-
 import { getProductByKey } from '@/api/catalog';
 import { useToken } from '@/context/token-context';
 import { useQuery } from '@tanstack/react-query';
@@ -13,6 +8,7 @@ import Lightbox from 'yet-another-react-lightbox';
 import Inline from 'yet-another-react-lightbox/plugins/inline';
 import clsx from 'clsx';
 import { getProductIdFromUrl } from '@/utils/getProductKeyFromUrl';
+import { NotFoundPage } from '../not-found-page/not-found-page';
 
 export const ProductPage = () => {
   const { token } = useToken();
@@ -24,10 +20,10 @@ export const ProductPage = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ['product', id],
     queryFn: () => {
-      console.log('Fetching product...');
       return getProductByKey(id, token);
     },
     enabled: !!id,
+    retry: 1,
   });
 
   if (isLoading) {
@@ -36,7 +32,7 @@ export const ProductPage = () => {
 
   if (error) {
     console.log(error);
-    return <div>Error when fetching product</div>;
+    return <NotFoundPage />;
   }
 
   const images = data?.masterVariant?.images;
