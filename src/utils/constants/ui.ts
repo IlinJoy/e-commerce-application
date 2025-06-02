@@ -11,3 +11,5 @@ export const headerScrollPref = {
 export const CLASSES = {
   disable: 'disable',
 };
+
+export const smallCardOffset = 208;

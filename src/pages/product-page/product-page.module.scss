@@ -1,9 +1,19 @@
 @use '../../styles/mixins' as *;
 
 .product {
-  @include flex(column);
+  @include flex(row, var(--spacing-3), $justify: center);
 
+  width: 100%;
   padding: 2rem;
+
+  .imageWrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    height: 70vh;
+
+    @include flex(row, var(--spacing-3), $justify: end, $align: start);
+  }
 
   & h2 {
     margin: 0;
@@ -24,4 +34,41 @@
     font-weight: bold;
     color: rgb(88 229 135);
   }
+}
+
+.imageTrack {
+  overflow: hidden;
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: 150px;
+
+  @include transition;
+
+  & .smallImage {
+    overflow: hidden;
+
+    width: 100%;
+    height: 200px;
+    border-radius: var(--spacing-1);
+
+    object-fit: cover;
+    filter: brightness(0.3);
+  }
+}
+
+.stepsWrapper {
+  width: 100%;
+
+  @include flex;
+
+  .steps {
+    display: block;
+    flex-grow: 1;
+    height: 2px;
+    background-color: var(--mui-palette-grey-400);
+  }
+}
+
+.lightbox-wrapper {
+  @include flex(column);
 }
