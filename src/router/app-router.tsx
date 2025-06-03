@@ -14,6 +14,8 @@ const NotFoundPage = lazy(ROUTES.NOT_FOUND.component);
 const RegistrationPage = lazy(ROUTES.REGISTRATION.component);
 const ProductPage = lazy(ROUTES.PRODUCT.component);
 const CatalogList = lazy(ROUTES.CATALOG_LIST.component);
+const Profile = lazy(ROUTES.PROFILE.component);
+const Addresses = lazy(ROUTES.ADDRESSES.component);
 
 export function AppRouter() {
   const { isLoggedIn } = useAuth();
@@ -37,14 +39,12 @@ export function AppRouter() {
           <Route path={ROUTES.CATALOG_LIST.path} element={<CatalogList />} />
         </Route>
 
-        <Route
-          path={ROUTES.ACCOUNT.path}
-          element={
-            <ProtectedRoute isAllowed={isLoggedIn} redirectPath={ROUTES.LOGIN.path}>
-              <AccountPage />
-            </ProtectedRoute>
-          }
-        />
+        <Route element={<ProtectedRoute isAllowed={isLoggedIn} redirectPath={ROUTES.LOGIN.path} />}>
+          <Route path={ROUTES.ACCOUNT.path} element={<AccountPage />}>
+            <Route index element={<Profile />} />
+            <Route path={ROUTES.ADDRESSES.path} element={<Addresses />} />
+          </Route>
+        </Route>
       </Route>
     </Routes>
   );

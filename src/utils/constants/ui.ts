@@ -3,6 +3,8 @@ export const NAV_LINKS = {
   auth: ['Login', 'Registration'],
 };
 
+export const ACCOUNT_LINKS = ['Profile', 'Addresses'] as const;
+
 export const headerScrollPref = {
   offset: 50,
   timeout: 50,
