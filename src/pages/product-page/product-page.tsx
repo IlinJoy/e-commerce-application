@@ -6,6 +6,8 @@ import { getProductIdFromUrl } from '@/utils/getProductKeyFromUrl';
 import { NotFoundPage } from '../not-found-page/not-found-page';
 import Typography from '@mui/material/Typography';
 import { ProductImageBlock } from '@/components/product-image-block/product-image-block';
+import { mapPrices } from '@/utils/catalog-utils';
+import { PriceBlock } from '@/components/price-block/price-block';
 
 export const ProductPage = () => {
   const id = getProductIdFromUrl() || '';
@@ -29,25 +31,17 @@ export const ProductPage = () => {
   }
 
   const images = data?.masterVariant?.images;
-  const discount = data?.masterVariant?.prices?.[0]?.discounted?.value?.centAmount;
+  const { itemPrice, itemDiscountedPrice, hasDiscount } = mapPrices(data?.masterVariant?.prices);
 
   return (
     <article className={styles.product}>
       {images && <ProductImageBlock images={images} />}
-      <div>
-        <Typography variant="h2">{data?.name['en-US']}</Typography>
-        <p>
-          <span className={clsx(discount && styles.discount)}>
-            {data?.masterVariant?.prices?.[0]?.value?.centAmount}{' '}
-            {data?.masterVariant?.prices?.[0]?.value?.currencyCode}
-          </span>
-          {discount && (
-            <span className={styles.newPrice}>
-              {` ${discount} ${data?.masterVariant?.prices?.[0]?.value?.currencyCode} `}
-            </span>
-          )}
-        </p>
-        <Typography>{data?.description?.['en-US']}</Typography>
+      <div className={styles.content}>
+        <Typography variant="h4" component="h2">
+          {data?.name['en-US']}
+        </Typography>
+        <PriceBlock hasDiscount={hasDiscount} itemPrice={itemPrice} itemDiscountedPrice={itemDiscountedPrice} />
+        <Typography className={styles.description}>{data?.description?.['en-US']}</Typography>
       </div>
     </article>
   );

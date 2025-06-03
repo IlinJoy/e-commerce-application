@@ -5,9 +5,13 @@
 
   width: 100%;
   padding: 2rem;
+}
+
+.content {
+  @include flex(column, $align: start);
 
   & h2 {
-    margin: 0;
+    margin: var(--spacing-1) 0;
   }
 
   & p {
@@ -15,9 +19,24 @@
   }
 
   & .discount {
-    color: rgb(229 88 93);
-    text-decoration: line-through;
-    opacity: 0.5;
+    position: relative;
+    opacity: 0.6;
+
+    &.discount::after {
+      content: '';
+
+      position: absolute;
+      right: 0;
+      bottom: 50%;
+      transform: rotate(35deg);
+
+      display: block;
+
+      width: 40px;
+      height: 3px;
+
+      background-color: var(--mui-palette-error-main);
+    }
   }
 
   & .new-price {
