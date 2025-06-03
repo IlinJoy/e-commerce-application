@@ -40,7 +40,7 @@ export function AppRouter() {
         <Route
           path={ROUTES.ACCOUNT.path}
           element={
-            <ProtectedRoute isAllowed={isLoggedIn}>
+            <ProtectedRoute isAllowed={isLoggedIn} redirectPath={ROUTES.LOGIN.path}>
               <AccountPage />
             </ProtectedRoute>
           }
