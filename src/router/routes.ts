@@ -29,6 +29,20 @@ export const ROUTES = {
     path: 'account',
     component: () => import('../pages/account-page/account-page').then((module) => ({ default: module.AccountPage })),
   },
+  PROFILE: {
+    path: '',
+    component: () =>
+      import('../components/profile/profile').then((module) => ({
+        default: module.Profile,
+      })),
+  },
+  ADDRESSES: {
+    path: 'addresses',
+    component: () =>
+      import('../components/addresses-block/addresses-block.tsx').then((module) => ({
+        default: module.AddressesBlock,
+      })),
+  },
   NOT_FOUND: {
     path: '*',
     component: () =>
