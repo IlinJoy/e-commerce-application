@@ -7,14 +7,21 @@ import clsx from 'clsx';
 
 export function ProductImageBlock({ images }: { images: Image[] }) {
   const [slideIndex, setSlideIndex] = useState(0);
+  const isSingle = images.length <= 1;
   const combineImagesForPreview = (images: Image[]) => [...images, ...images, ...images];
 
   return (
     <div className={styles.imageWrapper}>
-      <div className={styles.imageTrack} style={{ transform: `translateY(-${slideIndex * smallCardOffset}px)` }}>
-        {combineImagesForPreview(images).map((image) => (
-          <img key={image.url} src={image.url} alt={image.label} className={styles.smallImage} />
-        ))}
+      <div className={styles.imageMask}>
+        <div className={styles.imageTrack} style={{ transform: `translateY(-${slideIndex * smallCardOffset}px)` }}>
+          {isSingle ? (
+            <img src={images[0].url} alt={images[0].label} className={styles.smallImage} />
+          ) : (
+            combineImagesForPreview(images).map((image, index) => (
+              <img key={image.url + index} src={image.url} alt={image.label} className={styles.smallImage} />
+            ))
+          )}
+        </div>
       </div>
 
       <div className={styles.lightboxWrapper}>

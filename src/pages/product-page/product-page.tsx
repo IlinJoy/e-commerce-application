@@ -1,7 +1,6 @@
 import { getProductByKey } from '@/api/catalog';
 import { useQuery } from '@tanstack/react-query';
 import styles from './product-page.module.scss';
-import clsx from 'clsx';
 import { getProductIdFromUrl } from '@/utils/getProductKeyFromUrl';
 import { NotFoundPage } from '../not-found-page/not-found-page';
 import Typography from '@mui/material/Typography';
