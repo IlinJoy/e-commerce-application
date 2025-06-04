@@ -13,7 +13,7 @@ interface AddressFormProps {
   isDisabled: boolean;
 }
 
-export const AddressForm: React.FC<AddressFormProps> = ({ prefix, title, control, isDisabled }) => {
+export const AddressForm = ({ prefix, title, control, isDisabled }: AddressFormProps) => {
   const checkboxName = prefix === 'shippingAddress' ? 'shippingDefaultAddress' : 'billingDefaultAddress';
 
   return (

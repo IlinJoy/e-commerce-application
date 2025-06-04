@@ -14,5 +14,12 @@ type CheckBoxProps<T extends FieldValues> = {
 export function CheckBox<T extends FieldValues>({ name, label, control, onClick, ...rest }: CheckBoxProps<T>) {
   const { field } = useController({ name, control });
 
-  return <FormControlLabel {...rest} control={<Checkbox {...field} onClick={onClick} />} label={label} />;
+  return (
+    <FormControlLabel
+      {...rest}
+      checked={field.value}
+      control={<Checkbox {...field} onClick={onClick} />}
+      label={label}
+    />
+  );
 }

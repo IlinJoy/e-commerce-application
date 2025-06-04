@@ -1,11 +1,14 @@
 import styles from './account-page.module.scss';
 import { NavLink, Outlet } from 'react-router';
 import { ACCOUNT_LINKS } from '@/utils/constants/ui';
+import { useToken } from '@/context/token-context';
+import { useUser } from '@/context/user-context';
+import { useToast } from '@/context/toast-provider';
 
 export function AccountPage() {
-  // const { token } = useToken();
-  // const { updateProfile } = useUser();
-  // const { showToast } = useToast();
+  const { token } = useToken();
+  const { updateProfile } = useUser();
+  const { showToast } = useToast();
 
   // const {
   //   handleSubmit,
@@ -122,17 +125,5 @@ export function AccountPage() {
         <div className={styles.profileBg}></div>
       </div>
     </>
-
-    // <div className={styles.formWrapper}>
-    //   <Typography variant="h2">My Profile</Typography>
-    //   <AccountForm
-    //     onSubmit={onSubmit}
-    //     isSubmitting={isPending}
-    //     isValidForm={isValid && isDirty}
-    //     control={control}
-    //     isDirty={isDirty}
-    //   />
-    //   <div className={styles.profileBg}></div>
-    // </div>
   );
 }

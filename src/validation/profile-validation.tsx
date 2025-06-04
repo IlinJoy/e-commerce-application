@@ -7,14 +7,15 @@ import {
   validatePostalCode,
 } from './validation-functions';
 
-const addressSchema = z
+export const addressSchema = z
   .object({
     country: z.enum(['US', 'CN', '']),
     state: z.string().trim().nonempty(),
     streetName: z.string().trim().nonempty(),
     postalCode: z.string().nonempty(),
     city: validateName(),
-    isDefault: z.boolean().optional(),
+    shippingDefaultAddress: z.boolean().optional(),
+    billingDefaultAddress: z.boolean().optional(),
   })
   .superRefine((data, ctx) => {
     validatePostalCode({
