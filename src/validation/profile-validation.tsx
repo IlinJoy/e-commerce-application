@@ -7,7 +7,7 @@ import {
   validatePostalCode,
 } from './validation-functions';
 
-const addressSchema = z
+const singleAddressSchema = z
   .object({
     country: z.enum(['US', 'CN', '']),
     state: z.string().trim().nonempty(),
@@ -17,11 +17,13 @@ const addressSchema = z
     isDefault: z.boolean().optional(),
   })
   .superRefine((data, ctx) => {
-    validatePostalCode({
-      data,
-      ctx,
-    });
+    validatePostalCode({ data, ctx });
   });
+
+export const addressSchema = z.object({
+  shippingAddresses: z.array(singleAddressSchema),
+  billingAddresses: z.array(singleAddressSchema),
+});
 
 export type Addresses = z.infer<typeof addressSchema>;
 
@@ -32,8 +34,6 @@ export const profileSchema = z.object({
     lastName: validateName(),
     dateOfBirth: validateDate(),
   }),
-  shippingAddresses: z.array(addressSchema),
-  billingAddresses: z.array(addressSchema),
 });
 
 export type ProfileFormInputs = z.infer<typeof profileSchema>;
@@ -43,4 +43,4 @@ export const passwordSchema = z.object({
   newPassword: validatePassword(),
 });
 
-export type PasswordChangeInputs = z.infer<typeof passwordSchema>;
+export type PasswordInputs = z.infer<typeof passwordSchema>;
