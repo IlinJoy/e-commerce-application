@@ -106,7 +106,6 @@ export function Profile() {
 
   return (
     <>
-      <Typography variant="h3">Profile</Typography>
       <form onSubmit={onSubmit}>
         <div className={styles.actionsContainer}>
           <Button variant="outlined" onClick={() => setShowPasswordModal(true)}>

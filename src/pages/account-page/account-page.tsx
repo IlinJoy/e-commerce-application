@@ -10,6 +10,7 @@ export function AccountPage() {
           <NavLink
             key={element}
             to={element === 'Profile' ? '' : element.toLowerCase()}
+            end={element === 'Profile'}
             className={({ isActive }) => (isActive ? styles.activeTab : styles.tab)}
           >
             {element}
