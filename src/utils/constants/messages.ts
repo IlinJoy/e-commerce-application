@@ -9,5 +9,7 @@ export const ERROR_MESSAGES = {
 export const SUCCESS_MESSAGES = {
   LOGIN: 'Login successful!',
   REGISTRATION: 'Registration successful!',
+  DELETE_ADDRESS: 'Delete address successfully',
+  UPDATE_ADDRESS: 'The address has been updated',
   SEARCHING: ' Partial match suggestions. The full equivalent will be marked by color.',
 };

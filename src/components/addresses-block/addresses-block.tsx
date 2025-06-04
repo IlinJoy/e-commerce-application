@@ -18,25 +18,25 @@ export function AddressesBlock() {
   }
 
   const addresses = getAddresses(customer);
-  const handleAddressUpdate = async (actions: MyCustomerUpdateAction[]) => {
-    if (customer) {
-      return updateCustomer(token, { version: customer.version, actions });
-    }
+
+  const handleUpdateAddress = async (update: MyCustomerUpdateAction[]) => {
+    const result = await updateCustomer(token, { version: customer.version, actions: update });
+    return result;
   };
 
   return (
     <div>
       <AddressList
-        type="shipping"
+        type="Shipping"
         addresses={addresses?.shippingAddresses}
         defaultAddressId={customer?.defaultShippingAddressId}
-        onSubmit={handleAddressUpdate}
+        handleUpdateAddress={handleUpdateAddress}
       />
       <AddressList
-        type="billing"
-        addresses={addresses?.shippingAddresses}
+        type="Billing"
+        addresses={addresses?.billingAddresses}
         defaultAddressId={customer?.defaultShippingAddressId}
-        onSubmit={handleAddressUpdate}
+        handleUpdateAddress={handleUpdateAddress}
       />
     </div>
   );

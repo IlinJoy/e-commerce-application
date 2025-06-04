@@ -17,7 +17,7 @@ export function CheckBox<T extends FieldValues>({ name, label, control, onClick,
   return (
     <FormControlLabel
       {...rest}
-      checked={field.value}
+      checked={field.value || false}
       control={<Checkbox {...field} onClick={onClick} />}
       label={label}
     />
