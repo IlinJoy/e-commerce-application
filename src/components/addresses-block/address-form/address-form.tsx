@@ -1,5 +1,5 @@
 import type { Addresses } from '@/validation/profile-validation';
-import { addressSchema } from '@/validation/profile-validation';
+import { singleAddressSchema } from '@/validation/profile-validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { FormInput } from '../../input/input';
@@ -48,7 +48,7 @@ export function AddressBlockForm({
     reset,
     formState: { isDirty },
   } = useForm<Addresses>({
-    resolver: zodResolver(addressSchema),
+    resolver: zodResolver(singleAddressSchema),
     mode: 'onChange',
     defaultValues: getDefaultValues({ address, type, isDefault }),
   });
