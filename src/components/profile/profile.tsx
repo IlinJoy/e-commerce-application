@@ -20,19 +20,8 @@ export function Profile() {
   const { token } = useToken();
   const { showToast } = useToast();
 
-  const [editableSections, setEditableSections] = useState<Record<string, boolean>>({});
+  const [isEditable, setIsEditable] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
-
-  const enableSection = (section: string) => setEditableSections((prev) => ({ ...prev, [section]: true }));
-
-  const disableSection = (section: string) =>
-    setEditableSections((prev) => {
-      const updated = { ...prev };
-      delete updated[section];
-      return updated;
-    });
-
-  const isEditable = (section: string) => !!editableSections[section];
 
   const { handleSubmit, control, reset } = useForm<ProfileFormInputs>({
     defaultValues: {
@@ -89,7 +78,7 @@ export function Profile() {
   const { mutate, isPending } = useMutation({
     mutationFn: handleProfileUpdate,
     onSuccess: () => {
-      disableSection('personal');
+      setIsEditable(false);
       showToast({ message: SUCCESS_MESSAGES.PROFILE });
     },
     onError: (err) => {
@@ -100,6 +89,11 @@ export function Profile() {
   const onSubmit = handleSubmit((data: ProfileFormInputs) => {
     mutate(data);
   });
+
+  const handleReset = () => {
+    reset();
+    setIsEditable(false);
+  };
 
   return (
     <>
@@ -112,7 +106,7 @@ export function Profile() {
 
         <Typography variant="h6">
           Personal info
-          <IconButton onClick={() => enableSection('personal')}>
+          <IconButton onClick={() => setIsEditable((prev) => !prev)}>
             <EditIcon />
           </IconButton>
         </Typography>
@@ -124,7 +118,7 @@ export function Profile() {
             control={control}
             label="Email"
             fullWidth
-            isDisabled={!isEditable('personal')}
+            isDisabled={!isEditable}
           />
           <FormInput
             type="text"
@@ -132,7 +126,7 @@ export function Profile() {
             control={control}
             label="First Name"
             fullWidth
-            isDisabled={!isEditable('personal')}
+            isDisabled={!isEditable}
           />
           <FormInput
             type="text"
@@ -140,7 +134,7 @@ export function Profile() {
             control={control}
             label="Last Name"
             fullWidth
-            isDisabled={!isEditable('personal')}
+            isDisabled={!isEditable}
           />
           <FormInput
             type="date"
@@ -148,22 +142,16 @@ export function Profile() {
             control={control}
             label="Date of Birth"
             fullWidth
-            isDisabled={!isEditable('personal')}
+            isDisabled={!isEditable}
           />
         </div>
 
-        {isEditable('personal') && (
+        {isEditable && (
           <div className={styles.buttonsWrapper}>
             <Button type="submit" disabled={isPending} className={styles.submitButton}>
               Save changes
             </Button>
-            <Button
-              onClick={() => {
-                reset();
-                disableSection('personal');
-              }}
-              className={styles.cancelButton}
-            >
+            <Button onClick={handleReset} className={styles.cancelButton}>
               Cancel
             </Button>
           </div>

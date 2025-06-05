@@ -1,21 +1,41 @@
+@use '../../styles/mixins' as *;
+
 .actions-container {
   display: flex;
   align-items: center;
 }
 
-.buttons-wrapper {
-  margin-top: 20px;
-  text-align: center;
+// .buttons-wrapper {
+//   margin-top: 20px;
+//   text-align: center;
+// }
+
+.button-wrapper {
+  margin-right: auto;
+  margin-bottom: var(--spacing-4);
+
+  & button {
+    padding: calc(var(--spacing-2) / 2) var(--spacing-3);
+  }
+
+  @include media(phone) {
+    margin-bottom: var(--spacing-3);
+
+    & button {
+      width: 100%;
+      margin-top: var(--spacing-1);
+    }
+  }
 }
 
-.submit-button {
-  margin-right: 20px;
-  padding: 5px 10px;
-}
+// .submit-button {
+//   margin-right: 20px;
+//   padding: 5px 10px;
+// }
 
-.cancel-button {
-  padding: 5px 10px;
-}
+// .cancel-button {
+//   padding: 5px 10px;
+// }
 
 .dialog-content {
   padding: 20px 30px;

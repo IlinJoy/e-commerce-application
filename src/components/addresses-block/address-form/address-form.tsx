@@ -71,7 +71,7 @@ export function AddressBlockForm({
   });
 
   const handleReset = () => {
-    seIsDisabled(false);
+    seIsDisabled(true);
     reset();
   };
 
