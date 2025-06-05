@@ -1,4 +1,4 @@
-import { AddressBlockForm } from './address-form';
+import { AddressBlockForm } from '../address-form/address-form';
 import type { Address, Customer, MyCustomerUpdateAction } from '@commercetools/platform-sdk';
 import { useState } from 'react';
 import Button from '@mui/material/Button';
@@ -9,6 +9,7 @@ import type { Addresses } from '@/validation/profile-validation';
 import { updateCustomer } from '@/api/update-customer';
 import { SUCCESS_MESSAGES } from '@/utils/constants/messages';
 import { findNewAddress } from '@/utils/account-utils';
+import styles from './address-list.module.scss';
 
 type AddressListProps = {
   type: 'Shipping' | 'Billing';
@@ -81,6 +82,7 @@ export function AddressList({ addresses, type, defaultAddressId, handleUpdateAdd
       {isNew && (
         <AddressBlockForm type={type} onRemove={removeAddress} onSubmit={addAddress} isNew setIsNew={setIsNew} />
       )}
+      {addresses?.length === 0 && !isNew && <div className={styles.noAddress}>No addresses found</div>}
       {!isNew && <Button onClick={() => setIsNew(true)}>Add Address</Button>}
     </div>
   );

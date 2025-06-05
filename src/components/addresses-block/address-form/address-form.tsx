@@ -2,12 +2,12 @@ import type { Addresses } from '@/validation/profile-validation';
 import { addressSchema } from '@/validation/profile-validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { FormInput } from '../input/input';
-import { SelectFormInput } from '../select/select';
+import { FormInput } from '../../input/input';
+import { SelectFormInput } from '../../select/select';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuItem from '@mui/material/MenuItem';
-import { CheckBox } from '../checkbox/checkbox';
+import { CheckBox } from '../../checkbox/checkbox';
 import type { Dispatch, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
@@ -19,6 +19,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useToast } from '@/context/toast-provider';
 import { useToken } from '@/context/token-context';
 import { SUCCESS_MESSAGES } from '@/utils/constants/messages';
+import styles from './address-form.module.scss';
 
 export type AddressFormProps = DefaultValuesProps & {
   onRemove: (id?: string) => void;
@@ -69,15 +70,20 @@ export function AddressBlockForm({
     },
   });
 
+  const handleReset = () => {
+    seIsDisabled(false);
+    reset();
+  };
+
   const shouldDisabled = isDisabled && !isNew;
   const toggleDisable = () => seIsDisabled((prev) => !prev);
   const checkboxName = type === 'Shipping' ? 'shippingDefaultAddress' : 'billingDefaultAddress';
 
   return (
-    <form onSubmit={handleSubmit((data) => mutate({ data, id: address?.id }))}>
-      <div>
+    <form className={styles.form} onSubmit={handleSubmit((data) => mutate({ data, id: address?.id }))}>
+      <div className={styles.formHeading}>
         <CheckBox name={checkboxName} control={control} label="Default Address" disabled={shouldDisabled} />
-        <div>
+        <div className={styles.formHeadingButtons}>
           {!isNew && (
             <IconButton onClick={toggleDisable}>
               <EditIcon />
@@ -89,18 +95,19 @@ export function AddressBlockForm({
         </div>
       </div>
       <SelectFormInput name="country" control={control} label="Country" isDisabled={shouldDisabled}>
-        <MenuItem value="US">USA</MenuItem>
+        <MenuItem value="US"> USA</MenuItem>
         <MenuItem value="CN">Canada</MenuItem>
       </SelectFormInput>
-      <FormInput name="state" control={control} label="State" isDisabled={shouldDisabled} />
-      <FormInput name="streetName" control={control} label="Street" isDisabled={shouldDisabled} />
-      <FormInput name="city" control={control} label="City" isDisabled={shouldDisabled} />
-      <FormInput name="postalCode" control={control} label="Postal Code" isDisabled={shouldDisabled} />
+      <FormInput name="state" control={control} label="State" isDisabled={shouldDisabled} fullWidth />
+      <FormInput name="city" control={control} label="City" isDisabled={shouldDisabled} fullWidth />
+      <FormInput name="streetName" control={control} label="Street" isDisabled={shouldDisabled} fullWidth />
+
+      <FormInput name="postalCode" control={control} label="Postal Code" isDisabled={shouldDisabled} fullWidth />
       {isDirty && (
-        <div>
-          <Button type="submit">Apply</Button>
-          <Button type="reset" onClick={() => reset()}>
-            Reset
+        <div className={styles.buttonWrapper}>
+          <Button type="submit">Save Changes</Button>
+          <Button type="reset" onClick={handleReset}>
+            Cancel
           </Button>
         </div>
       )}
