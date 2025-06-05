@@ -1,4 +1,3 @@
-import Typography from '@mui/material/Typography';
 import { AddressBlockForm } from './address-form';
 import type { Address, Customer, MyCustomerUpdateAction } from '@commercetools/platform-sdk';
 import { useState } from 'react';
@@ -35,6 +34,14 @@ export function AddressList({ addresses, type, defaultAddressId, handleUpdateAdd
     },
   });
 
+  const getDefaultAddressAction = (actions: MyCustomerUpdateAction[], data: Addresses, id?: string) => {
+    const defaultAddressAction: MyCustomerUpdateAction[] = [];
+    if (type === 'Billing' ? data.billingDefaultAddress : data.shippingDefaultAddress) {
+      defaultAddressAction.push({ action: `setDefault${type}Address`, addressId: id });
+    }
+    return [...actions, ...defaultAddressAction];
+  };
+
   const removeAddress = (id?: string) => {
     if (id) {
       mutate([{ action: 'removeAddress', addressId: id }]);
@@ -46,38 +53,34 @@ export function AddressList({ addresses, type, defaultAddressId, handleUpdateAdd
     const result = await handleUpdateAddress([{ action: 'addAddress', address: data }]);
     const newAddress = findNewAddress(result);
     const actions: MyCustomerUpdateAction[] = [{ action: `add${type}AddressId`, addressId: newAddress?.id }];
-
-    if (data.shippingDefaultAddress || data.shippingDefaultAddress) {
-      actions.push({ action: `setDefault${type}Address`, addressId: newAddress?.id });
-    }
-    return await updateCustomer(token, { version: result.version, actions });
+    const actionsWithDefault = getDefaultAddressAction(actions, data, newAddress?.id);
+    return await updateCustomer(token, { version: result.version, actions: actionsWithDefault });
   };
 
   const changeAddress = async ({ data, id }: { data: Addresses; id?: string }) => {
     const actions: MyCustomerUpdateAction[] = [{ action: `changeAddress`, addressId: id, address: data }];
-    console.log(data);
-    if (data.shippingDefaultAddress || data.shippingDefaultAddress) {
-      actions.push({ action: `setDefault${type}Address`, addressId: id });
-    }
-    console.log(actions);
-    return await handleUpdateAddress(actions);
+    const actionsWithDefault = getDefaultAddressAction(actions, data, id);
+    return await handleUpdateAddress(actionsWithDefault);
   };
 
   return (
     <div>
-      <Typography variant="h6">{type} Addresses</Typography>
-      {addresses?.map((addr) => (
-        <AddressBlockForm
-          key={addr.id}
-          address={addr}
-          type={type}
-          isDefault={addr.id === defaultAddressId}
-          onRemove={removeAddress}
-          onSubmit={changeAddress}
-        />
-      ))}
+      {addresses?.map((addr) => {
+        return (
+          <AddressBlockForm
+            key={addr.id}
+            address={addr}
+            type={type}
+            isDefault={addr.id === defaultAddressId}
+            onRemove={removeAddress}
+            onSubmit={changeAddress}
+          />
+        );
+      })}
 
-      {isNew && <AddressBlockForm type={type} onRemove={removeAddress} onSubmit={addAddress} isNew />}
+      {isNew && (
+        <AddressBlockForm type={type} onRemove={removeAddress} onSubmit={addAddress} isNew setIsNew={setIsNew} />
+      )}
       {!isNew && <Button onClick={() => setIsNew(true)}>Add Address</Button>}
     </div>
   );

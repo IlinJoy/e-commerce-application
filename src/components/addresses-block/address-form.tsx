@@ -12,29 +12,35 @@ import type { Dispatch, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import type { Customer, MyCustomerUpdateAction } from '@commercetools/platform-sdk';
+import type { Customer } from '@commercetools/platform-sdk';
 import type { DefaultValuesProps } from '@/utils/account-utils';
 import { getDefaultValues } from '@/utils/account-utils';
-import { useCustomerQuery } from '@/hooks/use-customer-query';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useToast } from '@/context/toast-provider';
 import { useToken } from '@/context/token-context';
 import { SUCCESS_MESSAGES } from '@/utils/constants/messages';
 
 export type AddressFormProps = DefaultValuesProps & {
-  // onAdd?: (data: Addresses) => Promise<Customer | undefined>;
-  // onChange?: ({ data, id }: { data: Addresses; id?: string }) => Promise<Customer | undefined>;
   onRemove: (id?: string) => void;
   onSubmit: (data: { data: Addresses; id?: string }) => Promise<Customer | undefined>;
   isNew?: boolean;
+  setIsNew?: Dispatch<SetStateAction<boolean>>;
 };
 
-export function AddressBlockForm({ address, type, isDefault, isNew = false, onSubmit, onRemove }: AddressFormProps) {
+export function AddressBlockForm({
+  address,
+  type,
+  isDefault,
+  isNew = false,
+  onSubmit,
+  onRemove,
+  setIsNew,
+}: AddressFormProps) {
   const [isDisabled, seIsDisabled] = useState(true);
-  const defaultValues = getDefaultValues({ address, type, isDefault });
   const { token } = useToken();
   const queryClient = useQueryClient();
   const { showToast } = useToast();
+
   const {
     handleSubmit,
     control,
@@ -43,15 +49,19 @@ export function AddressBlockForm({ address, type, isDefault, isNew = false, onSu
   } = useForm<Addresses>({
     resolver: zodResolver(addressSchema),
     mode: 'onChange',
-    defaultValues,
+    defaultValues: getDefaultValues({ address, type, isDefault }),
   });
+
+  useEffect(() => {
+    reset({ ...getDefaultValues({ address, type, isDefault }) });
+  }, [address, isDefault, reset, type]);
 
   const { mutate } = useMutation({
     mutationFn: onSubmit,
     onSuccess: (data) => {
       showToast({ message: SUCCESS_MESSAGES.UPDATE_ADDRESS });
       seIsDisabled(true);
-      reset();
+      setIsNew?.(false);
       queryClient.setQueryData(['customer', token], data);
     },
     onError: (err) => {

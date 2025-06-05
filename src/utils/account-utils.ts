@@ -1,4 +1,3 @@
-import { Addresses } from '@/validation/registration-validation';
 import type { Address, Customer } from '@commercetools/platform-sdk';
 
 export type DefaultValuesProps = { address?: Address; isDefault?: boolean; type: 'Shipping' | 'Billing' };
@@ -13,10 +12,7 @@ export const getDefaultValues = ({ address, type, isDefault }: DefaultValuesProp
   billingDefaultAddress: type === 'Billing' && isDefault,
 });
 
-export const getAddresses = (data?: Customer) => {
-  if (!data) {
-    return;
-  }
+export const getAddresses = (data: Customer) => {
   const { addresses, billingAddressIds, shippingAddressIds } = data;
   const billingAddresses = addresses.filter((addr) => addr.id && billingAddressIds?.includes(addr.id));
   const shippingAddresses = addresses.filter((addr) => addr.id && shippingAddressIds?.includes(addr.id));
