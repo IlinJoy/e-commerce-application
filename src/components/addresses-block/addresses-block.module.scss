@@ -2,6 +2,7 @@
 
 .listWrapper {
   @include flex(column, var(--spacing-7), $align: start);
+  @include transition;
 }
 
 .list {

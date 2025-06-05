@@ -8,15 +8,11 @@ import Typography from '@mui/material/Typography';
 import styles from './addresses-block.module.scss';
 
 export function AddressesBlock() {
-  const { data: customer, isFetching } = useCustomerQuery();
+  const { data: customer } = useCustomerQuery();
   const { token } = useToken();
 
-  if (isFetching) {
-    return <div>Loading...</div>;
-  }
-
   if (!customer || !customer.addresses) {
-    return <div>No addresses found</div>;
+    return <div className={styles.listWrapper}>No addresses found</div>;
   }
 
   const addresses = getAddresses(customer);
