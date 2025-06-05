@@ -84,10 +84,12 @@ export function AddressBlockForm({
       <div className={styles.formHeading}>
         <CheckBox name={checkboxName} control={control} label="Default Address" disabled={shouldDisabled} />
         <div className={styles.formHeadingButtons}>
-          {!isNew && (
+          {!isNew ? (
             <IconButton onClick={toggleDisable}>
               <EditIcon />
             </IconButton>
+          ) : (
+            <span>New Address</span>
           )}
           <IconButton onClick={() => onRemove(address?.id)}>
             <DeleteIcon />
