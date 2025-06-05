@@ -7,25 +7,21 @@ import {
   validatePostalCode,
 } from './validation-functions';
 
-const singleAddressSchema = z
+export const singleAddressSchema = z
   .object({
     country: z.enum(['US', 'CN', '']),
     state: z.string().trim().nonempty(),
     streetName: z.string().trim().nonempty(),
     postalCode: z.string().nonempty(),
     city: validateName(),
-    isDefault: z.boolean().optional(),
+    shippingDefaultAddress: z.boolean().optional(),
+    billingDefaultAddress: z.boolean().optional(),
   })
   .superRefine((data, ctx) => {
     validatePostalCode({ data, ctx });
   });
 
-export const addressSchema = z.object({
-  shippingAddresses: z.array(singleAddressSchema),
-  billingAddresses: z.array(singleAddressSchema),
-});
-
-export type Addresses = z.infer<typeof addressSchema>;
+export type Addresses = z.infer<typeof singleAddressSchema>;
 
 export const profileSchema = z.object({
   customerData: z.object({

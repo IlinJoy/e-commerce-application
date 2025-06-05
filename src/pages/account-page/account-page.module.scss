@@ -23,6 +23,7 @@
   width: 38%;
   min-width: 300px;
   max-width: 900px;
+  min-height: 50vh;
   margin: -1px auto;
   padding: var(--spacing-7);
   border-top-right-radius: var(--spacing-1);
@@ -52,16 +53,15 @@
   border-top-right-radius: var(--spacing-1);
 
   font-size: 20px;
-  color: var(--pallet-color-dark);
+  color: var(--mui-palette-primary-main);
   text-decoration: none;
 
-  background-color: #665d5d;
+  background-color: var(--mui-palette-grey-800);
 
   transition: all 0.2s ease;
 
   &:hover {
-    color: #333;
-    background-color: #3a3a3a;
+    background-color: var(--pallet-color-dark);
   }
 }
 
