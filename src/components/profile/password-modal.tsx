@@ -10,6 +10,7 @@ import { useToast } from '@/context/toast-provider';
 import { useToken } from '@/context/token-context';
 import type { Customer } from '@commercetools/platform-sdk';
 import styles from './profile.module.scss';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/utils/constants/messages';
 
 type Props = {
   open: boolean;
@@ -49,10 +50,10 @@ export const PasswordChangeDialog = ({ open, onClose }: Props) => {
 
       const newToken = await getCustomerToken(customer.email, data.newPassword);
       updateToken(newToken);
-      showToast({ message: 'Password updated' });
+      showToast({ message: SUCCESS_MESSAGES.PASSWORD });
       onClose();
     } catch {
-      showToast({ message: 'Changing password error', isError: true });
+      showToast({ message: ERROR_MESSAGES.UPDATE_PASSWORD_FAIL, isError: true });
     }
   };
 

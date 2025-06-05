@@ -9,16 +9,15 @@ import { Button, IconButton, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { useToast } from '@/context/toast-provider';
 import { useToken } from '@/context/token-context';
-import { useUser } from '@/context/user-context';
 import { profileSchema, ProfileFormInputs } from '@/validation/profile-validation';
 import { fetchFromApi } from '@/api/platformApi';
 import type { Customer } from '@commercetools/platform-sdk';
 import { PasswordChangeDialog } from './password-modal';
 import styles from './profile.module.scss';
+import { SUCCESS_MESSAGES } from '@/utils/constants/messages';
 
 export function Profile() {
   const { token } = useToken();
-  const { updateProfile } = useUser();
   const { showToast } = useToast();
 
   const [editableSections, setEditableSections] = useState<Record<string, boolean>>({});
@@ -35,7 +34,7 @@ export function Profile() {
 
   const isEditable = (section: string) => !!editableSections[section];
 
-  const { handleSubmit, control, clearErrors, reset } = useForm<ProfileFormInputs>({
+  const { handleSubmit, control, reset } = useForm<ProfileFormInputs>({
     defaultValues: {
       customerData: {
         email: '',
@@ -62,7 +61,7 @@ export function Profile() {
           },
         });
       } catch {
-        showToast({ message: 'Something went wrong. Please try again later.', isError: true });
+        showToast({ message: 'Something went wrong. Please try later.', isError: true });
       }
     };
 
@@ -89,14 +88,12 @@ export function Profile() {
 
   const { mutate, isPending } = useMutation({
     mutationFn: handleProfileUpdate,
-    onSuccess: (updatedCustomer) => {
-      updateProfile(updatedCustomer);
+    onSuccess: () => {
       disableSection('personal');
-      showToast({ message: 'The profile updated' });
-      clearErrors();
+      showToast({ message: SUCCESS_MESSAGES.PROFILE });
     },
-    onError: () => {
-      showToast({ message: 'Updating error', isError: true });
+    onError: (err) => {
+      showToast({ message: err.message, isError: true });
     },
   });
 
