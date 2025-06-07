@@ -15,6 +15,7 @@ type FormInputProps<T extends FieldValues> = Omit<FormSelectProps<T>, 'children'
   endAdornment?: ReactNode;
   shrinkLabel?: boolean;
   fullWidth?: boolean;
+  ariaLabel?: string;
 };
 
 export function FormInput<T extends FieldValues>({
@@ -28,6 +29,7 @@ export function FormInput<T extends FieldValues>({
   endAdornment,
   shrinkLabel,
   fullWidth,
+  ariaLabel,
 }: FormInputProps<T>) {
   const [showPassword, setShowPassword] = useState(false);
   const {
@@ -51,6 +53,7 @@ export function FormInput<T extends FieldValues>({
         placeholder={placeholder}
         disabled={isDisabled}
         inputProps={{
+          'aria-label': ariaLabel,
           autoComplete: type === 'password' ? 'password' : 'current-password',
         }}
         endAdornment={

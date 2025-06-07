@@ -106,7 +106,7 @@ export function Profile() {
 
         <Typography variant="h6">
           Personal info
-          <IconButton onClick={() => setIsEditable((prev) => !prev)}>
+          <IconButton aria-label="edit personal info" onClick={() => setIsEditable((prev) => !prev)}>
             <EditIcon />
           </IconButton>
         </Typography>
