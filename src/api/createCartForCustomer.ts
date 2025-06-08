@@ -1,18 +1,12 @@
-import { type Address, type Cart } from '@commercetools/platform-sdk';
+import type { Cart } from '@commercetools/platform-sdk';
 import { fetchFromApi } from './platformApi';
 
-type CreateCartParams = {
-  token: string;
-  shippingAddress: Address;
-};
-
-export const createCartForCustomer = async (options: CreateCartParams): Promise<Cart> => {
+export const createCartForCustomer = async (token: string): Promise<Cart> => {
   const body = {
     currency: 'USD',
-    shippingAddress: options.shippingAddress,
   };
 
-  return fetchFromApi<Cart>('/me/carts', options.token, {
+  return fetchFromApi<Cart>('/me/carts', token, {
     method: 'POST',
     body: JSON.stringify(body),
   });

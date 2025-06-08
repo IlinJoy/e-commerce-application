@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import type { ReactNode } from 'react';
-import { createContext, use, useCallback, useEffect, useState } from 'react';
+import { createContext, use, useCallback, useEffect, useRef, useState } from 'react';
 import { cookieHandler } from '@/services/cookies/cookie-handler';
 import { handleAnonToken } from '@/utils/request-token-handler';
 
@@ -19,10 +19,12 @@ export const TokenContext = createContext<TokenContextType>({
 export function TokenContextProvider({ children }: { children: ReactNode }) {
   const tokenFromCookies = cookieHandler.get('token') || '';
   const [token, setToken] = useState(tokenFromCookies);
+  const hasAnonToken = useRef(!!cookieHandler.get('anonToken'));
 
   useEffect(() => {
-    if (!tokenFromCookies) {
+    if (!tokenFromCookies && !hasAnonToken.current) {
       handleAnonToken();
+      hasAnonToken.current = true;
     }
   }, [tokenFromCookies]);
 
