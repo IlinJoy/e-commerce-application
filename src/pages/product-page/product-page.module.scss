@@ -1,74 +1,47 @@
 @use '../../styles/mixins' as *;
 
 .product {
-  @include flex(row, var(--spacing-3), $justify: center);
+  @include flex(row, var(--spacing-6), $justify: center, $align: start);
+
+  padding: 0 var(--spacing-2);
+
+  @include media(tablet) {
+    flex-wrap: wrap;
+  }
+}
+
+.content {
+  @include flex(column, $align: start);
 
   width: 100%;
-  padding: 2rem;
-
-  .imageWrapper {
-    position: relative;
-    overflow: hidden;
-    display: inline-block;
-    height: 70vh;
-
-    @include flex(row, var(--spacing-3), $justify: end, $align: start);
-  }
+  max-width: 400px;
 
   & h2 {
-    margin: 0;
+    margin: var(--spacing-1) 0;
   }
 
   & p {
-    margin: 0;
-  }
-
-  & .discount {
-    color: rgb(229 88 93);
-    text-decoration: line-through;
-    opacity: 0.5;
-  }
-
-  & .new-price {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: rgb(88 229 135);
-  }
-}
-
-.imageTrack {
-  overflow: hidden;
-  flex-grow: 0;
-  flex-shrink: 0;
-  width: 150px;
-
-  @include transition;
-
-  & .smallImage {
-    overflow: hidden;
-
+    position: relative;
     width: 100%;
-    height: 200px;
-    border-radius: var(--spacing-1);
+    max-width: 400px;
+    margin-top: var(--spacing-9);
 
-    object-fit: cover;
-    filter: brightness(0.3);
+    &::before {
+      content: '';
+
+      position: absolute;
+      bottom: -64px;
+
+      display: block;
+
+      width: 100%;
+      height: 1px;
+
+      background-color: var(--mui-palette-grey-700);
+    }
   }
 }
 
-.stepsWrapper {
-  width: 100%;
-
-  @include flex;
-
-  .steps {
-    display: block;
-    flex-grow: 1;
-    height: 2px;
-    background-color: var(--mui-palette-grey-400);
-  }
-}
-
-.lightbox-wrapper {
-  @include flex(column);
+.description {
+  opacity: 0.85;
 }

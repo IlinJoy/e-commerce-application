@@ -4,6 +4,8 @@ import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
 import 'yet-another-react-lightbox/styles.css';
 import type { Image } from '@commercetools/platform-sdk';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 type ProductLightboxProps = {
   images: Image[];
@@ -13,6 +15,8 @@ type ProductLightboxProps = {
 
 export function ProductLightbox({ images, slideIndex, setSlideIndex }: ProductLightboxProps) {
   const [open, setOpen] = useState(false);
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
 
   const slides = images?.map((image) => ({
     src: image.url,
@@ -42,12 +46,11 @@ export function ProductLightbox({ images, slideIndex, setSlideIndex }: ProductLi
         }}
         inline={{
           style: {
-            width: '100%',
-            maxWidth: '500px',
-            height: '70vh',
             aspectRatio: '2 / 3',
+            minHeight: matches ? '70vh' : '55vh',
             borderRadius: '8px',
             overflow: 'hidden',
+            cursor: 'pointer',
           },
         }}
         render={{

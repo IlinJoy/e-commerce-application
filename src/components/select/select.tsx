@@ -14,6 +14,7 @@ export type FormSelectProps<T extends FieldValues> = {
   isDisabled?: boolean;
   children: ReactNode;
   control: Control<T>;
+  ariaLabel?: string;
 };
 
 export function SelectFormInput<T extends FieldValues>({
@@ -23,6 +24,7 @@ export function SelectFormInput<T extends FieldValues>({
   isDisabled = false,
   control,
   children,
+  ariaLabel,
 }: FormSelectProps<T>) {
   const {
     field,
@@ -41,7 +43,14 @@ export function SelectFormInput<T extends FieldValues>({
           {label}
         </InputLabel>
       )}
-      <Select {...field} id={name} disabled={isDisabled}>
+      <Select
+        {...field}
+        id={name}
+        disabled={isDisabled}
+        inputProps={{
+          'aria-label': ariaLabel,
+        }}
+      >
         {children}
       </Select>
       {error && <FormHelperText error>{error.message}</FormHelperText>}
