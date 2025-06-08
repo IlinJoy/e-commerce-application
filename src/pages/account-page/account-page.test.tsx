@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, waitFor, fireEvent, act } from '@testing-library/react';
-import { describe, it, vi, expect, beforeEach } from 'vitest';
+import { describe, it, vi, expect } from 'vitest';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter } from 'react-router';
 
@@ -41,10 +41,6 @@ vi.mock('@/components/profile/password-modal', () => ({
 }));
 
 describe('Profile', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
   it('loads and displays profile data', async () => {
     (fetchFromApi as unknown as ReturnType<typeof vi.fn>).mockResolvedValueOnce(mockCustomer);
 
