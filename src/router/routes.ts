@@ -25,6 +25,10 @@ export const ROUTES = {
     path: 'about',
     component: () => import('../pages/about-page/about-page').then((module) => ({ default: module.AboutPage })),
   },
+  CART: {
+    path: 'cart',
+    component: () => import('../pages/cart-page/cart-page').then((module) => ({ default: module.CartPage })),
+  },
   ACCOUNT: {
     path: 'account',
     component: () => import('../pages/account-page/account-page').then((module) => ({ default: module.AccountPage })),
