@@ -9,6 +9,17 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: './src/setupTest.ts',
+    coverage: {
+      exclude: [
+        '**/*.test.tsx',
+        'src/main.tsx',
+        'src/App.tsx',
+        'src/vite.config.ts',
+        'src/setupTest.ts',
+        'src/**/*.config.ts',
+        'src/**/*.d.ts',
+      ],
+    },
   },
   resolve: {
     alias: {
