@@ -5,9 +5,13 @@ import Container from '@mui/material/Container';
 import styles from './cart-page.module.scss';
 
 export function CartPage() {
-  const { data: cart } = useCartQuery();
+  const { data: cart, isFetching } = useCartQuery();
 
   const isEmpty = cart?.lineItems.length === 0;
+
+  if (isFetching) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Container component={'section'} className={styles.cart}>
