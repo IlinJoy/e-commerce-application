@@ -5,7 +5,7 @@ import type { LoginFormInputs } from '@/components/login-form/login-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema } from '@/validation/login-validation';
 import { useMutation } from '@tanstack/react-query';
-import { fetchLoggedInCustomer } from '@/api/clientAuth';
+import { loginCustomer } from '@/api/clientAuth';
 import { useAuth } from '@/hooks/use-auth';
 import styles from './login-page.module.scss';
 import { useToast } from '@/context/toast-provider';
@@ -29,7 +29,7 @@ export function LoginPage() {
   const navigate = useNavigate();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: LoginFormInputs) => fetchLoggedInCustomer(data.email, data.password),
+    mutationFn: (data: LoginFormInputs) => loginCustomer(data.email, data.password),
     onSuccess: (data) => {
       onLogin(data);
       showToast({ message: SUCCESS_MESSAGES.LOGIN });

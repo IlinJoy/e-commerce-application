@@ -3,7 +3,6 @@ import { getAnonymousToken } from '@/api/platformApi';
 
 export const getRequestToken = async () => {
   const token = cookieHandler.get('token') || cookieHandler.get('anonToken') || (await handleAnonToken());
-  console.log({ getRequestToken: token });
   return token;
 };
 

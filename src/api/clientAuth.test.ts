@@ -1,4 +1,4 @@
-import { fetchLoggedInCustomer } from './clientAuth';
+import { loginCustomer } from './clientAuth';
 import { getCustomerToken, fetchFromApi } from '@/api/platformApi';
 
 vi.mock('@/api/platformApi', () => ({
@@ -21,7 +21,7 @@ describe('fetchLoggedInCustomer', () => {
     mockedGetCustomerToken.mockResolvedValue(mockToken);
     mockedFetchFromApi.mockResolvedValue(mockCustomer);
 
-    const result = await fetchLoggedInCustomer(mockEmail, mockPassword);
+    const result = await loginCustomer(mockEmail, mockPassword);
     expect(mockedGetCustomerToken).toHaveBeenCalledWith(mockEmail, mockPassword);
     expect(mockedFetchFromApi).toHaveBeenCalledWith('/me', mockToken);
     expect(result).toEqual({ customer: mockCustomer, customerToken: mockToken });

@@ -1,15 +1,17 @@
 /* eslint-disable react-refresh/only-export-components */
 import type { ReactNode } from 'react';
-import { createContext, use, useEffect, useState } from 'react';
+import { createContext, use, useCallback, useEffect, useState } from 'react';
 import { cookieHandler } from '@/services/cookies/cookie-handler';
 import { getNewCartId } from '@/api/cart';
 
 type CartContextType = {
   cartId: string;
+  resetCart: () => void;
 };
 
 const CartContext = createContext<CartContextType>({
   cartId: '',
+  resetCart: () => {},
 });
 
 export function CartContextProvider({ children }: { children: ReactNode }) {
@@ -27,7 +29,12 @@ export function CartContextProvider({ children }: { children: ReactNode }) {
     }
   }, [cartId]);
 
-  return <CartContext.Provider value={{ cartId }}>{children}</CartContext.Provider>;
+  const resetCart = useCallback(() => {
+    setCartId('');
+    cookieHandler.delete('cartId');
+  }, []);
+
+  return <CartContext.Provider value={{ cartId, resetCart }}>{children}</CartContext.Provider>;
 }
 
 export const useCart = () => {

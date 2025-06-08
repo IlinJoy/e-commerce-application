@@ -23,14 +23,18 @@ export function TokenContextProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!tokenFromCookies && !hasAnonToken.current) {
-      handleAnonToken();
-      hasAnonToken.current = true;
+      const updateAnonToken = async () => {
+        const anonToken = await handleAnonToken();
+        hasAnonToken.current = !!anonToken;
+      };
+      updateAnonToken();
     }
   }, [tokenFromCookies]);
 
   const updateToken = useCallback((token: string) => {
     setToken(token);
     cookieHandler.set('token', token);
+    cookieHandler.delete('anonToken');
   }, []);
 
   const resetToken = useCallback(() => {
