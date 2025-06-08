@@ -34,7 +34,7 @@ export function CatalogList() {
   }
 
   if (!data?.result.length) {
-    return <NothingFound />;
+    return <NothingFound message={'Try searching again!'} />;
   }
 
   return (

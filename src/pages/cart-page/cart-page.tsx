@@ -1,10 +1,16 @@
+import { CartAside } from '@/components/cart-aside/cart-aside';
+import { NothingFound } from '@/components/nothing-found/nothing-found';
 import { useCartQuery } from '@/hooks/use-cart-query';
-import { cookieHandler } from '@/services/cookies/cookie-handler';
 
 export function CartPage() {
   const { data: cart } = useCartQuery();
-  console.log(cookieHandler.get('cartId'));
-  console.log({ cart });
 
-  return <div>Cart</div>;
+  const isEmpty = cart?.lineItems.length === 0;
+
+  return (
+    <div>
+      <CartAside />
+      {isEmpty && <NothingFound />}
+    </div>
+  );
 }
