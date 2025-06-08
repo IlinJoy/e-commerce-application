@@ -3,11 +3,17 @@
 .cart-aside {
   min-width: 30vw;
   margin-top: auto;
+  padding: var(--spacing-2);
 
   @include flex(column, var(--spacing-3), $align: start);
 
   & span {
     font-weight: 600;
+  }
+
+  @include media(tablet) {
+    width: 100%;
+    border-top: 1px solid var(--mui-palette-primary-main);
   }
 }
 
