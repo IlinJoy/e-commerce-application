@@ -6,11 +6,11 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import styles from './product-card.module.scss';
-import clsx from 'clsx';
 import { LANG } from '@/utils/constants/filters';
 import { HighlightedText } from '../highlighted-text/highlighted-text';
 import { useNavigate } from 'react-router';
 import { ROUTES } from '@/router/routes';
+import { PriceBlock } from '../price-block/price-block';
 
 type ProductCardProps = {
   product: ProductProjection;
@@ -41,18 +41,11 @@ export function ProductCard({ product }: ProductCardProps) {
         <CardContent>
           <HighlightedText text={name[LANG]} isHeading />
           <HighlightedText text={itemDescription} />
-          <div className={styles.footer}>
-            <Typography
-              className={clsx(styles.price, { [styles.old]: hasDiscount })}
-              component="span"
-            >{`$ ${itemPrice}`}</Typography>
-            {hasDiscount && (
-              <Typography
-                component="span"
-                className={styles.discountPrice}
-              >{`$ ${discountInfo.itemDiscountedPrice}`}</Typography>
-            )}
-          </div>
+          <PriceBlock
+            hasDiscount={hasDiscount}
+            itemPrice={itemPrice}
+            itemDiscountedPrice={discountInfo.itemDiscountedPrice}
+          />
         </CardContent>
       </CardActionArea>
     </Card>

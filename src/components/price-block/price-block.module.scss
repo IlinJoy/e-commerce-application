@@ -1,0 +1,35 @@
+@use '../../styles/mixins' as *;
+
+.footer {
+  margin-top: var(--spacing-2);
+
+  @include flex(row, var(--spacing-2), $justify: start, $align: start);
+
+  & span {
+    font-size: 1rem;
+  }
+}
+
+.price {
+  position: relative;
+
+  &.old {
+    opacity: 0.6;
+  }
+
+  &.old::after {
+    content: '';
+
+    position: absolute;
+    right: 0;
+    bottom: 50%;
+    transform: rotate(35deg);
+
+    display: block;
+
+    width: 40px;
+    height: 3px;
+
+    background-color: var(--mui-palette-error-main);
+  }
+}

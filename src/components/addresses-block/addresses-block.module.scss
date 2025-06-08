@@ -1,0 +1,10 @@
+@use '../../styles/mixins' as *;
+
+.listWrapper {
+  @include flex(column, var(--spacing-7), $align: start);
+  @include transition;
+}
+
+.list {
+  @include flex(column, var(--spacing-3), $align: start);
+}

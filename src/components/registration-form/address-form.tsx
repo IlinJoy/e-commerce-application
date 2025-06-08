@@ -13,20 +13,44 @@ interface AddressFormProps {
   isDisabled: boolean;
 }
 
-export const AddressForm: React.FC<AddressFormProps> = ({ prefix, title, control, isDisabled }) => {
+export const AddressForm = ({ prefix, title, control, isDisabled }: AddressFormProps) => {
   const checkboxName = prefix === 'shippingAddress' ? 'shippingDefaultAddress' : 'billingDefaultAddress';
 
   return (
     <>
       <Typography variant="h6">{title}</Typography>
 
-      <FormInput name={`${prefix}.streetName`} control={control} label="Street" isDisabled={isDisabled} />
-      <FormInput name={`${prefix}.city`} control={control} label="City" isDisabled={isDisabled} />
-      <SelectFormInput name={`${prefix}.country`} control={control} label="Country" isDisabled={isDisabled}>
+      <FormInput
+        name={`${prefix}.streetName`}
+        ariaLabel={`${prefix} street`}
+        control={control}
+        label="Street"
+        isDisabled={isDisabled}
+      />
+      <FormInput
+        name={`${prefix}.city`}
+        ariaLabel={`${prefix} city`}
+        control={control}
+        label="City"
+        isDisabled={isDisabled}
+      />
+      <SelectFormInput
+        name={`${prefix}.country`}
+        ariaLabel={`${prefix} country`}
+        control={control}
+        label="Country"
+        isDisabled={isDisabled}
+      >
         <MenuItem value="US">USA</MenuItem>
         <MenuItem value="CN">Canada</MenuItem>
       </SelectFormInput>
-      <FormInput name={`${prefix}.postalCode`} control={control} label="Postal Code" isDisabled={isDisabled} />
+      <FormInput
+        name={`${prefix}.postalCode`}
+        ariaLabel={`${prefix} postal code`}
+        control={control}
+        label="Postal Code"
+        isDisabled={isDisabled}
+      />
       <CheckBox control={control} name={checkboxName} label="Set as default address" />
     </>
   );

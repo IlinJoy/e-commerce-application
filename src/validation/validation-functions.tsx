@@ -58,7 +58,7 @@ export const validateEmail = () => {
 
 export const validateName = () => {
   return z.string().superRefine((data, ctx) => {
-    if (!/^[\p{L}]+$/u.test(data)) {
+    if (!/^[\p{L}\s]+$/u.test(data)) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: 'Only letters are allowed. No digits or special characters',
