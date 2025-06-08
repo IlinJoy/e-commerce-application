@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import type { ReactNode } from 'react';
 import { createContext, use, useCallback, useEffect, useState } from 'react';
-import { tokenCookieHandler } from '@/services/cookies/cookie-handler';
+import { cookieHandler } from '@/services/cookies/cookie-handler';
 import { handleAnonToken } from '@/utils/request-token-handler';
 
 type TokenContextType = {
@@ -17,7 +17,7 @@ export const TokenContext = createContext<TokenContextType>({
 });
 
 export function TokenContextProvider({ children }: { children: ReactNode }) {
-  const tokenFromCookies = tokenCookieHandler.get() || '';
+  const tokenFromCookies = cookieHandler.get('token') || '';
   const [token, setToken] = useState(tokenFromCookies);
 
   useEffect(() => {
@@ -28,12 +28,12 @@ export function TokenContextProvider({ children }: { children: ReactNode }) {
 
   const updateToken = useCallback((token: string) => {
     setToken(token);
-    tokenCookieHandler.set(token);
+    cookieHandler.set('token', token);
   }, []);
 
   const resetToken = useCallback(() => {
     setToken('');
-    tokenCookieHandler.delete();
+    cookieHandler.delete('token');
   }, []);
 
   return <TokenContext.Provider value={{ token, resetToken, updateToken }}>{children}</TokenContext.Provider>;
