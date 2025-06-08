@@ -13,7 +13,7 @@ export function NothingFound({ message }: NothingFoundProps) {
 
   const handleReset = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    navigate(`/${ROUTES.CATALOG.path}`, { replace: true });
+    navigate(`/${ROUTES.CATALOG.path}`);
   };
 
   return (

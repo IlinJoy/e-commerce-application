@@ -1,0 +1,16 @@
+@use '../../styles/mixins' as *;
+
+.cart-aside {
+  min-width: 30vw;
+  margin-top: auto;
+
+  @include flex(column, var(--spacing-3), $align: start);
+
+  & span {
+    font-weight: 600;
+  }
+}
+
+.addressDetails {
+  margin-top: var(--spacing-3);
+}

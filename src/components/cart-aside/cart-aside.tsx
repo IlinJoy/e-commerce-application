@@ -4,14 +4,22 @@ import { mapShippingDetails } from '@/utils/cart-utils';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router';
+import styles from './cart-aside.module.scss';
 
 export function CartAside() {
   const { data: customer } = useCustomerQuery();
   const shippingDetails = mapShippingDetails(customer);
   const navigate = useNavigate();
 
+  const renderField = ([key, value]: [string, string]) => (
+    <div key={key}>
+      <span>{key}: </span>
+      {value}
+    </div>
+  );
+
   return (
-    <aside>
+    <aside className={styles.cartAside}>
       <Typography variant="h4">Shipping Details</Typography>
       {shippingDetails ? (
         <div>
@@ -22,14 +30,14 @@ export function CartAside() {
             <span>Contact Email:</span> {shippingDetails.mail}
           </div>
 
-          <div>
+          <div className={styles.addressDetails}>
             <span>Shipping Address:</span>
             {shippingDetails.shippingAddress ? (
-              Object.entries(shippingDetails.shippingAddress).map(([key, value]) => (
-                <div key={key}>
-                  <span>{key}:</span> {value}
-                </div>
-              ))
+              <div>
+                {Object.entries(shippingDetails.shippingAddress)
+                  .filter(([key]) => key !== 'id')
+                  .map(renderField)}
+              </div>
             ) : (
               <div>-</div>
             )}
