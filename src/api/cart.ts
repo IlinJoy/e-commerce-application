@@ -3,13 +3,12 @@ import { fetchFromApi } from './platformApi';
 import type { Cart } from '@commercetools/platform-sdk';
 import { createCartForCustomer } from './createCartForCustomer';
 
-export const getCart = async (id: string) => {
+export const getCart = async () => {
   const token = await getRequestToken();
-  return fetchFromApi<Cart>(`/me/carts/${id}`, token);
+  return fetchFromApi<Cart>(`/me/active-cart`, token);
 };
 
-export const getNewCartId = async () => {
+export const getNewCart = async () => {
   const token = await getRequestToken();
-  const cart = await createCartForCustomer(token);
-  return cart.id;
+  return await createCartForCustomer(token);
 };

@@ -9,7 +9,7 @@ export const useCartQuery = () => {
 
   return useQuery({
     queryKey: ['cart', token],
-    queryFn: async () => getCart(cartId),
+    queryFn: async () => getCart(),
     enabled: !!cartId,
   });
 };

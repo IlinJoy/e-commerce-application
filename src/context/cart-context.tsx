@@ -2,12 +2,15 @@
 import type { ReactNode } from 'react';
 import { createContext, use, useCallback, useEffect, useState } from 'react';
 import { cookieHandler } from '@/services/cookies/cookie-handler';
-import { getNewCartId } from '@/api/cart';
+import { getCart, getNewCart } from '@/api/cart';
+import type { Cart } from '@commercetools/platform-sdk';
+import { ERROR_MESSAGES } from '@/utils/constants/messages';
 
 type CartContextType = {
   cartId: string;
   resetCart: () => void;
 };
+type GetCartCallback = () => Promise<Cart>;
 
 const CartContext = createContext<CartContextType>({
   cartId: '',
@@ -20,12 +23,17 @@ export function CartContextProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!cartId) {
-      const setNewCartId = async () => {
-        const newCartId = await getNewCartId();
-        cookieHandler.set('cartId', newCartId);
-        setCartId(newCartId);
+      const getCurrentCart = async (callback: GetCartCallback) => {
+        try {
+          const currentCart = await callback();
+          setCartId(currentCart.id);
+          cookieHandler.set('cartId', currentCart.id);
+        } catch {
+          console.log(ERROR_MESSAGES.NEW_CART);
+          getCurrentCart(getNewCart);
+        }
       };
-      setNewCartId();
+      getCurrentCart(getCart);
     }
   }, [cartId]);
 
