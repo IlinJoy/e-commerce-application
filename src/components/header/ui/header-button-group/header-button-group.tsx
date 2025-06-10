@@ -5,6 +5,8 @@ import { SpriteIcon } from '@/components/icon/icon';
 import { useAuth } from '@/hooks/use-auth';
 import styles from './header-button-group.module.scss';
 import clsx from 'clsx';
+import { useNavigate } from 'react-router';
+import { ROUTES } from '@/router/routes';
 
 type HeaderMenuProps = {
   toggleMenuHandler: () => void;
@@ -13,10 +15,11 @@ type HeaderMenuProps = {
 
 export function HeaderButtonGroup({ toggleMenuHandler, isOpenMenu }: HeaderMenuProps) {
   const { isLoggedIn } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <div className={styles.buttonGroup}>
-      <IconButton color="primary">
+      <IconButton color="primary" onClick={() => navigate(ROUTES.CART.path)}>
         <Badge badgeContent={9} color="warning">
           <SpriteIcon id="cart" />
         </Badge>

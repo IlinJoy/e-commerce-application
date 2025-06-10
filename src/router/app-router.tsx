@@ -14,6 +14,7 @@ const NotFoundPage = lazy(ROUTES.NOT_FOUND.component);
 const RegistrationPage = lazy(ROUTES.REGISTRATION.component);
 const ProductPage = lazy(ROUTES.PRODUCT.component);
 const CatalogList = lazy(ROUTES.CATALOG_LIST.component);
+const CartPage = lazy(ROUTES.CART.component);
 const Profile = lazy(ROUTES.PROFILE.component);
 const Addresses = lazy(ROUTES.ADDRESSES.component);
 
@@ -27,6 +28,7 @@ export function AppRouter() {
         <Route path={ROUTES.CATALOG.path} element={<CatalogPage />} />
         <Route path={ROUTES.PRODUCT.path} element={<ProductPage />} />
         <Route path={ROUTES.ABOUT.path} element={<AboutPage />} />
+        <Route path={ROUTES.CART.path} element={<CartPage />} />
         <Route path={ROUTES.NOT_FOUND.path} element={<NotFoundPage />} />
 
         <Route element={<ProtectedRoute isAllowed={!isLoggedIn} />}>

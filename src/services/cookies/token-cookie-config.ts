@@ -4,18 +4,19 @@ const baseOptions = {
   samesite: 'lax',
 } as const;
 
-export const tokenCookiesConfig = {
-  key: 'token',
-  options: {
+export type CookieConfigOptions = typeof baseOptions & { maxAge: number };
+
+export const cookieConfig = {
+  token: {
     ...baseOptions,
     maxAge: 162800,
   },
-} as const;
-
-export const anonTokenCookiesConfig = {
-  key: 'anonToken',
-  options: {
+  anonToken: {
     ...baseOptions,
     maxAge: 10000,
   },
-};
+  cartId: {
+    ...baseOptions,
+    maxAge: 2592000,
+  },
+} as const;

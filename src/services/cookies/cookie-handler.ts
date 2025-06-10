@@ -1,4 +1,5 @@
-import { anonTokenCookiesConfig, tokenCookiesConfig } from './token-cookie-config';
+import type { CookieConfigOptions } from './token-cookie-config';
+import { cookieConfig } from './token-cookie-config';
 
 type CookieOptions = {
   path?: string;
@@ -9,20 +10,17 @@ type CookieOptions = {
   samesite?: 'strict' | 'lax' | 'none';
 };
 
-export class CookieHandler {
-  constructor(
-    private name: string,
-    private options: CookieOptions
-  ) {}
+class CookieHandler<T extends Record<string, CookieConfigOptions>> {
+  constructor(private config: T) {}
 
-  public get() {
-    const regexp = new RegExp('(?:^|; )' + this.name + '=([^;]*)');
+  public get(key: keyof T & string) {
+    const regexp = new RegExp(`(?:^|; )${key}=([^;]*)`);
     const matches = document.cookie.match(regexp);
     return matches ? decodeURIComponent(matches[1]) : null;
   }
 
-  public set(value: string, cookieOptions?: CookieOptions) {
-    const options = { ...this.options, ...cookieOptions };
+  public set(key: keyof T & string, value: string, cookieOptions?: CookieOptions) {
+    const options = { ...this.config[key], ...cookieOptions };
 
     if (options.expires instanceof Date) {
       options.expires = options.expires.toUTCString();
@@ -33,14 +31,14 @@ export class CookieHandler {
         const cookieKey = key === 'maxAge' ? 'max-age' : key;
         return string + `; ${cookieKey}=${value.toString()}`;
       },
-      `${this.encode(this.name, value)}`
+      `${this.encode(key, value)}`
     );
 
     document.cookie = cookieString;
   }
 
-  public delete() {
-    this.set('', { maxAge: -1 });
+  public delete(key: keyof T & string) {
+    this.set(key, '', { maxAge: -1 });
   }
 
   private encode(name: string, value: string) {
@@ -48,5 +46,4 @@ export class CookieHandler {
   }
 }
 
-export const tokenCookieHandler = new CookieHandler(tokenCookiesConfig.key, tokenCookiesConfig.options);
-export const anonCookieHandler = new CookieHandler(anonTokenCookiesConfig.key, anonTokenCookiesConfig.options);
+export const cookieHandler = new CookieHandler(cookieConfig);

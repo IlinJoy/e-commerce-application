@@ -1,11 +1,11 @@
 import type { ReactNode } from 'react';
-import { UserContextProvider } from '../user-context';
 import { TokenContextProvider } from '../token-context';
+import { CartContextProvider } from '../cart-context';
 
 export function CustomerProvider({ children }: { children: ReactNode }) {
   return (
-    <UserContextProvider>
-      <TokenContextProvider>{children}</TokenContextProvider>
-    </UserContextProvider>
+    <TokenContextProvider>
+      <CartContextProvider>{children}</CartContextProvider>
+    </TokenContextProvider>
   );
 }
