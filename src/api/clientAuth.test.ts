@@ -1,10 +1,16 @@
-import { fetchLoggedInCustomer } from './clientAuth';
-import { getCustomerToken, fetchFromApi } from '@/api/platformApi';
+import { loginCustomer } from './clientAuth';
+import { fetchFromApi, getCustomerToken } from '@/api/platformApi';
+import { getRequestToken } from '@/utils/request-token-handler';
 
 vi.mock('@/api/platformApi', () => ({
-  getCustomerToken: vi.fn(),
   fetchFromApi: vi.fn(),
+  getCustomerToken: vi.fn(),
 }));
+
+vi.mock('@/utils/request-token-handler', () => ({
+  getRequestToken: vi.fn(),
+}));
+
 vi.mock('@/utils/mapApiErrorToMessage', () => ({
   mapApiErrorToMessage: vi.fn(),
 }));
@@ -14,16 +20,29 @@ describe('fetchLoggedInCustomer', () => {
   const mockPassword = 'Test123!';
   const mockToken = 'token';
   const mockCustomer = { id: '123' };
-  const mockedGetCustomerToken = vi.mocked(getCustomerToken);
+  const mockCustomerToken = 'customer token';
+
+  const mockedGetRequestToken = vi.mocked(getRequestToken);
   const mockedFetchFromApi = vi.mocked(fetchFromApi);
+  const mockedGetCustomerToken = vi.mocked(getCustomerToken);
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
 
   it('should log in customer', async () => {
-    mockedGetCustomerToken.mockResolvedValue(mockToken);
+    mockedGetRequestToken.mockResolvedValue(mockToken);
     mockedFetchFromApi.mockResolvedValue(mockCustomer);
+    mockedGetCustomerToken.mockResolvedValue(mockCustomerToken);
 
-    const result = await fetchLoggedInCustomer(mockEmail, mockPassword);
+    const result = await loginCustomer(mockEmail, mockPassword);
+
+    expect(mockedGetRequestToken).toHaveBeenCalled();
+    expect(mockedFetchFromApi).toHaveBeenCalledWith('/me/login', mockToken, {
+      method: 'POST',
+      body: JSON.stringify({ email: mockEmail, password: mockPassword }),
+    });
     expect(mockedGetCustomerToken).toHaveBeenCalledWith(mockEmail, mockPassword);
-    expect(mockedFetchFromApi).toHaveBeenCalledWith('/me', mockToken);
-    expect(result).toEqual({ customer: mockCustomer, customerToken: mockToken });
+    expect(result).toEqual({ customer: mockCustomer, customerToken: mockCustomerToken });
   });
 });

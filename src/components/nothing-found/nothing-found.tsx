@@ -4,21 +4,26 @@ import styles from './nothing-found.module.scss';
 import Typography from '@mui/material/Typography';
 import { ROUTES } from '@/router/routes';
 
-export function NothingFound() {
+type NothingFoundProps = {
+  message?: string;
+};
+
+export function NothingFound({ message }: NothingFoundProps) {
   const navigate = useNavigate();
 
   const handleReset = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    navigate(`/${ROUTES.CATALOG.path}`, { replace: true });
+    navigate(`/${ROUTES.CATALOG.path}`);
   };
 
   return (
     <div className={styles.nothingFound}>
-      <Typography>
+      <Typography component="div">
         Looks like we couldn't find anything here.
-        <br /> Try searching again!
+        <br />
+        {message}
       </Typography>
-      <Button onClick={() => handleReset()}>Back to catalog</Button>
+      <Button onClick={() => handleReset()}>Go to catalog</Button>
     </div>
   );
 }

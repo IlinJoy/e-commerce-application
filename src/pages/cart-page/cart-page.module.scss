@@ -1,0 +1,13 @@
+@use '../../styles/mixins' as *;
+
+.cart {
+  width: 100%;
+  max-width: 1440px;
+
+  @include flex;
+
+  @include media(tablet) {
+    flex-direction: column-reverse;
+    gap: var(--spacing-5);
+  }
+}

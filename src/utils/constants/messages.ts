@@ -5,6 +5,7 @@ export const ERROR_MESSAGES = {
   UPDATE_INFO: 'Could not update information. Please login to proceed.',
   UPDATE_PASSWORD_FAIL: 'Changing password error',
   TOKEN_NOT_FOUND: 'Could not found your personal access token, please register or reload page.',
+  NEW_CART: 'Creating new cart...',
 };
 
 export const SUCCESS_MESSAGES = {

@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { registrationSchema } from '@/validation/registration-validation';
 import type { Addresses, RegisterFormInputs } from '@/validation/registration-validation';
 import styles from './registration-page.module.scss';
-import { getAnonymousToken, getCustomerToken } from '@/api/platformApi';
+import { getCustomerToken } from '@/api/platformApi';
 import { registerCustomer } from '@/api/clientAuth';
 import { useAuth } from '@/hooks/use-auth';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/utils/constants/messages';
@@ -49,14 +49,13 @@ export function RegistrationPage() {
     mode: 'onChange',
     defaultValues: defaultValues,
   });
-  const { onRegistration, onLogout } = useAuth();
+  const { onLogout } = useAuth();
   const { showToast } = useToast();
   const { updateToken } = useToken();
   const navigate = useNavigate();
 
   const handleRegistration = async (data: RegisterFormInputs) => {
-    const token = await getAnonymousToken(data.customerData.email);
-    const customerInfo = await registerCustomer(token, data);
+    const customerInfo = await registerCustomer(data);
     if (!customerInfo?.customer.id) {
       throw new Error(ERROR_MESSAGES.REGISTRATION_FAIL);
     }
@@ -66,7 +65,6 @@ export function RegistrationPage() {
   const { mutate, isPending } = useMutation({
     mutationFn: handleRegistration,
     onSuccess: (data) => {
-      onRegistration(data.customer);
       mutateToken({ email: data.customer.email, password: data.password });
       showToast({ message: SUCCESS_MESSAGES.REGISTRATION });
     },
