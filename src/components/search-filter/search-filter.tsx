@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { debounce } from '@/utils/debounce';
 import { useSearchParams } from 'react-router';
 import Tooltip from '@mui/material/Tooltip';
-import { SUCCESS_MESSAGES } from '@/utils/constants/messages';
+import { MESSAGES } from '@/utils/constants/messages';
 
 export function SearchInput() {
   const { filterParams, setFilterParams } = useCatalogFilters();
@@ -36,7 +36,7 @@ export function SearchInput() {
         <SpriteIcon id="search" />
       </div>
       {search && (
-        <Tooltip title={SUCCESS_MESSAGES.SEARCHING} arrow>
+        <Tooltip title={MESSAGES.SEARCHING} arrow>
           <span className={styles.mark}>?</span>
         </Tooltip>
       )}

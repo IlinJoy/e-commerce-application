@@ -14,7 +14,7 @@ export const useAuth = () => {
   const onLogin = useCallback(
     (data?: FetchedCustomer) => {
       if (!data) {
-        throw new Error(ERROR_MESSAGES.LOGIN_FAIL);
+        throw new Error(ERROR_MESSAGES.SOMETHING_WRONG);
       }
       updateToken(data.customerToken);
     },
