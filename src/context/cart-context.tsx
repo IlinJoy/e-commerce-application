@@ -3,23 +3,37 @@ import type { ReactNode } from 'react';
 import { createContext, use, useCallback, useEffect, useState } from 'react';
 import { cookieHandler } from '@/services/cookies/cookie-handler';
 import { getCart, getNewCart } from '@/api/cart';
-import type { Cart } from '@commercetools/platform-sdk';
+import type { Cart, DiscountCode } from '@commercetools/platform-sdk';
 import { ERROR_MESSAGES } from '@/utils/constants/messages';
+import { LANG } from '@/utils/constants/filters';
+
+type Discount = {
+  code: string;
+  name?: string;
+  id: string;
+};
+
+type Discounts = Record<string, Discount>;
+type GetCartCallback = () => Promise<Cart>;
 
 type CartContextType = {
   cartId: string;
   resetCart: () => void;
+  discounts: Discounts;
+  addDiscount: (discountCode: DiscountCode) => void;
 };
-type GetCartCallback = () => Promise<Cart>;
 
 const CartContext = createContext<CartContextType>({
   cartId: '',
   resetCart: () => {},
+  discounts: {},
+  addDiscount: () => {},
 });
 
 export function CartContextProvider({ children }: { children: ReactNode }) {
   const cartIdFromCookies = cookieHandler.get('cartId') || '';
   const [cartId, setCartId] = useState(cartIdFromCookies);
+  const [discounts, setDiscounts] = useState<Discounts>({});
 
   useEffect(() => {
     if (!cartId) {
@@ -42,7 +56,18 @@ export function CartContextProvider({ children }: { children: ReactNode }) {
     cookieHandler.delete('cartId');
   }, []);
 
-  return <CartContext.Provider value={{ cartId, resetCart }}>{children}</CartContext.Provider>;
+  const addDiscount = useCallback((discountCode: DiscountCode) => {
+    const newDiscount = {
+      [discountCode.code]: {
+        name: discountCode.name?.[LANG],
+        code: discountCode.code,
+        id: discountCode.id,
+      },
+    };
+    setDiscounts((prev) => ({ ...prev, ...newDiscount }));
+  }, []);
+
+  return <CartContext.Provider value={{ cartId, resetCart, discounts, addDiscount }}>{children}</CartContext.Provider>;
 }
 
 export const useCart = () => {

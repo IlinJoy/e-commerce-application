@@ -1,0 +1,53 @@
+@use '../../../../styles/mixins' as *;
+
+.top-bar {
+  max-height: 1.5rem;
+
+  @include transition;
+
+  &.hidden {
+    max-height: 0;
+    visibility: hidden;
+    opacity: 0;
+  }
+}
+
+.promo-wrapper {
+  cursor: pointer;
+  overflow: hidden;
+  width: max-content;
+  background-color: var(--mui-palette-primary-dark);
+
+  @include flex(row, 0);
+  @include transition;
+
+  & .promo {
+    display: inline-block;
+
+    color: var(--pallet-color-dark);
+    letter-spacing: 0.2em;
+    white-space: nowrap;
+
+    animation: discount-row 250s linear infinite;
+
+    @include transition;
+  }
+
+  &:hover {
+    background-color: var(--mui-palette-primary-main);
+  }
+
+  &:hover .promo {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes discount-row {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}

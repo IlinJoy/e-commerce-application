@@ -20,5 +20,5 @@ export const SUCCESS_MESSAGES = {
 
 export const MESSAGES = {
   SEARCHING: 'Partial match suggestions. The full equivalent will be marked by color.',
-  DISCOUNT_COPY: 'Click to apply promo code to your cart.',
+  DISCOUNT_COPY: 'Click to copy promo code.',
 };
