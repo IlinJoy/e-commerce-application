@@ -5,7 +5,6 @@ import { getProductIdFromUrl } from '@/utils/getProductKeyFromUrl';
 import { NotFoundPage } from '../not-found-page/not-found-page';
 import Typography from '@mui/material/Typography';
 import { ProductImageBlock } from '@/components/product-image-block/product-image-block';
-import { mapPrices } from '@/utils/catalog-utils';
 import { PriceBlock } from '@/components/price-block/price-block';
 
 export const ProductPage = () => {
@@ -30,7 +29,7 @@ export const ProductPage = () => {
   }
 
   const images = data?.masterVariant?.images;
-  const { itemPrice, itemDiscountedPrice, hasDiscount } = mapPrices(data?.masterVariant?.prices);
+  const prices = data?.masterVariant?.prices;
 
   return (
     <article className={styles.product}>
@@ -39,7 +38,7 @@ export const ProductPage = () => {
         <Typography variant="h4" component="h2">
           {data?.name['en-US']}
         </Typography>
-        <PriceBlock hasDiscount={hasDiscount} itemPrice={itemPrice} itemDiscountedPrice={itemDiscountedPrice} />
+        <PriceBlock price={prices} />
         <Typography className={styles.description}>{data?.description?.['en-US']}</Typography>
       </div>
     </article>

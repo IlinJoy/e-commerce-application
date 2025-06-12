@@ -1,4 +1,4 @@
-import { mapPrices } from '@/utils/catalog-utils';
+import { getDiscountPercent } from '@/utils/catalog-utils';
 import type { ProductProjection } from '@commercetools/platform-sdk';
 import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
@@ -27,13 +27,14 @@ export function ProductCard({ product }: ProductCardProps) {
 
   const image = images?.[0];
   const itemDescription = description?.[LANG] || '';
-  const { itemPrice, hasDiscount, ...discountInfo } = mapPrices(prices);
+  const price = prices?.[0];
+  const discountPercent = getDiscountPercent(price?.value.centAmount, price?.discounted?.value.centAmount);
 
   return (
     <Card className={styles.cardWrapper} variant="outlined">
       <CardActionArea onClick={() => navigate(`/${ROUTES.PRODUCT.base}/${key}`)}>
-        {hasDiscount && (
-          <Typography className={styles.discount} component="span">{`-${discountInfo.discountPercent}%`}</Typography>
+        {discountPercent && (
+          <Typography className={styles.discount} component="span">{`-${discountPercent}%`}</Typography>
         )}
 
         <CardMedia component="img" height="380" image={image?.url} alt={image?.label} />
@@ -41,11 +42,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <CardContent>
           <HighlightedText text={name[LANG]} isHeading />
           <HighlightedText text={itemDescription} />
-          <PriceBlock
-            hasDiscount={hasDiscount}
-            itemPrice={itemPrice}
-            itemDiscountedPrice={discountInfo.itemDiscountedPrice}
-          />
+          <PriceBlock price={prices} />
         </CardContent>
       </CardActionArea>
     </Card>
