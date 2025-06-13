@@ -1,13 +1,14 @@
 @use '../../styles/mixins' as *;
 
 .cart {
+  position: relative;
   width: 100%;
   max-width: 1440px;
 
-  @include flex;
+  @include flex(row, var(--spacing-5), $justify: start, $align: start);
 
   @include media(tablet) {
-    flex-direction: column-reverse;
+    flex-direction: column;
     gap: var(--spacing-5);
   }
 }
@@ -16,4 +17,22 @@
   width: 100%;
 
   @include flex(column, var(--spacing-1));
+}
+
+.cart-aside {
+  position: sticky;
+  top: var(--spacing-8);
+  min-width: 30vw;
+  padding: var(--spacing-2);
+
+  @include flex(column, var(--spacing-3), $align: start);
+
+  & span {
+    font-weight: 600;
+  }
+
+  @include media(tablet) {
+    width: 100%;
+    border-top: 1px solid var(--mui-palette-primary-main);
+  }
 }

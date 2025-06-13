@@ -1,25 +1,25 @@
 import { useCustomerQuery } from '@/hooks/use-customer-query';
-import { ROUTES } from '@/router/routes';
+import { ShippingRow } from './shipping-row';
 import { mapShippingDetails } from '@/utils/cart-utils';
+import { useNavigate } from 'react-router';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { useNavigate } from 'react-router';
-import styles from './cart-aside.module.scss';
-import { CartAsideRow } from './cart-aside-row';
+import styles from './shipping-cart-block.module.scss';
+import { ROUTES } from '@/router/routes';
 
-export function CartAside() {
+export function ShippingCartBlock() {
   const { data: customer } = useCustomerQuery();
   const shippingDetails = mapShippingDetails(customer);
   const navigate = useNavigate();
 
   return (
-    <aside className={styles.cartAside}>
+    <div className={styles.shippingBlock}>
       <Typography variant="h4">Shipping Details</Typography>
 
       {shippingDetails ? (
         <div>
-          <CartAsideRow title="Contact Name" info={shippingDetails.name} />
-          <CartAsideRow title="Contact Email" info={shippingDetails.name} />
+          <ShippingRow title="Contact Name" info={shippingDetails.name} />
+          <ShippingRow title="Contact Email" info={shippingDetails.name} />
 
           {shippingDetails.shippingAddress && (
             <div className={styles.addressDetails}>
@@ -28,7 +28,7 @@ export function CartAside() {
               {Object.entries(shippingDetails.shippingAddress)
                 .filter(([key]) => key !== 'id')
                 .map(([key, value]: [string, string]) => (
-                  <CartAsideRow key={key} title={key} info={value} />
+                  <ShippingRow key={key} title={key} info={value} />
                 ))}
             </div>
           )}
@@ -38,6 +38,6 @@ export function CartAside() {
       )}
 
       <Button onClick={() => navigate(`/${ROUTES.ACCOUNT.path}`)}>Update Info</Button>
-    </aside>
+    </div>
   );
 }
