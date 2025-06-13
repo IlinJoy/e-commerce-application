@@ -1,6 +1,7 @@
 @use '../../styles/mixins' as *;
 
 .card-wrapper {
+  position: relative;
   flex: 1 1 300px;
   max-width: 500px;
   background-color: var(--mui-palette-background-default);
@@ -39,4 +40,58 @@
   text-overflow: ellipsis;
 
   opacity: 0.75;
+}
+
+.add-btn {
+  position: absolute;
+  right: 16px;
+  bottom: 6px;
+
+  padding: 0.8em 2.7em;
+  border: 1px solid var(--mui-palette-error-main);
+
+  color: var(--mui-palette-primary-main);
+
+  background-color: var(--mui-palette-error-main);
+
+  &:hover {
+    border: 1px solid var(--palette-accent-dark);
+    background-color: var(--palette-accent-dark);
+  }
+}
+
+.remove-btn {
+  position: absolute;
+  right: 16px;
+  bottom: 6px;
+
+  padding: 0.8em;
+  border: 1px solid var(--mui-palette-primary-dark);
+
+  color: var(--mui-palette-primary-main);
+
+  background-color: var(--mui-palette-background-default);
+
+  &:hover {
+    color: var(--mui-palette-background-default);
+    background-color: var(--mui-palette-primary-main);
+  }
+}
+
+.card-action-area {
+  margin-bottom: 60px;
+}
+
+.in-cart-wrapper {
+  position: absolute;
+  bottom: 17px;
+  left: 16px;
+
+  display: flex;
+  align-items: flex-end;
+}
+
+.check-icon {
+  font-size: 30px;
+  color: green;
 }
