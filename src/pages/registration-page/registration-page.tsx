@@ -14,6 +14,10 @@ import { useToken } from '@/context/token-context';
 import { ROUTES } from '@/router/routes';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router';
+import { setShippingAddressToCart } from '@/api/setAddressToCart';
+import { useCart } from '@/context/cart-context';
+import { getShippingAddressForCart } from '@/utils/cart-utils';
+import type { Cart, Customer } from '@commercetools/platform-sdk';
 
 const defaultAddress: Addresses = {
   country: '',
@@ -52,26 +56,40 @@ export function RegistrationPage() {
   const { onLogout } = useAuth();
   const { showToast } = useToast();
   const { updateToken } = useToken();
+  const { setCart } = useCart();
   const navigate = useNavigate();
 
   const handleRegistration = async (data: RegisterFormInputs) => {
     const customerInfo = await registerCustomer(data);
-    if (!customerInfo?.customer.id) {
+    if (!customerInfo?.customer.id || !customerInfo.cart) {
       throw new Error(ERROR_MESSAGES.REGISTRATION_FAIL);
     }
-    return { customer: customerInfo.customer, password: data.customerData.password };
+    return { customer: customerInfo.customer, password: data.customerData.password, cart: customerInfo.cart };
+  };
+
+  const handleSetCartAddress = async (customer: Customer, cart: Cart) => {
+    const shippingAddress = getShippingAddressForCart(customer);
+    if (shippingAddress) {
+      const newCart = await setShippingAddressToCart({
+        cartId: cart.id,
+        cartVersion: cart.version,
+        address: shippingAddress,
+      });
+      setCart(newCart);
+    }
   };
 
   const { mutate, isPending } = useMutation({
     mutationFn: handleRegistration,
-    onSuccess: (data) => {
-      mutateToken({ email: data.customer.email, password: data.password });
+    onSuccess: async (data) => {
+      await mutateToken({ email: data.customer.email, password: data.password });
+      handleSetCartAddress(data.customer, data.cart);
       showToast({ message: SUCCESS_MESSAGES.REGISTRATION });
     },
     onError: (error) => showToast({ message: error.message, isError: true }),
   });
 
-  const { mutate: mutateToken } = useMutation({
+  const { mutateAsync: mutateToken } = useMutation({
     mutationFn: (data: { email: string; password: string }) => getCustomerToken(data.email, data.password),
     onSuccess: (token) => updateToken(token),
     onError: () => {

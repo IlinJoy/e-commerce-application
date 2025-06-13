@@ -1,31 +1,36 @@
-import { useCustomerQuery } from '@/hooks/use-customer-query';
 import { ShippingRow } from './shipping-row';
-import { mapShippingDetails } from '@/utils/cart-utils';
+
 import { useNavigate } from 'react-router';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import styles from './shipping-cart-block.module.scss';
 import { ROUTES } from '@/router/routes';
+import { useCart } from '@/context/cart-context';
+import { useCustomerQuery } from '@/hooks/use-customer-query';
 
 export function ShippingCartBlock() {
-  const { data: customer } = useCustomerQuery();
-  const shippingDetails = mapShippingDetails(customer);
+  const { cart } = useCart();
+  const { data: customer, isLoading } = useCustomerQuery();
   const navigate = useNavigate();
+
+  if (isLoading) {
+    return <div>Updating Shipping Information...</div>;
+  }
 
   return (
     <div className={styles.shippingBlock}>
       <Typography variant="h4">Shipping Details</Typography>
 
-      {shippingDetails ? (
+      {customer ? (
         <div>
-          <ShippingRow title="Contact Name" info={shippingDetails.name} />
-          <ShippingRow title="Contact Email" info={shippingDetails.name} />
+          <ShippingRow title="Contact Name" info={customer.firstName} />
+          <ShippingRow title="Contact Email" info={customer.email} />
 
-          {shippingDetails.shippingAddress && (
+          {cart?.shippingAddress && (
             <div className={styles.addressDetails}>
               <span>Shipping Address:</span>
 
-              {Object.entries(shippingDetails.shippingAddress)
+              {Object.entries(cart.shippingAddress)
                 .filter(([key]) => key !== 'id')
                 .map(([key, value]: [string, string]) => (
                   <ShippingRow key={key} title={key} info={value} />
