@@ -5,7 +5,9 @@ export const ERROR_MESSAGES = {
   UPDATE_INFO: 'Could not update information. Please login to proceed.',
   UPDATE_PASSWORD_FAIL: 'Changing password error',
   TOKEN_NOT_FOUND: 'Could not found your personal access token, please register or reload page.',
-  NEW_CART: 'Creating new cart...',
+  CREATE_CART_FAIL: 'Failed to create a cart',
+  ADD_PRODUCT_FAIL: 'Failed to add this product to cart!',
+  REMOVE_PRODUCT_FAIL: 'Failed to remove this product from cart!',
 };
 
 export const SUCCESS_MESSAGES = {
@@ -16,4 +18,6 @@ export const SUCCESS_MESSAGES = {
   PROFILE: 'Your profile updated',
   PASSWORD: 'Password updated',
   SEARCHING: ' Partial match suggestions. The full equivalent will be marked by color.',
+  ADD_PRODUCT: 'This product added to cart',
+  REMOVE_PRODUCT: 'This product has been removed from your cart',
 };
