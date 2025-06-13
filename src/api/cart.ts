@@ -12,3 +12,12 @@ export const getNewCart = async () => {
   const token = await getRequestToken();
   return await createCartForCustomer(token);
 };
+
+type DeleteCartProps = { id: string; version: number };
+
+export const deleteCart = async ({ id, version }: DeleteCartProps) => {
+  const token = await getRequestToken();
+  return fetchFromApi<Cart>(`/me/carts/${id}?version=${version} `, token, {
+    method: 'DELETE',
+  });
+};
