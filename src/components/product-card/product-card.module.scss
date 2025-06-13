@@ -77,3 +77,21 @@
     background-color: var(--mui-palette-primary-main);
   }
 }
+
+.card-action-area {
+  margin-bottom: 60px;
+}
+
+.in-cart-wrapper {
+  position: absolute;
+  bottom: 17px;
+  left: 16px;
+
+  display: flex;
+  align-items: flex-end;
+}
+
+.check-icon {
+  font-size: 30px;
+  color: green;
+}

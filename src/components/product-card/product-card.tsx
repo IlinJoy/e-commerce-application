@@ -63,7 +63,7 @@ export function ProductCard({ product }: ProductCardProps) {
     }
 
     if (currentCart.anonymousId) {
-      cookieHandler.delete('cartId'); //Если зайти в режим инкогнито, надо удалять cartId, т.к. вылазит ошибка
+      cookieHandler.delete('cartId'); //Если зайти в режим инкогнито, надо удалять cartId, т.к. появляется ошибка
 
       try {
         currentCart = await getCartWithoutToken();
@@ -129,7 +129,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
   return (
     <Card className={styles.cardWrapper} variant="outlined">
-      <CardActionArea style={{ marginBottom: '60px' }} onClick={() => navigate(`/${ROUTES.PRODUCT.base}/${key}`)}>
+      <CardActionArea className={styles.cardActionArea} onClick={() => navigate(`/${ROUTES.PRODUCT.base}/${key}`)}>
         {hasDiscount && (
           <Typography className={styles.discount} component="span">{`-${discountInfo.discountPercent}%`}</Typography>
         )}
@@ -153,8 +153,8 @@ export function ProductCard({ product }: ProductCardProps) {
         </Button>
       ) : (
         <>
-          <div style={{ position: 'absolute', left: '16px', bottom: '17px', display: 'flex', alignItems: 'flex-end' }}>
-            <CheckIcon style={{ color: 'green', fontSize: 30 }} /> In cart
+          <div className={styles.inCartWrapper}>
+            <CheckIcon className={styles.checkIcon} /> In cart
           </div>
           <Button onClick={handleRemoveFromCart} className={styles.removeBtn}>
             Remove from cart
