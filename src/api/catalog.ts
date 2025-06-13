@@ -7,12 +7,6 @@ import type {
   ProductType,
 } from '@commercetools/platform-sdk';
 
-export const getProducts = async (): Promise<ProductProjection[]> => {
-  const token = await getRequestToken();
-  const result = await fetchFromApi<{ results: ProductProjection[] }>('/product-projections', token);
-  return result.results;
-};
-
 export const getProductByKey = async (key: string): Promise<ProductProjection> => {
   const token = await getRequestToken();
   const result = await fetchFromApi<ProductProjection>(`/product-projections/key=${key}`, token);
