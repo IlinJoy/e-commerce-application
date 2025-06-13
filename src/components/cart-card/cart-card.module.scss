@@ -5,25 +5,40 @@
 
   position: relative;
 
+  overflow: hidden;
+
   width: 100%;
-  min-height: 200px;
+  height: 220px;
   border: 1px solid var(--mui-palette-grey-800);
   border-radius: var(--border-radius-1);
+}
+
+.image-wrapper {
+  overflow: hidden;
+  flex-grow: 1;
+
+  width: 200px;
+  min-width: 120px;
+  height: 100%;
+
+  @include flex($justify: center);
 
   & .image {
-    width: 150px;
-  }
-
-  & .content {
     width: 100%;
     height: 100%;
-    padding: var(--spacing-2);
+    object-fit: cover;
+  }
+}
 
-    @include flex(row, var(--spacing-2));
+.content {
+  width: 100%;
+  height: 100%;
+  padding: var(--spacing-2);
 
-    @include media(phone) {
-      @include flex(column, $align: start);
-    }
+  @include flex(row, var(--spacing-1));
+
+  @include media(phone) {
+    @include flex(column, $align: start);
   }
 }
 
@@ -48,7 +63,7 @@
 }
 
 .product-amount {
-  @include flex(row, var(--spacing-4), $justify: flex-end);
+  @include flex(row, var(--spacing-2), $justify: flex-end);
 
   flex-grow: 1;
   flex-wrap: wrap;
@@ -64,6 +79,7 @@
   @include flex(column, $align: end);
 
   min-width: 120px;
+  margin-top: var(--spacing-2);
   margin-left: auto;
 
   & div {

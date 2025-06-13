@@ -23,7 +23,10 @@ export function CartRow({ product }: CartRowProps) {
 
   return (
     <div className={styles.productRow}>
-      <img className={styles.image} src={cover?.url} alt={cover?.label}></img>
+      <div className={styles.imageWrapper}>
+        <img className={styles.image} src={cover?.url} alt={cover?.label}></img>
+      </div>
+
       <div className={styles.content}>
         <div className={styles.productInfo}>
           <Typography

@@ -5,7 +5,7 @@
   width: 100%;
   max-width: 1440px;
 
-  @include flex(row, var(--spacing-5), $justify: start, $align: start);
+  @include flex(row, var(--spacing-2), $justify: start, $align: start);
 
   @include media(tablet) {
     flex-direction: column;
@@ -29,7 +29,9 @@
 .cart-aside {
   position: sticky;
   top: var(--spacing-8);
-  min-width: 300px;
+
+  width: 100%;
+  max-width: 400px;
   padding: var(--spacing-2);
 
   @include flex(column, var(--spacing-3), $align: start);
@@ -39,7 +41,7 @@
   }
 
   @include media(tablet) {
-    width: 100%;
+    max-width: none;
     border-top: 1px solid var(--mui-palette-primary-main);
   }
 }
