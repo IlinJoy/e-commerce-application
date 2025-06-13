@@ -1,4 +1,4 @@
-import { getCartWithoutToken, getOrCreateCart } from '@/api/cart';
+import { getOrCreateCart } from '@/api/cart';
 import { useCart } from '@/context/cart-context';
 import { useToken } from '@/context/token-context';
 import { ERROR_MESSAGES } from '@/utils/constants/messages';
@@ -25,13 +25,10 @@ export const useAuth = () => {
     [setCart, updateToken]
   );
 
-  const onLogout = useCallback(async () => {
+  const onLogout = useCallback(() => {
     resetToken();
     resetCart();
-
-    const anonCart = await getCartWithoutToken();
-    setCart(anonCart);
-  }, [resetCart, resetToken, setCart]);
+  }, [resetCart, resetToken]);
 
   return { onLogin, onLogout, isLoggedIn };
 };
