@@ -1,4 +1,4 @@
-import { getDiscountPercent, mapPrices } from '@/utils/catalog-utils';
+import { getDiscountPercent } from '@/utils/catalog-utils';
 import type { ProductProjection } from '@commercetools/platform-sdk';
 import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';

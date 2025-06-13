@@ -1,5 +1,4 @@
 import { NothingFound } from '@/components/nothing-found/nothing-found';
-import { useCartQuery } from '@/hooks/use-cart-query';
 import Container from '@mui/material/Container';
 import styles from './cart-page.module.scss';
 import { CartRow } from '@/components/cart-card/cart-card';
@@ -13,7 +12,7 @@ import { useToast } from '@/context/toast-provider';
 import { SUCCESS_MESSAGES } from '@/utils/constants/messages';
 
 export function CartPage() {
-  const { data: cart, isFetching } = useCartQuery();
+  const { cart, isLoading } = useCart();
   const { resetCart } = useCart();
   const { showToast } = useToast();
 
@@ -37,7 +36,7 @@ export function CartPage() {
     mutate({ id, version });
   };
 
-  if (isFetching) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 

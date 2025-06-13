@@ -7,8 +7,8 @@ import styles from './header-button-group.module.scss';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router';
 import { ROUTES } from '@/router/routes';
-import { useCartQuery } from '@/hooks/use-cart-query';
 import { getItemsAmount } from '@/utils/cart-utils';
+import { useCart } from '@/context/cart-context';
 
 type HeaderMenuProps = {
   toggleMenuHandler: () => void;
@@ -18,7 +18,7 @@ type HeaderMenuProps = {
 export function HeaderButtonGroup({ toggleMenuHandler, isOpenMenu }: HeaderMenuProps) {
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
-  const { data: cart } = useCartQuery();
+  const { cart } = useCart();
 
   const itemsAmount = getItemsAmount(cart?.lineItems);
 
