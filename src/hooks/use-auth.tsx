@@ -1,3 +1,4 @@
+import { getCartWithoutToken, getOrCreateCart } from '@/api/cart';
 import { useCart } from '@/context/cart-context';
 import { useToken } from '@/context/token-context';
 import { ERROR_MESSAGES } from '@/utils/constants/messages';
@@ -7,24 +8,30 @@ import { useCallback } from 'react';
 export type FetchedCustomer = { customer: CustomerSignInResult; customerToken: string };
 
 export const useAuth = () => {
-  const { resetCart } = useCart();
+  const { setCart, resetCart } = useCart();
   const { updateToken, resetToken, token } = useToken();
   const isLoggedIn = !!token;
 
   const onLogin = useCallback(
-    (data?: FetchedCustomer) => {
+    async (data?: FetchedCustomer) => {
       if (!data) {
         throw new Error(ERROR_MESSAGES.LOGIN_FAIL);
       }
       updateToken(data.customerToken);
+
+      const cart = await getOrCreateCart(data.customerToken);
+      setCart(cart);
     },
-    [updateToken]
+    [setCart, updateToken]
   );
 
-  const onLogout = useCallback(() => {
+  const onLogout = useCallback(async () => {
     resetToken();
     resetCart();
-  }, [resetCart, resetToken]);
+
+    const anonCart = await getCartWithoutToken();
+    setCart(anonCart);
+  }, [resetCart, resetToken, setCart]);
 
   return { onLogin, onLogout, isLoggedIn };
 };

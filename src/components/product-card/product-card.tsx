@@ -12,13 +12,16 @@ import { useNavigate } from 'react-router';
 import { ROUTES } from '@/router/routes';
 import { PriceBlock } from '../price-block/price-block';
 import Button from '@mui/material/Button';
-import { getOrCreateCart } from '@/api/getOrCreateCart';
 import { addProductToCart } from '@/api/addProductToCart';
-import { useToken } from '@/context/token-context';
 import { removeProductFromCart } from '@/api/removeProductFromCart';
 import { useEffect, useState } from 'react';
-import { anonCookieHandler } from '@/services/cookies/cookie-handler';
 import { useToast } from '@/context/toast-provider';
+import { useCart } from '@/context/cart-context';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/utils/constants/messages';
+import { getRequestToken } from '@/utils/request-token-handler';
+import CheckIcon from '@mui/icons-material/Check';
+import { getCartWithoutToken } from '@/api/cart';
+import { cookieHandler } from '@/services/cookies/cookie-handler';
 
 type ProductCardProps = {
   product: ProductProjection;
@@ -37,62 +40,69 @@ export function ProductCard({ product }: ProductCardProps) {
   const itemDescription = description?.[LANG] || '';
   const { itemPrice, hasDiscount, ...discountInfo } = mapPrices(prices);
 
+  const { cart, setCart } = useCart();
   const [inCart, setInCart] = useState(false);
   const { showToast } = useToast();
 
-  const { token } = useToken();
-  const currentToken = token || anonCookieHandler.get();
-
   useEffect(() => {
-    const checkProduct = async () => {
-      if (!currentToken) {
-        return;
-      }
-
-      const cart = await getOrCreateCart(currentToken);
-      const isProductInCart = cart.lineItems.some((item) => item.productId === product.id);
-
-      setInCart(isProductInCart);
-    };
-
-    checkProduct();
-  }, [currentToken, product.id, token]);
-
-  const handleAddToCart = async () => {
-    if (!currentToken) {
+    if (!cart || !cart.lineItems) {
+      setInCart(false);
       return;
     }
 
-    try {
-      const cart = await getOrCreateCart(currentToken);
+    const isProductInCart = cart.lineItems.some((item) => item.productId === product.id);
+    setInCart(isProductInCart);
+  }, [cart, product.id]);
 
+  const handleAddToCart = async () => {
+    const currentToken = await getRequestToken();
+    let currentCart = cart;
+
+    if (!currentCart) {
+      return;
+    }
+
+    if (currentCart.anonymousId) {
+      cookieHandler.delete('cartId'); //Если зайти в режим инкогнито, надо удалять cartId, т.к. вылазит ошибка
+
+      try {
+        currentCart = await getCartWithoutToken();
+        setCart(currentCart);
+      } catch {
+        showToast({ message: ERROR_MESSAGES.ADD_PRODUCT_FAIL, isError: true });
+        return;
+      }
+    }
+
+    try {
       const updatedCart = await addProductToCart({
         token: currentToken,
-        cartId: cart.id,
-        cartVersion: cart.version,
+        cartId: currentCart.id,
+        cartVersion: currentCart.version,
         productId: product.id,
         variantId: product.masterVariant.id,
         quantity: 1,
       });
 
+      setCart(updatedCart);
       setInCart(true);
-      showToast({ message: 'This product added to cart' });
+      showToast({ message: SUCCESS_MESSAGES.ADD_PRODUCT });
 
-      //это для удобства, потом удалить
-      console.log(`added: ${product.name[LANG]}, items in cart: ${updatedCart.lineItems.length}`);
+      //TODO это для удобства, потом удалить
+      console.log(`added: ${product.name[LANG]}, items in the cart: ${updatedCart.lineItems.length}`);
     } catch {
-      showToast({ message: 'Failed to add this product to cart!', isError: true });
+      showToast({ message: ERROR_MESSAGES.ADD_PRODUCT_FAIL, isError: true });
     }
   };
 
   const handleRemoveFromCart = async () => {
-    if (!currentToken) {
+    if (!cart) {
       return;
     }
 
-    try {
-      const cart = await getOrCreateCart(currentToken);
+    const currentToken = await getRequestToken();
 
+    try {
       const lineItemToRemove = cart.lineItems.find((item) => item.productId === product.id);
 
       if (!lineItemToRemove) {
@@ -106,19 +116,20 @@ export function ProductCard({ product }: ProductCardProps) {
         lineItemId: lineItemToRemove.id,
       });
 
+      setCart(updatedCart);
       setInCart(false);
-      showToast({ message: 'This product removed from cart' });
+      showToast({ message: SUCCESS_MESSAGES.REMOVE_PRODUCT });
 
-      //здесь тоже для удобства, позже удалить
-      console.log(`deleted: ${lineItemToRemove.name[LANG]}, items in cart: ${updatedCart.lineItems.length}`);
+      //TODO здесь тоже для удобства, позже удалить
+      console.log(`deleted: ${lineItemToRemove.name[LANG]}, items in the cart: ${updatedCart.lineItems.length}`);
     } catch {
-      showToast({ message: 'Failed to remove this product fron cart!', isError: true });
+      showToast({ message: ERROR_MESSAGES.REMOVE_PRODUCT_FAIL, isError: true });
     }
   };
 
   return (
     <Card className={styles.cardWrapper} variant="outlined">
-      <CardActionArea onClick={() => navigate(`/${ROUTES.PRODUCT.base}/${key}`)}>
+      <CardActionArea style={{ marginBottom: '60px' }} onClick={() => navigate(`/${ROUTES.PRODUCT.base}/${key}`)}>
         {hasDiscount && (
           <Typography className={styles.discount} component="span">{`-${discountInfo.discountPercent}%`}</Typography>
         )}
@@ -141,9 +152,14 @@ export function ProductCard({ product }: ProductCardProps) {
           Add to cart
         </Button>
       ) : (
-        <Button onClick={handleRemoveFromCart} className={styles.removeBtn}>
-          Remove from cart
-        </Button>
+        <>
+          <div style={{ position: 'absolute', left: '16px', bottom: '17px', display: 'flex', alignItems: 'flex-end' }}>
+            <CheckIcon style={{ color: 'green', fontSize: 30 }} /> In cart
+          </div>
+          <Button onClick={handleRemoveFromCart} className={styles.removeBtn}>
+            Remove from cart
+          </Button>
+        </>
       )}
     </Card>
   );
