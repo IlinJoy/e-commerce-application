@@ -1,4 +1,4 @@
-import type { Attribute, Customer } from '@commercetools/platform-sdk';
+import type { Attribute, Customer, LineItem } from '@commercetools/platform-sdk';
 import { LANG } from './constants/filters';
 import { CART_ATTRIBUTES_NAMES } from './constants/ui';
 
@@ -32,4 +32,10 @@ export const mapCartAttributes = (attributes?: Attribute[]) => {
       const attrValue = value.label || value[LANG];
       return { name: makeFirstLatterUppercase(name), value: attrValue };
     });
+};
+
+export const getItemsAmount = (items?: LineItem[]) => {
+  if (items) {
+    return items.reduce((acc, item) => acc + item.quantity, 0);
+  }
 };
