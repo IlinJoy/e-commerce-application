@@ -23,6 +23,11 @@
 
     width: 100%;
     margin: var(--spacing-2) 0;
+
+    @include media(phone) {
+      flex-wrap: wrap;
+      align-items: start;
+    }
   }
 }
 

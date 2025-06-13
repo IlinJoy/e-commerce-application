@@ -11,6 +11,12 @@
   height: 220px;
   border: 1px solid var(--mui-palette-grey-800);
   border-radius: var(--border-radius-1);
+
+  @include media(phone) {
+    flex-wrap: wrap;
+    max-width: 350px;
+    height: auto;
+  }
 }
 
 .image-wrapper {
@@ -22,6 +28,10 @@
   height: 100%;
 
   @include flex($justify: center);
+
+  @include media(phone) {
+    height: 200px;
+  }
 
   & .image {
     width: 100%;
@@ -91,5 +101,8 @@
   position: absolute;
   top: var(--spacing-1);
   right: var(--spacing-1);
+
   color: var(--mui-palette-grey-300);
+
+  mix-blend-mode: difference;
 }
