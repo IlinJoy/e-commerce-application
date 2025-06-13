@@ -7,10 +7,9 @@ import clsx from 'clsx';
 
 type NavigationProps = {
   isOpenMenu?: boolean;
-  closeMenu?: () => void;
 };
 
-export function Navigation({ isOpenMenu, closeMenu }: NavigationProps) {
+export function Navigation({ isOpenMenu }: NavigationProps) {
   const { isLoggedIn } = useAuth();
   const headerLinks = isLoggedIn ? NAV_LINKS.base : [...NAV_LINKS.base, ...NAV_LINKS.auth];
 
@@ -21,7 +20,6 @@ export function Navigation({ isOpenMenu, closeMenu }: NavigationProps) {
           key={page}
           to={page === 'Home' ? ROUTES.MAIN.path : page.toLowerCase()}
           className={({ isActive }) => clsx(styles.navLink, { [styles.active]: isActive })}
-          onClick={closeMenu}
         >
           {page}
         </NavLink>
