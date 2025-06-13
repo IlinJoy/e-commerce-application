@@ -11,3 +11,9 @@
     gap: var(--spacing-5);
   }
 }
+
+.products {
+  width: 100%;
+
+  @include flex(column, var(--spacing-1));
+}
