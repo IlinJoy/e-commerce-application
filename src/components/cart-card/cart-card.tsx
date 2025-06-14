@@ -15,6 +15,7 @@ import { useCart } from '@/context/cart-context';
 import { useToast } from '@/context/toast-provider';
 import { SUCCESS_MESSAGES } from '@/utils/constants/messages';
 import { getRequestToken } from '@/utils/request-token-handler';
+import { switchPrice } from '@/utils/catalog-utils';
 
 type CartRowProps = {
   product: LineItem;
@@ -28,6 +29,7 @@ export function CartRow({ product }: CartRowProps) {
   const variant = product.variant;
   const cover = variant.images?.[0];
   const attributes = mapCartAttributes(variant.attributes);
+  const totalCoast = switchPrice(product.totalPrice.centAmount, {});
 
   const { mutate, isPending } = useMutation({
     mutationFn: removeProductFromCart,
@@ -78,7 +80,7 @@ export function CartRow({ product }: CartRowProps) {
           <QuantityInput lineItemId={product.id} quantity={product.quantity} isDisabled={isPending} />
           <div className={styles.productTotal}>
             <Typography>Total cost:</Typography>
-            <PriceBlock price={[product.price]} />
+            <div>$ {totalCoast}</div>
           </div>
         </div>
       </div>
