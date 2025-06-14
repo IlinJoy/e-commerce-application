@@ -24,6 +24,10 @@
       background-color: transparent;
     }
   }
+}
+
+.input-wrapper {
+  position: relative;
 
   & span {
     overflow: hidden;
@@ -36,5 +40,31 @@
 
     text-align: center;
     text-overflow: ellipsis;
+  }
+
+  & input {
+    cursor: text;
+
+    position: absolute;
+    inset: 0;
+
+    border: none;
+
+    font: inherit;
+    color: transparent;
+    text-align: center;
+
+    appearance: none;
+    background: transparent;
+    caret-color: var(--mui-palette-primary-dark);
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      appearance: none;
+    }
+
+    &:focus {
+      outline: none;
+    }
   }
 }

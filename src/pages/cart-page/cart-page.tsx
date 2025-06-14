@@ -10,6 +10,7 @@ import { deleteCart } from '@/api/cart';
 import { useMutation } from '@tanstack/react-query';
 import { useToast } from '@/context/toast-provider';
 import { SUCCESS_MESSAGES } from '@/utils/constants/messages';
+import { QUANTITY_SETTINGS } from '@/utils/constants/cart';
 
 export function CartPage() {
   const { cart, isLoading } = useCart();
@@ -57,6 +58,7 @@ export function CartPage() {
       )}
       <aside className={styles.cartAside}>
         <CustomerInfoBlock />
+        <Typography>Sorry, we can deliver only {QUANTITY_SETTINGS.max} for this moment</Typography>
       </aside>
     </Container>
   );

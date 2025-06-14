@@ -75,7 +75,7 @@ export function CartRow({ product }: CartRowProps) {
         </div>
 
         <div className={styles.productAmount}>
-          <QuantityInput quantity={product.quantity} isDisabled={isPending} />
+          <QuantityInput lineItemId={product.id} quantity={product.quantity} isDisabled={isPending} />
           <div className={styles.productTotal}>
             <Typography>Total cost:</Typography>
             <PriceBlock price={[product.price]} />

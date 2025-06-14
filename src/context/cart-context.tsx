@@ -27,7 +27,7 @@ export function CartContextProvider({ children }: { children: ReactNode }) {
   const cartVersion = useRef(1);
 
   const setCart = useCallback((cart: Cart) => {
-    setCartState(cart);
+    setCartState((prev) => ({ ...prev, ...cart }));
     cartVersion.current = cart.version;
   }, []);
 
