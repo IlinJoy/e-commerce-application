@@ -9,6 +9,12 @@ import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 import styles from './cart-card.module.scss';
 import { useNavigate } from 'react-router';
 import { ROUTES } from '@/router/routes';
+import { useMutation } from '@tanstack/react-query';
+import { removeProductFromCart } from '@/api/removeProductFromCart';
+import { useCart } from '@/context/cart-context';
+import { useToast } from '@/context/toast-provider';
+import { SUCCESS_MESSAGES } from '@/utils/constants/messages';
+import { getRequestToken } from '@/utils/request-token-handler';
 
 type CartRowProps = {
   product: LineItem;
@@ -16,10 +22,31 @@ type CartRowProps = {
 
 export function CartRow({ product }: CartRowProps) {
   const navigate = useNavigate();
+  const { cart, setCart } = useCart();
+  const { showToast } = useToast();
 
   const variant = product.variant;
   const cover = variant.images?.[0];
   const attributes = mapCartAttributes(variant.attributes);
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: removeProductFromCart,
+    onSuccess: (data) => {
+      setCart(data);
+      showToast({ message: SUCCESS_MESSAGES.REMOVE_PRODUCT });
+    },
+    onError: (err) => {
+      showToast({ message: err.message, isError: true });
+    },
+  });
+
+  const handleRemove = async () => {
+    if (!cart) {
+      return;
+    }
+    const token = await getRequestToken();
+    mutate({ token, lineItemId: product.id, cartVersion: cart.version, cartId: cart.id });
+  };
 
   return (
     <div className={styles.productRow}>
@@ -48,14 +75,14 @@ export function CartRow({ product }: CartRowProps) {
         </div>
 
         <div className={styles.productAmount}>
-          <QuantityInput quantity={product.quantity} />
+          <QuantityInput quantity={product.quantity} isDisabled={isPending} />
           <div className={styles.productTotal}>
             <Typography>Total cost:</Typography>
             <PriceBlock price={[product.price]} />
           </div>
         </div>
       </div>
-      <IconButton size="small" className={styles.removeButton}>
+      <IconButton onClick={() => handleRemove()} disabled={isPending} size="small" className={styles.removeButton}>
         <ClearOutlinedIcon />
       </IconButton>
     </div>

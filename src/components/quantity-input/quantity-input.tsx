@@ -3,14 +3,17 @@ import styles from './quantity-input.module.scss';
 
 type QuantityInputProps = {
   quantity: number;
+  isDisabled: boolean;
 };
 
-export function QuantityInput({ quantity }: QuantityInputProps) {
+export function QuantityInput({ quantity, isDisabled }: QuantityInputProps) {
   return (
     <div className={styles.wrapper}>
-      <Button className={styles.button}>-</Button>
+      <Button className={styles.button} disabled={isDisabled}>
+        -
+      </Button>
       <span>{quantity}</span>
-      <Button>+</Button>
+      <Button disabled={isDisabled}>+</Button>
     </div>
   );
 }
