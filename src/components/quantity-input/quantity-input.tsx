@@ -23,7 +23,7 @@ export function QuantityInput({ quantity, isDisabled, lineItemId }: QuantityInpu
     mutationFn: changeCardItemQuantity,
     onSuccess: (data) => {
       setCart(data);
-      showToast({ message: SUCCESS_MESSAGES.ADD_PRODUCT });
+      showToast({ message: SUCCESS_MESSAGES.UPDATE_CART });
     },
     onError: (err) => {
       showToast({ message: err.message, isError: true });

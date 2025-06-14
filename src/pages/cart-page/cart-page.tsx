@@ -23,7 +23,7 @@ export function CartPage() {
     mutationFn: deleteCart,
     onSuccess: () => {
       resetCart();
-      showToast({ message: SUCCESS_MESSAGES.CLEAR_CART });
+      showToast({ message: SUCCESS_MESSAGES.UPDATE_CART });
     },
     onError: (err) => {
       showToast({ message: err.message, isError: true });
@@ -58,7 +58,10 @@ export function CartPage() {
       )}
       <aside className={styles.cartAside}>
         <CustomerInfoBlock />
-        <Typography>Sorry, we can deliver only {QUANTITY_SETTINGS.max} for this moment</Typography>
+        <Typography>
+          Sorry, we can deliver only {QUANTITY_SETTINGS.max} items per position at the moment. Thank you for
+          understanding
+        </Typography>
       </aside>
     </Container>
   );

@@ -22,5 +22,5 @@ export const SUCCESS_MESSAGES = {
   SEARCHING: ' Partial match suggestions. The full equivalent will be marked by color.',
   ADD_PRODUCT: 'This product added to cart',
   REMOVE_PRODUCT: 'This product has been removed from your cart',
-  CLEAR_CART: 'The card has been cleared successfully',
+  UPDATE_CART: 'The cart has been updated successfully',
 };
