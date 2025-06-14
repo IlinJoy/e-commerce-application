@@ -34,9 +34,9 @@ const createCart = async (token: string): Promise<Cart> => {
   });
 };
 
-type DeleteCartProps = { id: string; version: number };
+type DeleteCartParams = { id: string; version: number };
 
-export const deleteCart = async ({ id, version }: DeleteCartProps) => {
+export const deleteCart = async ({ id, version }: DeleteCartParams) => {
   const token = await getRequestToken();
   return fetchFromApi<Cart>(`/me/carts/${id}?version=${version} `, token, {
     method: 'DELETE',
