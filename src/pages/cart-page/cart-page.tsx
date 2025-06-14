@@ -2,7 +2,7 @@ import { NothingFound } from '@/components/nothing-found/nothing-found';
 import Container from '@mui/material/Container';
 import styles from './cart-page.module.scss';
 import { CartRow } from '@/components/cart-card/cart-card';
-import { ShippingCartBlock } from '@/components/shipping-cart-block/shipping-cart-block';
+import { CustomerInfoBlock } from '@/components/shipping-cart-block/shipping-cart-block';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useCart } from '@/context/cart-context';
@@ -22,7 +22,7 @@ export function CartPage() {
     mutationFn: deleteCart,
     onSuccess: () => {
       resetCart();
-      showToast({ message: SUCCESS_MESSAGES.DELETE_ADDRESS });
+      showToast({ message: SUCCESS_MESSAGES.CLEAR_CART });
     },
     onError: (err) => {
       showToast({ message: err.message, isError: true });
@@ -56,7 +56,7 @@ export function CartPage() {
         </div>
       )}
       <aside className={styles.cartAside}>
-        <ShippingCartBlock />
+        <CustomerInfoBlock />
       </aside>
     </Container>
   );
