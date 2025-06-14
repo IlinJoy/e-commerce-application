@@ -4,6 +4,7 @@ export const NAV_LINKS = {
 };
 
 export const ACCOUNT_LINKS = ['Profile', 'Addresses'] as const;
+export const CART_ATTRIBUTES_NAMES = ['color', 'brand'];
 
 export const headerScrollPref = {
   offset: 50,

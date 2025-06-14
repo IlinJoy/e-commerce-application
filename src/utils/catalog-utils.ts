@@ -1,4 +1,11 @@
-import type { AttributeDefinition, Category, FacetResults, Price, ProductType } from '@commercetools/platform-sdk';
+import type {
+  AttributeDefinition,
+  Category,
+  FacetResults,
+  Price,
+  ProductType,
+  TypedMoney,
+} from '@commercetools/platform-sdk';
 import { LANG, type FilterAttribute, type FilterKey } from './constants/filters';
 
 export type CategoryWithChildren = Category & { children: CategoryWithChildren[] };
@@ -90,20 +97,22 @@ export const getCategoryIdFromPath = (pathname: string, categories?: Category[])
 
 export const mapPrices = (prices?: Price[]) => {
   if (!prices?.length) {
-    return { itemPrice: 0, itemDiscountedPrice: undefined, discountPercent: undefined, hasDiscount: false };
+    return { itemPrice: 0, itemDiscountedPrice: undefined };
   }
 
-  const { value, discounted } = prices[0];
+  const price = prices[0];
+  const getPrice = (value: TypedMoney) => switchPrice(value.centAmount, { fractionDigits: value.fractionDigits });
+
+  return {
+    itemPrice: getPrice(price.value),
+    itemDiscountedPrice: price.discounted ? getPrice(price.discounted.value) : undefined,
+  };
+};
+
+export const getDiscountPercent = (itemPrice?: number, itemDiscountedPrice?: number) => {
+  if (!itemPrice || !itemDiscountedPrice) {
+    return null;
+  }
   const MULTIPLIER = 100;
-
-  const itemPrice = switchPrice(value.centAmount, { fractionDigits: value.fractionDigits });
-  let itemDiscountedPrice;
-  let discountPercent;
-
-  if (discounted) {
-    itemDiscountedPrice = switchPrice(discounted.value.centAmount, { fractionDigits: discounted.value.fractionDigits });
-    discountPercent = Math.round(((itemPrice - itemDiscountedPrice) / itemPrice) * MULTIPLIER);
-  }
-
-  return { itemPrice, itemDiscountedPrice, discountPercent, hasDiscount: !!discounted };
+  return Math.round(((itemPrice - itemDiscountedPrice) / itemPrice) * MULTIPLIER);
 };

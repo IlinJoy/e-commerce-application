@@ -1,4 +1,4 @@
-import { mapPrices } from '@/utils/catalog-utils';
+import { getDiscountPercent } from '@/utils/catalog-utils';
 import type { ProductProjection } from '@commercetools/platform-sdk';
 import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
@@ -38,7 +38,8 @@ export function ProductCard({ product }: ProductCardProps) {
 
   const image = images?.[0];
   const itemDescription = description?.[LANG] || '';
-  const { itemPrice, hasDiscount, ...discountInfo } = mapPrices(prices);
+  const price = prices?.[0];
+  const discountPercent = getDiscountPercent(price?.value.centAmount, price?.discounted?.value.centAmount);
 
   const { cart, setCart } = useCart();
   const [inCart, setInCart] = useState(false);
@@ -63,7 +64,7 @@ export function ProductCard({ product }: ProductCardProps) {
     }
 
     if (currentCart.anonymousId) {
-      cookieHandler.delete('cartId'); //Если зайти в режим инкогнито, надо удалять cartId, т.к. появляется ошибка
+      cookieHandler.delete('cartId');
 
       try {
         currentCart = await getCartWithoutToken();
@@ -87,9 +88,6 @@ export function ProductCard({ product }: ProductCardProps) {
       setCart(updatedCart);
       setInCart(true);
       showToast({ message: SUCCESS_MESSAGES.ADD_PRODUCT });
-
-      //TODO это для удобства, потом удалить
-      console.log(`added: ${product.name[LANG]}, items in the cart: ${updatedCart.lineItems.length}`);
     } catch {
       showToast({ message: ERROR_MESSAGES.ADD_PRODUCT_FAIL, isError: true });
     }
@@ -119,9 +117,6 @@ export function ProductCard({ product }: ProductCardProps) {
       setCart(updatedCart);
       setInCart(false);
       showToast({ message: SUCCESS_MESSAGES.REMOVE_PRODUCT });
-
-      //TODO здесь тоже для удобства, позже удалить
-      console.log(`deleted: ${lineItemToRemove.name[LANG]}, items in the cart: ${updatedCart.lineItems.length}`);
     } catch {
       showToast({ message: ERROR_MESSAGES.REMOVE_PRODUCT_FAIL, isError: true });
     }
@@ -130,8 +125,8 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <Card className={styles.cardWrapper} variant="outlined">
       <CardActionArea className={styles.cardActionArea} onClick={() => navigate(`/${ROUTES.PRODUCT.base}/${key}`)}>
-        {hasDiscount && (
-          <Typography className={styles.discount} component="span">{`-${discountInfo.discountPercent}%`}</Typography>
+        {discountPercent && (
+          <Typography className={styles.discount} component="span">{`-${discountPercent}%`}</Typography>
         )}
 
         <CardMedia component="img" height="380" image={image?.url} alt={image?.label} />
@@ -139,11 +134,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <CardContent>
           <HighlightedText text={name[LANG]} isHeading />
           <HighlightedText text={itemDescription} />
-          <PriceBlock
-            hasDiscount={hasDiscount}
-            itemPrice={itemPrice}
-            itemDiscountedPrice={discountInfo.itemDiscountedPrice}
-          />
+          <PriceBlock price={prices} />
         </CardContent>
       </CardActionArea>
 

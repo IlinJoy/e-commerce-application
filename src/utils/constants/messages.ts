@@ -8,6 +8,8 @@ export const ERROR_MESSAGES = {
   CREATE_CART_FAIL: 'Failed to create a cart',
   ADD_PRODUCT_FAIL: 'Failed to add this product to cart!',
   REMOVE_PRODUCT_FAIL: 'Failed to remove this product from cart!',
+  QUANTITY_LIMIT: (value: number, limit: number) =>
+    `Sorry, you can't add ${value} items. Only ${limit} available right now`,
 };
 
 export const SUCCESS_MESSAGES = {
@@ -20,4 +22,5 @@ export const SUCCESS_MESSAGES = {
   SEARCHING: ' Partial match suggestions. The full equivalent will be marked by color.',
   ADD_PRODUCT: 'This product added to cart',
   REMOVE_PRODUCT: 'This product has been removed from your cart',
+  UPDATE_CART: 'The cart has been updated successfully',
 };

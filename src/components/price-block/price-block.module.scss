@@ -1,6 +1,7 @@
 @use '../../styles/mixins' as *;
 
 .footer {
+  width: fit-content;
   margin-top: var(--spacing-2);
 
   @include flex(row, var(--spacing-2), $justify: start, $align: start);

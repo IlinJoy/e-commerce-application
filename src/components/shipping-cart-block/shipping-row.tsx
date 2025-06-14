@@ -5,7 +5,7 @@ type CartAsideRowProps = {
   info?: string;
 };
 
-export function CartAsideRow({ title, info = '' }: CartAsideRowProps) {
+export function ShippingRow({ title, info = '' }: CartAsideRowProps) {
   return (
     <Typography>
       <span>{title}: </span>

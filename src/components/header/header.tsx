@@ -7,13 +7,14 @@ import { CLASSES, headerScrollPref } from '@/utils/constants/ui';
 import { throttle } from '@/utils/throttle';
 import styles from './header.module.scss';
 import clsx from 'clsx';
+import { useLocation } from 'react-router';
 
 export function Header() {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [isFilledHeader, setIsFilledHeader] = useState(false);
+  const { pathname } = useLocation();
 
   const toggleMenuHandler = () => setIsOpenMenu((show) => !show);
-  const closeMenu = () => setIsOpenMenu(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,12 +38,16 @@ export function Header() {
     document.body.classList.toggle(CLASSES.disable, isOpenMenu);
   }, [isOpenMenu]);
 
+  useEffect(() => {
+    setIsOpenMenu(false);
+  }, [pathname]);
+
   return (
     <header className={clsx(styles.header, { [styles.filled]: isFilledHeader })}>
       <Container>
         <div className={styles.bar}>
           <Logo />
-          <Navigation isOpenMenu={isOpenMenu} closeMenu={closeMenu} />
+          <Navigation isOpenMenu={isOpenMenu} />
           <HeaderButtonGroup toggleMenuHandler={toggleMenuHandler} isOpenMenu={isOpenMenu} />
         </div>
       </Container>
