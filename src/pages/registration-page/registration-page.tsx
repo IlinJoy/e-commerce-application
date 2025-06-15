@@ -14,6 +14,7 @@ import { useToken } from '@/context/token-context';
 import { ROUTES } from '@/router/routes';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router';
+import { useCart } from '@/context/cart-context';
 
 const defaultAddress: Addresses = {
   country: '',
@@ -52,26 +53,28 @@ export function RegistrationPage() {
   const { onLogout } = useAuth();
   const { showToast } = useToast();
   const { updateToken } = useToken();
+  const { setCart } = useCart();
   const navigate = useNavigate();
 
   const handleRegistration = async (data: RegisterFormInputs) => {
     const customerInfo = await registerCustomer(data);
-    if (!customerInfo?.customer.id) {
+    if (!customerInfo?.customer.id || !customerInfo.cart) {
       throw new Error(ERROR_MESSAGES.REGISTRATION_FAIL);
     }
-    return { customer: customerInfo.customer, password: data.customerData.password };
+    return { customer: customerInfo.customer, password: data.customerData.password, cart: customerInfo.cart };
   };
 
   const { mutate, isPending } = useMutation({
     mutationFn: handleRegistration,
-    onSuccess: (data) => {
-      mutateToken({ email: data.customer.email, password: data.password });
+    onSuccess: async (data) => {
+      setCart(data.cart);
+      await mutateToken({ email: data.customer.email, password: data.password });
       showToast({ message: SUCCESS_MESSAGES.REGISTRATION });
     },
     onError: (error) => showToast({ message: error.message, isError: true }),
   });
 
-  const { mutate: mutateToken } = useMutation({
+  const { mutateAsync: mutateToken } = useMutation({
     mutationFn: (data: { email: string; password: string }) => getCustomerToken(data.email, data.password),
     onSuccess: (token) => updateToken(token),
     onError: () => {

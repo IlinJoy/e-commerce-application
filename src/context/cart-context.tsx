@@ -1,73 +1,58 @@
 /* eslint-disable react-refresh/only-export-components */
 import type { ReactNode } from 'react';
-import { createContext, use, useCallback, useEffect, useState } from 'react';
-import { cookieHandler } from '@/services/cookies/cookie-handler';
-import { getCart, getNewCart } from '@/api/cart';
-import type { Cart, DiscountCode } from '@commercetools/platform-sdk';
+import { createContext, use, useCallback, useEffect, useRef, useState } from 'react';
+import { getCartWithoutToken } from '@/api/cart';
+import { useToast } from './toast-provider';
+import type { Cart } from '@commercetools/platform-sdk';
 import { ERROR_MESSAGES } from '@/utils/constants/messages';
-import { LANG } from '@/utils/constants/filters';
-
-type Discount = {
-  code: string;
-  name?: string;
-  id: string;
-};
-
-type Discounts = Record<string, Discount>;
-type GetCartCallback = () => Promise<Cart>;
 
 type CartContextType = {
-  cartId: string;
+  cart: Cart | null;
+  setCart: (cart: Cart) => void;
   resetCart: () => void;
-  discounts: Discounts;
-  addDiscount: (discountCode: DiscountCode) => void;
+  isLoading: boolean;
 };
 
 const CartContext = createContext<CartContextType>({
-  cartId: '',
+  cart: null,
+  setCart: () => {},
   resetCart: () => {},
-  discounts: {},
-  addDiscount: () => {},
+  isLoading: false,
 });
 
 export function CartContextProvider({ children }: { children: ReactNode }) {
-  const cartIdFromCookies = cookieHandler.get('cartId') || '';
-  const [cartId, setCartId] = useState(cartIdFromCookies);
-  const [discounts, setDiscounts] = useState<Discounts>({});
+  const [cart, setCartState] = useState<Cart | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const { showToast } = useToast();
+  const cartVersion = useRef(1);
 
-  useEffect(() => {
-    if (!cartId) {
-      const getCurrentCart = async (callback: GetCartCallback) => {
-        try {
-          const currentCart = await callback();
-          setCartId(currentCart.id);
-          cookieHandler.set('cartId', currentCart.id);
-        } catch {
-          console.log(ERROR_MESSAGES.NEW_CART);
-          getCurrentCart(getNewCart);
-        }
-      };
-      getCurrentCart(getCart);
-    }
-  }, [cartId]);
+  const setCart = useCallback((cart: Cart) => {
+    setCartState((prev) => ({ ...prev, ...cart }));
+    cartVersion.current = cart.version;
+  }, []);
 
   const resetCart = useCallback(() => {
-    setCartId('');
-    cookieHandler.delete('cartId');
+    setCartState(null);
   }, []);
 
-  const addDiscount = useCallback((discountCode: DiscountCode) => {
-    const newDiscount = {
-      [discountCode.code]: {
-        name: discountCode.name?.[LANG],
-        code: discountCode.code,
-        id: discountCode.id,
-      },
-    };
-    setDiscounts((prev) => ({ ...prev, ...newDiscount }));
-  }, []);
+  useEffect(() => {
+    if (!cart) {
+      setIsLoading(true);
+      const loadCart = async () => {
+        try {
+          const currentCart = await getCartWithoutToken();
+          setCart(currentCart);
+        } catch {
+          showToast({ message: ERROR_MESSAGES.CREATE_CART_FAIL, isError: true });
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      loadCart();
+    }
+  }, [cart, setCart, showToast]);
 
-  return <CartContext.Provider value={{ cartId, resetCart, discounts, addDiscount }}>{children}</CartContext.Provider>;
+  return <CartContext.Provider value={{ cart, setCart, resetCart, isLoading }}>{children}</CartContext.Provider>;
 }
 
 export const useCart = () => {

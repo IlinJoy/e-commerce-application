@@ -10,19 +10,17 @@ const mockAuth = { isLoggedIn: false };
 vi.mock('@/hooks/use-auth', () => ({ useAuth: () => mockAuth }));
 
 describe('Navigation', () => {
-  const mockCloseMenu = vi.fn();
-
   beforeEach(() => {
     mockAuth.isLoggedIn = false;
   });
 
   it('renders navigation', () => {
-    render(<Navigation isOpenMenu={false} closeMenu={mockCloseMenu} />);
+    render(<Navigation isOpenMenu={false} />);
     expect(screen.getByRole('navigation')).toBeInTheDocument();
   });
 
   it('shows auth links when not logged in', () => {
-    render(<Navigation isOpenMenu={false} closeMenu={mockCloseMenu} />);
+    render(<Navigation isOpenMenu={false} />);
     expect(screen.getByText('Login')).toBeInTheDocument();
     expect(screen.getByText('Registration')).toBeInTheDocument();
   });
@@ -30,7 +28,7 @@ describe('Navigation', () => {
   it('hides auth links when logged in', () => {
     mockAuth.isLoggedIn = true;
 
-    render(<Navigation isOpenMenu={false} closeMenu={mockCloseMenu} />);
+    render(<Navigation isOpenMenu={false} />);
     expect(screen.queryByText('Login')).not.toBeInTheDocument();
     expect(screen.queryByText('Registration')).not.toBeInTheDocument();
   });

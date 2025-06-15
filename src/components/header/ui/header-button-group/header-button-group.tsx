@@ -7,6 +7,8 @@ import styles from './header-button-group.module.scss';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router';
 import { ROUTES } from '@/router/routes';
+import { getItemsAmount } from '@/utils/cart-utils';
+import { useCart } from '@/context/cart-context';
 
 type HeaderMenuProps = {
   toggleMenuHandler: () => void;
@@ -16,11 +18,14 @@ type HeaderMenuProps = {
 export function HeaderButtonGroup({ toggleMenuHandler, isOpenMenu }: HeaderMenuProps) {
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
+  const { cart } = useCart();
+
+  const itemsAmount = getItemsAmount(cart?.lineItems);
 
   return (
     <div className={styles.buttonGroup}>
       <IconButton color="primary" onClick={() => navigate(ROUTES.CART.path)}>
-        <Badge badgeContent={9} color="warning">
+        <Badge badgeContent={itemsAmount} color="warning">
           <SpriteIcon id="cart" />
         </Badge>
       </IconButton>

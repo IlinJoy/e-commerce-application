@@ -5,7 +5,11 @@ export const ERROR_MESSAGES = {
   UPDATE_INFO: 'Could not update information. Please login to proceed.',
   UPDATE_PASSWORD_FAIL: 'Changing password error',
   TOKEN_NOT_FOUND: 'Could not found your personal access token, please register or reload page.',
-  NEW_CART: 'Creating new cart...',
+  CREATE_CART_FAIL: 'Failed to create a cart',
+  ADD_PRODUCT_FAIL: 'Failed to add this product to cart!',
+  REMOVE_PRODUCT_FAIL: 'Failed to remove this product from cart!',
+  QUANTITY_LIMIT: (value: number, limit: number) =>
+    `Sorry, you can't add ${value} items. Only ${limit} available right now`,
 };
 
 export const SUCCESS_MESSAGES = {
@@ -15,10 +19,8 @@ export const SUCCESS_MESSAGES = {
   UPDATE_ADDRESS: 'The address has been updated',
   PROFILE: 'Your profile updated',
   PASSWORD: 'Password updated',
-  PROMO_APPLIED: 'The promo code has been successfully applied to your cart.',
-};
-
-export const MESSAGES = {
-  SEARCHING: 'Partial match suggestions. The full equivalent will be marked by color.',
-  DISCOUNT_COPY: 'Click to copy promo code.',
+  SEARCHING: ' Partial match suggestions. The full equivalent will be marked by color.',
+  ADD_PRODUCT: 'This product added to cart',
+  REMOVE_PRODUCT: 'This product has been removed from your cart',
+  UPDATE_CART: 'The cart has been updated successfully',
 };

@@ -1,0 +1,9 @@
+@use '../../styles/mixins' as *;
+
+.shipping-block {
+  @include flex(column, var(--spacing-3), $align: start);
+}
+
+.addressDetails {
+  margin-top: var(--spacing-2);
+}
