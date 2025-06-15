@@ -1,6 +1,8 @@
-import type { Attribute, Customer, LineItem } from '@commercetools/platform-sdk';
+import type { Attribute, Cart, Customer, LineItem } from '@commercetools/platform-sdk';
 import { LANG } from './constants/filters';
 import { CART_ATTRIBUTES_NAMES } from './constants/ui';
+import { isVisible } from '@testing-library/user-event/dist/cjs/utils/index.js';
+import { Discount } from '@/components/promo-input/promo-input';
 
 export const getShippingAddressForCart = (customer: Customer) => {
   return customer.addresses.find(
@@ -29,3 +31,8 @@ export const getItemsAmount = (items?: LineItem[]) => {
     return items.reduce((acc, item) => acc + item.quantity, 0);
   }
 };
+
+export const mapDiscounts = (cart: Cart | null) =>
+  cart?.discountCodes
+    .filter((code) => code.state === 'MatchesCart')
+    .map((code) => ({ code: code.discountCode.obj?.code, id: code.discountCode.id, isVisible: true })) || [];

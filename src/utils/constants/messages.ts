@@ -10,6 +10,7 @@ export const ERROR_MESSAGES = {
   REMOVE_PRODUCT_FAIL: 'Failed to remove this product from cart!',
   QUANTITY_LIMIT: (value: number, limit: number) =>
     `Sorry, you can't add ${value} items. Only ${limit} available right now`,
+  PROMO_EXIST: 'This promotion has already been applied',
 };
 
 export const SUCCESS_MESSAGES = {

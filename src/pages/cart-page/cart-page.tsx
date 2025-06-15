@@ -11,6 +11,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useToast } from '@/context/toast-provider';
 import { SUCCESS_MESSAGES } from '@/utils/constants/messages';
 import { QUANTITY_SETTINGS } from '@/utils/constants/cart';
+import { PromoInput } from '../../components/promo-input/promo-input';
 
 export function CartPage() {
   const { cart, isLoading } = useCart();
@@ -57,6 +58,7 @@ export function CartPage() {
         </div>
       )}
       <aside className={styles.cartAside}>
+        <PromoInput />
         <CustomerInfoBlock />
         <Typography>
           Sorry, we can deliver only {QUANTITY_SETTINGS.max} items per position at the moment. Thank you for

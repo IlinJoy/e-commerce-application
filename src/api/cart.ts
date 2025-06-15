@@ -18,7 +18,7 @@ export const getOrCreateCart = async (token: string): Promise<Cart> => {
 };
 
 const getActiveCart = async (token: string): Promise<Cart | null> => {
-  const response = await fetchFromApi<{ results: Cart[] }>('/me/carts', token);
+  const response = await fetchFromApi<{ results: Cart[] }>('/me/carts?expand=discountCodes[*].discountCode', token);
 
   return response.results[0];
 };
@@ -56,7 +56,7 @@ export const updateCart = async ({ token, cartId, cartVersion, actions }: Update
     actions,
   };
 
-  return await fetchFromApi<Cart>(`/me/carts/${cartId}`, token, {
+  return await fetchFromApi<Cart>(`/me/carts/${cartId}?expand=discountCodes[*].discountCode`, token, {
     method: 'POST',
     body: JSON.stringify(body),
   });

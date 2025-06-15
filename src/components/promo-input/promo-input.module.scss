@@ -1,0 +1,86 @@
+@use '../../styles/mixins' as *;
+
+.promo-wrapper {
+  @include card-border;
+
+  width: 100%;
+
+  @include flex(column, var(--spacing-1), $align: start);
+  @include transition;
+
+  padding: var(--spacing-2);
+
+  & label {
+    margin-bottom: var(--spacing-1);
+  }
+
+  & button {
+    width: 100%;
+  }
+}
+
+.input-wrapper {
+  @include flex($justify: start);
+
+  flex-wrap: wrap;
+  width: 100%;
+  min-height: 30px;
+
+  &::after {
+    content: '';
+
+    display: block;
+
+    width: 100%;
+    margin-top: var(--spacing-1);
+    border-bottom: solid 1px var(--mui-palette-grey-700);
+  }
+
+  & input {
+    flex-grow: 1;
+
+    width: 0;
+    min-width: 120px;
+    border: none;
+
+    font: inherit;
+
+    background: transparent;
+    caret-color: var(--mui-palette-primary-dark);
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+// .promo-wrapper {
+//   @include card-border;
+
+//   width: 100%;
+
+//   @include flex(column, var(--spacing-1), $align: start);
+//   @include transition;
+
+//   padding: var(--spacing-2);
+// }
+
+// .input-wrapper {
+//   flex-wrap: wrap;
+//   width: 100%;
+//   min-height: 30px;
+
+//   @include flex($justify: start);
+
+//   & input {
+//     border: none;
+//     flex-grow: 1;
+//     font: inherit;
+//     background: transparent;
+//     caret-color: var(--mui-palette-primary-dark);
+
+//     &:focus {
+//       outline: none;
+//     }
+//   }
+// }

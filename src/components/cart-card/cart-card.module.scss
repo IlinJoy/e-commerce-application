@@ -4,13 +4,11 @@
   @include flex;
 
   position: relative;
-
   overflow: hidden;
-
   width: 100%;
   height: 220px;
-  border: 1px solid var(--mui-palette-grey-800);
-  border-radius: var(--border-radius-1);
+
+  @include card-border;
 
   @include media(phone) {
     flex-wrap: wrap;
