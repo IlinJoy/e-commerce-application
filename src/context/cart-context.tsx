@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import type { ReactNode } from 'react';
-import { createContext, use, useCallback, useEffect, useRef, useState } from 'react';
+import { createContext, use, useCallback, useEffect, useState } from 'react';
 import { getCartWithoutToken } from '@/api/cart';
 import { useToast } from './toast-provider';
 import type { Cart } from '@commercetools/platform-sdk';
