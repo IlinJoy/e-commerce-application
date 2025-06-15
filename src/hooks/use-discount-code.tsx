@@ -1,31 +1,27 @@
 import { useCallback } from 'react';
-
 import { getDiscountCodeByKey } from '@/api/promo';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/utils/constants/messages';
 import { useToast } from '@/context/toast-provider';
-import { useCart } from '@/context/cart-context';
 
 export const useDiscountCode = () => {
   const { showToast } = useToast();
-  const { addDiscount } = useCart();
 
-  const setDiscountToCart = useCallback(
+  const copyDiscount = useCallback(
     async (key?: string) => {
+      if (!key) {
+        return;
+      }
       try {
-        if (!key) {
-          return;
-        }
-
         const promoCode = await getDiscountCodeByKey(key);
-        addDiscount(promoCode);
-        showToast({ message: SUCCESS_MESSAGES.PROMO_APPLIED });
-        return promoCode;
-      } catch {
-        showToast({ message: ERROR_MESSAGES.SOMETHING_WRONG, isError: true });
+        await navigator.clipboard.writeText(promoCode.code);
+        showToast({ message: SUCCESS_MESSAGES.CODE_COPIED(promoCode.code) });
+      } catch (error) {
+        const message = error instanceof Error ? error.message : ERROR_MESSAGES.SOMETHING_WRONG;
+        showToast({ message, isError: true });
       }
     },
-    [addDiscount, showToast]
+    [showToast]
   );
 
-  return { setDiscountToCart };
+  return { copyDiscount };
 };
