@@ -30,4 +30,5 @@ export const SUCCESS_MESSAGES = {
 export const MESSAGES = {
   SEARCHING: ' Partial match suggestions. The full equivalent will be marked by color.',
   PROMO_COPY: 'Click to copy promo code',
+  WANT_TO_CLEAR_CART: 'This will permanently remove the selected products. Are you sure you want to continue?',
 };

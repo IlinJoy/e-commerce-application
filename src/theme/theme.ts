@@ -1,3 +1,4 @@
+import { grey } from '@mui/material/colors';
 import { createTheme, responsiveFontSizes } from '@mui/material/styles';
 
 const theme = createTheme({
@@ -29,13 +30,11 @@ const theme = createTheme({
     },
     MuiAccordion: {
       styleOverrides: {
-        root: () => ({
+        root: {
           boxShadow: 'none',
           backgroundColor: 'transparent',
           backgroundImage: 'none',
-          '--Paper-shadow': 'none',
-          '--Paper-overlay': 'none',
-        }),
+        },
       },
     },
     MuiAccordionSummary: {
@@ -45,6 +44,17 @@ const theme = createTheme({
           '&.Mui-expanded': {
             margin: 0,
           },
+        },
+      },
+    },
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          backgroundImage: 'none',
+          backgroundColor: 'var(--mui-palette-grey-900)',
+          borderRadius: 'var(--border-radius-2)',
+          padding: 'var(--spacing-4)',
+          maxWidth: '500px',
         },
       },
     },
