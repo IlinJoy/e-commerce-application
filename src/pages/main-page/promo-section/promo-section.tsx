@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router';
 import { ROUTES } from '@/router/routes';
 import Container from '@mui/material/Container';
 import { getProductKeyFromPredicate } from '@/utils/cart-utils';
-import clsx from 'clsx';
 
 export function PromoSection() {
   const { data: discounts } = useDiscountQuery();
@@ -20,26 +19,24 @@ export function PromoSection() {
     <Container component={'section'} className={styles.promo}>
       {discounts?.slice(1).map((discount) => {
         const itemPromo = discount.target?.type === 'lineItems';
-        const productKey = itemPromo ? getProductKeyFromPredicate(discount.target.predicate) : undefined;
+        const productKey = itemPromo && getProductKeyFromPredicate(discount.target.predicate);
 
         return (
-          <div key={discount.key} className={clsx(styles.promoCard, { [styles.itemPromo]: itemPromo })}>
+          <div key={discount.key} className={styles.promoCard}>
             {discount.requiresDiscountCode ? (
-              <>
-                {isLoading && <div>...</div>}
-                {discount.key && (
-                  <div onClick={() => copyDiscount(discount.key)} className={styles.label}>
-                    <Typography>{getDiscountCode(discount.key)}</Typography>
-                    <ContentCopyOutlinedIcon />
-                  </div>
-                )}
-              </>
+              discount.key && (
+                <div onClick={() => copyDiscount(discount.key)} className={styles.label}>
+                  <Typography>{isLoading ? '...' : getDiscountCode(discount.key)}</Typography>
+                  <ContentCopyOutlinedIcon />
+                </div>
+              )
             ) : (
               <div onClick={() => navigate(`/${ROUTES.PRODUCT.base}/${productKey}`)} className={styles.label}>
                 <Typography>VIEW PRODUCT</Typography>
                 <SellOutlinedIcon />
               </div>
             )}
+
             <div className={styles.description}>
               <Typography variant="h2" className={styles.title}>
                 {discount.name[LANG]}
