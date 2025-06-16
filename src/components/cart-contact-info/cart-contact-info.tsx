@@ -32,7 +32,7 @@ export function CustomerInfoBlock() {
           <InfoRow title="Contact Email" info={customer.email} />
         </div>
       ) : (
-        <Typography>No shipping details available</Typography>
+        <Typography>No information found. Log in to access your data.</Typography>
       )}
     </div>
   );
