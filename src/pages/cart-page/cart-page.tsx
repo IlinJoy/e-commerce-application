@@ -49,7 +49,7 @@ export function CartPage() {
   return (
     <Container component={'section'} className={styles.cart}>
       {isEmpty ? (
-        <NothingFound />
+        <NothingFound message="Your cart is empty. Let's fix that!" />
       ) : (
         <div className={styles.products}>
           <div className={styles.productsHeading}>
