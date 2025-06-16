@@ -1,0 +1,50 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+
+  padding: var(--spacing-5);
+  border-radius: var(--spacing-2);
+
+  background-color: var(--mui-palette-primary-dark);
+}
+
+.wrapper-title {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.title-text {
+  text-align: left;
+}
+
+.team-name {
+  color: var(--palette-accent-dark);
+}
+
+.wrapper-team {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+
+  width: 100%;
+}
+
+.card-container {
+  flex: 0 1 400px;
+  transition:
+    transform 0.8s ease,
+    box-shadow 0.8s ease;
+}
+
+.card-container:hover {
+  z-index: 1;
+  transform: scale(1.1);
+  box-shadow: 0 0 33px 9px rgb(255 255 255 / 62%);
+}
