@@ -1,6 +1,7 @@
 import type { Attribute, Cart, Customer, LineItem } from '@commercetools/platform-sdk';
 import { LANG } from './constants/filters';
 import { CART_ATTRIBUTES_NAMES } from './constants/ui';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from './constants/messages';
 
 export const getShippingAddressForCart = (customer: Customer) => {
   return customer.addresses.find(
@@ -40,5 +41,13 @@ export const getProductKeyFromPredicate = (predicate: string) => {
   return match?.[1] || '';
 };
 
-export const getDiscountsDoestMatch = (cart: Cart | null) =>
+const getDiscountsDoestMatch = (cart: Cart | null) =>
   cart?.discountCodes.find((code) => code.state !== 'MatchesCart')?.discountCode.obj?.code;
+
+export const composeDiscountMessage = (cart: Cart | null) => {
+  const discountDoestMatch = getDiscountsDoestMatch(cart);
+  const message = discountDoestMatch
+    ? ERROR_MESSAGES.CODE_DOEST_MATCH(discountDoestMatch)
+    : SUCCESS_MESSAGES.UPDATE_CART;
+  return { message, isError: !!discountDoestMatch };
+};
