@@ -1,3 +1,5 @@
+@use '../../styles/mixins' as *;
+
 .MuiFormControl-root {
   margin-bottom: var(--spacing-2);
 
@@ -13,13 +15,7 @@
 }
 
 .MuiFormHelperText-sizeMedium.Mui-error {
-  padding: 0 var(--spacing-1);
-  border-radius: calc(var(--spacing-1) / 2);
-  background-color: var(--mui-palette-error-dark);
-
-  &::before {
-    content: '⚠ ';
-  }
+  @include error-base;
 }
 
 .MuiInputLabel-asterisk {

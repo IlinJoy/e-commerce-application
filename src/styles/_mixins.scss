@@ -65,3 +65,13 @@
     border-bottom: solid 1px var(--mui-palette-grey-700);
   }
 }
+
+@mixin error-base {
+  padding: 0 var(--spacing-1);
+  border-radius: calc(var(--spacing-1) / 2);
+  background-color: var(--mui-palette-error-dark);
+
+  &::before {
+    content: '⚠ ';
+  }
+}
