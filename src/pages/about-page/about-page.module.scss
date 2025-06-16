@@ -7,7 +7,7 @@
   padding: var(--spacing-5);
   border-radius: var(--spacing-2);
 
-  background-color: #ffd0c281;
+  background-color: var(--mui-palette-primary-dark);
 }
 
 .wrapper-title {
@@ -19,6 +19,14 @@
   text-align: center;
 }
 
+.title-text {
+  text-align: left;
+}
+
+.team-name {
+  color: var(--palette-accent-dark);
+}
+
 .wrapper-team {
   display: flex;
   flex-wrap: wrap;
@@ -28,33 +36,7 @@
   width: 100%;
 }
 
-.card-content {
-  display: flex;
-  gap: 5px;
-  align-items: center;
-}
-
-.card-text-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.card-name,
-.team-name {
-  color: #ffa500;
-}
-
-.card-contribution-title {
-  margin-top: 10px;
-}
-
-.title-text {
-  text-align: left;
-}
-
 .card-container {
-  cursor: pointer;
   flex: 0 1 400px;
   transition:
     transform 0.8s ease,

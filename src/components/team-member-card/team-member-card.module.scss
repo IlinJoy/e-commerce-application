@@ -1,0 +1,19 @@
+.card-content {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.card-text-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.card-name {
+  color: var(--palette-accent-dark);
+}
+
+.card-contribution-title {
+  margin-top: 10px;
+}
