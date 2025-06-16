@@ -26,7 +26,7 @@ export function CartContextProvider({ children }: { children: ReactNode }) {
   const { showToast } = useToast();
 
   const setCart = useCallback((cart: Cart) => {
-    setCartState((prev) => ({ ...prev, ...cart }));
+    setCartState(cart);
   }, []);
 
   const resetCart = useCallback(() => {

@@ -1,12 +1,11 @@
 @use '../../styles/mixins' as *;
 
 .promo-wrapper {
-  @include card-border;
-
   width: 100%;
 
   @include flex(column, var(--spacing-1), $align: start);
   @include transition;
+  @include card-border;
 
   padding: var(--spacing-2);
 
@@ -20,21 +19,12 @@
 }
 
 .input-wrapper {
-  @include flex($justify: start);
-
   flex-wrap: wrap;
   width: 100%;
   min-height: 30px;
 
-  &::after {
-    content: '';
-
-    display: block;
-
-    width: 100%;
-    margin-top: var(--spacing-1);
-    border-bottom: solid 1px var(--mui-palette-grey-700);
-  }
+  @include flex($justify: start);
+  @include border-bottom;
 
   & input {
     flex-grow: 1;
