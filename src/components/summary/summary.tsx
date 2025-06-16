@@ -18,7 +18,9 @@ export function Summary({ totalPrice, discountedAmount, itemsAmount }: SummaryPr
     fractionDigits: discountedAmount?.fractionDigits,
   });
 
-  const summaryTotalPrice = discountedAmount ? totalCartPrice + discountedAmountPrice : totalCartPrice;
+  const summaryTotalPrice = discountedAmount
+    ? (totalCartPrice + discountedAmountPrice).toFixed(totalPrice?.fractionDigits)
+    : totalCartPrice;
 
   return (
     <div className={styles.summary}>

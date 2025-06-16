@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { getDiscountCodeByKey, getDiscountCodes } from '@/api/promo';
+import { getDiscountCodes } from '@/api/promo';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/utils/constants/messages';
 import { useToast } from '@/context/toast-provider';
 import type { DiscountCode } from '@commercetools/platform-sdk';
