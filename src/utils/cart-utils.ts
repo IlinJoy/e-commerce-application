@@ -1,6 +1,7 @@
-import type { Attribute, Customer, LineItem } from '@commercetools/platform-sdk';
+import type { Attribute, Cart, Customer, LineItem } from '@commercetools/platform-sdk';
 import { LANG } from './constants/filters';
 import { CART_ATTRIBUTES_NAMES } from './constants/ui';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from './constants/messages';
 
 export const getShippingAddressForCart = (customer: Customer) => {
   return customer.addresses.find(
@@ -24,8 +25,29 @@ export const mapCartAttributes = (attributes?: Attribute[]) => {
     });
 };
 
-export const getItemsAmount = (items?: LineItem[]) => {
-  if (items) {
-    return items.reduce((acc, item) => acc + item.quantity, 0);
-  }
+export const getItemsAmount = (items: LineItem[] = []) => {
+  return items.reduce((acc, item) => acc + item.quantity, 0);
+};
+
+export const mapDiscounts = (cart: Cart | null) =>
+  cart?.discountCodes.map((code) => ({
+    code: code.discountCode.obj?.code,
+    id: code.discountCode.id,
+    isVisible: true,
+  })) || [];
+
+export const getProductKeyFromPredicate = (predicate: string) => {
+  const match = predicate.match(/"(.*?)"/);
+  return match?.[1] || '';
+};
+
+const getDiscountsDoestMatch = (cart: Cart | null) =>
+  cart?.discountCodes.find((code) => code.state !== 'MatchesCart')?.discountCode.obj?.code;
+
+export const composeDiscountMessage = (cart: Cart | null) => {
+  const discountDoestMatch = getDiscountsDoestMatch(cart);
+  const message = discountDoestMatch
+    ? ERROR_MESSAGES.CODE_DOEST_MATCH(discountDoestMatch)
+    : SUCCESS_MESSAGES.UPDATE_CART;
+  return { message, isError: !!discountDoestMatch };
 };

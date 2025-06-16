@@ -1,0 +1,14 @@
+@use '../../styles/mixins' as *;
+
+.content-wrapper {
+  width: 100%;
+
+  @include flex(column, var(--spacing-2), $align: start);
+  @include border-bottom;
+
+  & .header {
+    width: 100%;
+
+    @include flex;
+  }
+}

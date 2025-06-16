@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import type { ReactNode } from 'react';
-import { createContext, use, useCallback, useEffect, useRef, useState } from 'react';
+import { createContext, use, useCallback, useEffect, useState } from 'react';
 import { getCartWithoutToken } from '@/api/cart';
 import { useToast } from './toast-provider';
 import type { Cart } from '@commercetools/platform-sdk';
@@ -24,11 +24,9 @@ export function CartContextProvider({ children }: { children: ReactNode }) {
   const [cart, setCartState] = useState<Cart | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { showToast } = useToast();
-  const cartVersion = useRef(1);
 
   const setCart = useCallback((cart: Cart) => {
-    setCartState((prev) => ({ ...prev, ...cart }));
-    cartVersion.current = cart.version;
+    setCartState(cart);
   }, []);
 
   const resetCart = useCallback(() => {

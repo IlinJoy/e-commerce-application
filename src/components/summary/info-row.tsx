@@ -2,12 +2,13 @@ import Typography from '@mui/material/Typography';
 
 type CartAsideRowProps = {
   title: string;
-  info?: string;
+  info?: string | number;
+  className?: string;
 };
 
-export function ShippingRow({ title, info = '' }: CartAsideRowProps) {
+export function InfoRow({ title, info = '', className }: CartAsideRowProps) {
   return (
-    <Typography>
+    <Typography className={className}>
       <span>{title}: </span>
       {info}
     </Typography>

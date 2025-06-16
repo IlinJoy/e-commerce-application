@@ -1,10 +1,9 @@
-@use '../../styles/mixins' as *;
+@use '../../../styles/mixins' as *;
 
 .hero {
   min-height: 86dvh;
-  margin-top: var(--spacing-4);
   padding: var(--spacing-4);
-  border-radius: var(--spacing-2);
+  border-radius: var(--border-radius-2);
 
   @include flex(column);
 

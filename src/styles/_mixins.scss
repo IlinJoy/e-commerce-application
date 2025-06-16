@@ -48,3 +48,30 @@
     }
   }
 }
+
+@mixin card-border() {
+  border: 1px solid var(--mui-palette-grey-800);
+  border-radius: var(--border-radius-1);
+}
+
+@mixin border-bottom {
+  &::after {
+    content: '';
+
+    display: block;
+
+    width: 100%;
+    margin-top: var(--spacing-1);
+    border-bottom: solid 1px var(--mui-palette-grey-700);
+  }
+}
+
+@mixin error-base {
+  padding: 0 var(--spacing-1);
+  border-radius: calc(var(--spacing-1) / 2);
+  background-color: var(--mui-palette-error-dark);
+
+  &::before {
+    content: '⚠ ';
+  }
+}

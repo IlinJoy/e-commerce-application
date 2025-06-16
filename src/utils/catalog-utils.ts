@@ -11,7 +11,7 @@ import { LANG, type FilterAttribute, type FilterKey } from './constants/filters'
 export type CategoryWithChildren = Category & { children: CategoryWithChildren[] };
 type TogglePriceOptions = { switchToCents?: boolean; fractionDigits?: number };
 
-export const switchPrice = (amount: number, { switchToCents = false, fractionDigits }: TogglePriceOptions) => {
+export const switchPrice = (amount: number = 0, { switchToCents = false, fractionDigits }: TogglePriceOptions) => {
   const POW_BASE = 10;
   const DEFAULT_FRACTION_DIGITS = 2;
   const conversionFactor = POW_BASE ** (fractionDigits || DEFAULT_FRACTION_DIGITS);

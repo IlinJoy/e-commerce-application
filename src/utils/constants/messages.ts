@@ -1,6 +1,6 @@
 export const ERROR_MESSAGES = {
   ENV_NOT_FOUND: (key: string) => `Cannot found env ${key}`,
-  LOGIN_FAIL: 'Something went wrong. Please attempt to log in again later.',
+  SOMETHING_WRONG: 'Something went wrong. Please try again later.',
   REGISTRATION_FAIL: 'An error occurred during registration. Please try later.',
   UPDATE_INFO: 'Could not update information. Please login to proceed.',
   UPDATE_PASSWORD_FAIL: 'Changing password error',
@@ -10,6 +10,8 @@ export const ERROR_MESSAGES = {
   REMOVE_PRODUCT_FAIL: 'Failed to remove this product from cart!',
   QUANTITY_LIMIT: (value: number, limit: number) =>
     `Sorry, you can't add ${value} items. Only ${limit} available right now`,
+  PROMO_EXIST: 'This promotion has already been applied',
+  CODE_DOEST_MATCH: (code: string) => `The conditions for applying ${code} promo codes are not met.`,
 };
 
 export const SUCCESS_MESSAGES = {
@@ -19,8 +21,13 @@ export const SUCCESS_MESSAGES = {
   UPDATE_ADDRESS: 'The address has been updated',
   PROFILE: 'Your profile updated',
   PASSWORD: 'Password updated',
-  SEARCHING: ' Partial match suggestions. The full equivalent will be marked by color.',
   ADD_PRODUCT: 'This product added to cart',
   REMOVE_PRODUCT: 'This product has been removed from your cart',
   UPDATE_CART: 'The cart has been updated successfully',
+  CODE_COPIED: (code: string) => `The promo code ${code} was copied.`,
+};
+
+export const MESSAGES = {
+  SEARCHING: ' Partial match suggestions. The full equivalent will be marked by color.',
+  PROMO_COPY: 'Click to copy promo code',
 };

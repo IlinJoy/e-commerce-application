@@ -7,6 +7,7 @@ import { CLASSES, headerScrollPref } from '@/utils/constants/ui';
 import { throttle } from '@/utils/throttle';
 import styles from './header.module.scss';
 import clsx from 'clsx';
+import { PromoBar } from './ui/promo-bar/promo-bar';
 import { useLocation } from 'react-router';
 
 export function Header() {
@@ -44,6 +45,7 @@ export function Header() {
 
   return (
     <header className={clsx(styles.header, { [styles.filled]: isFilledHeader })}>
+      <PromoBar isScrolled={isFilledHeader} />
       <Container>
         <div className={styles.bar}>
           <Logo />
