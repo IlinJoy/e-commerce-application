@@ -6,6 +6,7 @@ import { CatalogBreadcrumbs } from '@/components/breadcrumbs/breadcrumbs';
 import { SortFilter } from '@/components/sort-filter/sort-filter';
 import { SearchInput } from '@/components/search-filter/search-filter';
 import styles from './catalog-page.module.scss';
+import { Loader } from '@/components/loader/loader';
 
 export function CatalogPage() {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
@@ -22,7 +23,7 @@ export function CatalogPage() {
             <SearchInput />
             <SortFilter />
           </div>
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<Loader />}>
             <Outlet context={{ activeCategory }} />
           </Suspense>
         </div>
