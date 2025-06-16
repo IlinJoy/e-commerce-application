@@ -29,7 +29,7 @@ export function CartRow({ product }: CartRowProps) {
   const variant = product.variant;
   const cover = variant.images?.[0];
   const attributes = mapCartAttributes(variant.attributes);
-  const totalCoast = switchPrice(product.totalPrice.centAmount, {});
+  const totalCost = switchPrice(product.totalPrice.centAmount, {});
 
   const { mutate, isPending } = useMutation({
     mutationFn: removeProductFromCart,
@@ -80,7 +80,7 @@ export function CartRow({ product }: CartRowProps) {
           <QuantityInput lineItemId={product.id} quantity={product.quantity} isDisabled={isPending} />
           <div className={styles.productTotal}>
             <Typography>Total cost:</Typography>
-            <div>$ {totalCoast}</div>
+            <div>$ {totalCost}</div>
           </div>
         </div>
       </div>
