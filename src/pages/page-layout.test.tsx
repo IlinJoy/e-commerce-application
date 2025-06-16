@@ -2,8 +2,14 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { PageLayout } from './page-layout';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import { act, lazy, ReactNode } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-const Providers = ({ children }: { children: ReactNode }) => <MemoryRouter>{children}</MemoryRouter>;
+const queryClient = new QueryClient();
+const Providers = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={queryClient}>
+    <MemoryRouter>{children}</MemoryRouter>
+  </QueryClientProvider>
+);
 
 describe('PageLayout', () => {
   it('should render with header', () => {
