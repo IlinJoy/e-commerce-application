@@ -43,34 +43,3 @@
     }
   }
 }
-
-// .promo-wrapper {
-//   @include card-border;
-
-//   width: 100%;
-
-//   @include flex(column, var(--spacing-1), $align: start);
-//   @include transition;
-
-//   padding: var(--spacing-2);
-// }
-
-// .input-wrapper {
-//   flex-wrap: wrap;
-//   width: 100%;
-//   min-height: 30px;
-
-//   @include flex($justify: start);
-
-//   & input {
-//     border: none;
-//     flex-grow: 1;
-//     font: inherit;
-//     background: transparent;
-//     caret-color: var(--mui-palette-primary-dark);
-
-//     &:focus {
-//       outline: none;
-//     }
-//   }
-// }
