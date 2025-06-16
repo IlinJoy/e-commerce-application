@@ -14,9 +14,14 @@
 
 .promo-wrapper {
   cursor: pointer;
+
   overflow: hidden;
-  width: max-content;
+
+  width: 100%;
+
   background-color: var(--mui-palette-primary-dark);
+
+  mask-image: linear-gradient(to right, transparent, black 50%, transparent);
 
   @include flex(row, 0);
   @include transition;
