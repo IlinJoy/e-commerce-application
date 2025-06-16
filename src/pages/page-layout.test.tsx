@@ -36,7 +36,7 @@ describe('PageLayout', () => {
       render(<TestLayout />, { wrapper: Providers });
     });
 
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    expect(screen.getByRole('progressbar')).toBeInTheDocument();
 
     await waitFor(() => {
       expect(screen.queryByText('Loading...')).not.toBeInTheDocument();

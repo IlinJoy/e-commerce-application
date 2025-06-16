@@ -14,6 +14,7 @@ import { QUANTITY_SETTINGS } from '@/utils/constants/cart';
 import { PromoInput } from '../../components/promo-input/promo-input';
 import { Summary } from '../../components/summary/summary';
 import { getItemsAmount } from '@/utils/cart-utils';
+import { Loader } from '@/components/loader/loader';
 
 export function CartPage() {
   const { cart, isLoading } = useCart();
@@ -42,7 +43,7 @@ export function CartPage() {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   return (
