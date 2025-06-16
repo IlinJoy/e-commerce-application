@@ -21,7 +21,10 @@
   --spacing-7: 56px;
   --spacing-8: 64px;
   --spacing-9: 72px;
+  --spacing-10: 88px;
+  --spacing-sections: 100px;
   --border-radius-1: 4px;
+  --border-radius-2: 8px;
 }
 
 main {
@@ -30,7 +33,7 @@ main {
   position: relative;
   left: calc((100vw - 100%) / 2);
   min-height: 100dvh;
-  padding-top: var(--spacing-9);
+  padding-top: var(--spacing-10);
 }
 
 body {

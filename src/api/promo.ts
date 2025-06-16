@@ -1,6 +1,11 @@
 import { getRequestToken } from '@/utils/request-token-handler';
 import { fetchFromApi } from './platformApi';
-import type { CartDiscountPagedQueryResponse, CartUpdateAction, DiscountCode } from '@commercetools/platform-sdk';
+import type {
+  CartDiscountPagedQueryResponse,
+  CartUpdateAction,
+  DiscountCode,
+  DiscountCodePagedQueryResponse,
+} from '@commercetools/platform-sdk';
 import { updateCart } from './cart';
 import type { Discount } from '@/components/promo-input/promo-input';
 
@@ -13,6 +18,12 @@ export const getCardDiscounts = async () => {
 export const getDiscountCodeByKey = async (key: string) => {
   const token = await getRequestToken();
   return await fetchFromApi<DiscountCode>(`/discount-codes/key=${key}`, token);
+};
+
+export const getDiscountCodes = async () => {
+  const token = await getRequestToken();
+  const result = await fetchFromApi<DiscountCodePagedQueryResponse>(`/discount-codes`, token);
+  return result.results;
 };
 
 export type AddProductToCartParams = {

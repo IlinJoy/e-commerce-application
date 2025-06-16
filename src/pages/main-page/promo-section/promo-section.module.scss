@@ -1,0 +1,77 @@
+@use '../../../styles/mixins' as *;
+
+.promo {
+  position: relative;
+
+  padding-top: var(--spacing-3);
+  padding-bottom: var(--spacing-3);
+  border-top: 1px solid var(--mui-palette-primary-dark);
+  border-bottom: 1px solid var(--mui-palette-primary-dark);
+
+  @include flex(row, var(--spacing-6));
+
+  &::after {
+    content: '';
+
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+
+    height: 100%;
+    border-right: 1px solid var(--mui-palette-primary-dark);
+  }
+
+  @include media(phone) {
+    flex-direction: column;
+    gap: var(--spacing-2);
+
+    &::after {
+      display: none;
+    }
+  }
+}
+
+.promo-card {
+  position: relative;
+
+  width: 100%;
+  min-height: 360px;
+  padding: var(--spacing-2);
+  border-radius: var(--border-radius-2);
+
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  @include flex(column, $align: start);
+
+  &:nth-child(even) {
+    background-image: url('/images/triple.webp');
+  }
+
+  &:nth-child(odd) {
+    align-items: end;
+    text-align: right;
+    background-image: url('/images/spend.webp');
+  }
+}
+
+.label {
+  @include flex;
+
+  cursor: pointer;
+
+  min-width: 180px;
+  padding: calc(var(--spacing-1) / 2) var(--spacing-1);
+  border-radius: var(--border-radius-1);
+
+  background-color: var(--mui-palette-background-default);
+}
+
+.title {
+  margin-bottom: var(--spacing-2);
+}
+
+.description {
+  max-width: 300px;
+}

@@ -1,0 +1,14 @@
+@use '../../../styles/mixins' as *;
+
+.marketing {
+  margin-top: var(--spacing-sections);
+  margin-bottom: var(--spacing-sections);
+
+  &-content {
+    max-width: 520px;
+    margin: auto;
+    text-align: center;
+
+    @include flex(column, var(--spacing-4));
+  }
+}
