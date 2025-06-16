@@ -22,7 +22,7 @@ export const getCategories = async () => {
 export const getProductsWithFilters = async (queryString: string) => {
   const token = await getRequestToken();
   const result = await fetchFromApi<ProductProjectionPagedSearchResponse>(`/product-projections${queryString}`, token);
-  return { result: result.results, facets: result.facets };
+  return { result: result.results, facets: result.facets, total: result.total };
 };
 
 export const getProductType = async () => {

@@ -5,6 +5,8 @@ import { switchPrice } from './catalog-utils';
 
 type FacetsQueryParams = { attributes?: AttributeDefinition[]; category: string | null };
 
+export const LIMIT_CARDS_ON_PAGE = 5;
+
 export const createFacetsQueryString = ({ attributes, category }: FacetsQueryParams) => {
   const params = new URLSearchParams();
   const appendFacet = (value: string) => params.append('facet', value);
@@ -36,7 +38,7 @@ export const createFacetsQueryString = ({ attributes, category }: FacetsQueryPar
   return `/search?${params.toString()}&limit=0`;
 };
 
-type QueryParams = { category: string | null; filterParams: FilterParams };
+type QueryParams = { category: string | null; filterParams: FilterParams; page?: number; limit?: number };
 type FilterParamsEntries<T> = { [K in keyof T]: [K, T[K]] }[keyof T][];
 type FilterEntries = FilterParamsEntries<FilterParams>;
 
@@ -82,11 +84,16 @@ const getFilterParams = ({ category, filterParams }: QueryParams) => {
   return params;
 };
 
-export const createQueryString = ({ category, filterParams }: QueryParams) => {
+export const createQueryString = ({ category, filterParams, page = 1, limit = LIMIT_CARDS_ON_PAGE }: QueryParams) => {
   const baseParams = new URLSearchParams();
   const filterUrlParams = getFilterParams({ category, filterParams });
   const filters = filterUrlParams.size > 0 ? filterUrlParams.toString() + '&' : '';
 
+  const offset = (page - 1) * limit;
+
   baseParams.append('sort', 'createdAt asc');
+  baseParams.append('offset', String(offset));
+  baseParams.append('limit', String(limit));
+
   return `/search?${filters}${baseParams.toString()}`;
 };

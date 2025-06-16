@@ -11,6 +11,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useToast } from '@/context/toast-provider';
 import { SUCCESS_MESSAGES } from '@/utils/constants/messages';
 import { QUANTITY_SETTINGS } from '@/utils/constants/cart';
+import { Loader } from '@/components/loader/loader';
 
 export function CartPage() {
   const { cart, isLoading } = useCart();
@@ -38,7 +39,7 @@ export function CartPage() {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   return (
