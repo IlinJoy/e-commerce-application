@@ -2,7 +2,7 @@ import type { AddProductToCartParams } from '@/api/promo';
 import { updateDiscountCodes } from '@/api/promo';
 import { useCart } from '@/context/cart-context';
 import { useToast } from '@/context/toast-provider';
-import { mapDiscounts } from '@/utils/cart-utils';
+import { getDiscountsDoestMatch, mapDiscounts } from '@/utils/cart-utils';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/utils/constants/messages';
 import type { PromoInput } from '@/validation/promo-validation';
 import { promoSchema } from '@/validation/promo-validation';
@@ -42,6 +42,10 @@ export function PromoInput() {
   const { mutate, isPending } = useMutation({
     mutationFn: updateDiscountCodes,
     onSuccess: (data) => {
+      const discountDoestMatch = getDiscountsDoestMatch(data);
+      if (discountDoestMatch) {
+        showToast({ message: ERROR_MESSAGES.CODE_DOEST_MATCH(discountDoestMatch), isError: true });
+      }
       setCart(data);
       setDiscounts(mapDiscounts(data));
       showToast({ message: SUCCESS_MESSAGES.UPDATE_CART });
@@ -113,6 +117,7 @@ export function PromoInput() {
                   onClick={() => handleChipClick(code, index)}
                   onDelete={() => handleDelete(discount.id)}
                   variant="outlined"
+                  disabled={isPending}
                 />
               );
             }

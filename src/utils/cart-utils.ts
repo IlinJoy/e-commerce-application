@@ -29,11 +29,16 @@ export const getItemsAmount = (items: LineItem[] = []) => {
 };
 
 export const mapDiscounts = (cart: Cart | null) =>
-  cart?.discountCodes
-    .filter((code) => code.state === 'MatchesCart')
-    .map((code) => ({ code: code.discountCode.obj?.code, id: code.discountCode.id, isVisible: true })) || [];
+  cart?.discountCodes.map((code) => ({
+    code: code.discountCode.obj?.code,
+    id: code.discountCode.id,
+    isVisible: true,
+  })) || [];
 
 export const getProductKeyFromPredicate = (predicate: string) => {
   const match = predicate.match(/"(.*?)"/);
   return match?.[1] || '';
 };
+
+export const getDiscountsDoestMatch = (cart: Cart | null) =>
+  cart?.discountCodes.find((code) => code.state !== 'MatchesCart')?.discountCode.obj?.code;

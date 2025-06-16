@@ -11,6 +11,7 @@ export const ERROR_MESSAGES = {
   QUANTITY_LIMIT: (value: number, limit: number) =>
     `Sorry, you can't add ${value} items. Only ${limit} available right now`,
   PROMO_EXIST: 'This promotion has already been applied',
+  CODE_DOEST_MATCH: (code: string) => `The conditions for applying ${code} promo codes are not met.`,
 };
 
 export const SUCCESS_MESSAGES = {
