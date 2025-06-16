@@ -95,5 +95,5 @@ export const createQueryString = ({ category, filterParams, page = 1, limit = LI
   baseParams.append('offset', String(offset));
   baseParams.append('limit', String(limit));
 
-  return `?${filters}${baseParams.toString()}`;
+  return `/search?${filters}${baseParams.toString()}`;
 };
