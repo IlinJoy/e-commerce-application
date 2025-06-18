@@ -9,7 +9,7 @@ import styles from './catalog-page.module.scss';
 import { Loader } from '@/components/loader/loader';
 
 export function CatalogPage() {
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [activeCategory, setActiveCategory] = useState<string | null>('');
 
   return (
     <Container component={'section'}>
