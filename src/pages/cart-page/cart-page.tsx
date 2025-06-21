@@ -9,14 +9,17 @@ import { useCart } from '@/context/cart-context';
 import { deleteCart } from '@/api/cart';
 import { useMutation } from '@tanstack/react-query';
 import { useToast } from '@/context/toast-provider';
-import { SUCCESS_MESSAGES } from '@/utils/constants/messages';
+import { MESSAGES, SUCCESS_MESSAGES } from '@/utils/constants/messages';
 import { QUANTITY_SETTINGS } from '@/utils/constants/cart';
 import { PromoInput } from '../../components/promo-input/promo-input';
 import { Summary } from '../../components/summary/summary';
 import { getItemsAmount } from '@/utils/cart-utils';
 import { Loader } from '@/components/loader/loader';
+import { AppDialog } from '@/components/app-dialog/app-dialog';
+import { useState } from 'react';
 
 export function CartPage() {
+  const [isOpenDialog, setIsOpenDialog] = useState(false);
   const { cart, isLoading } = useCart();
   const { resetCart } = useCart();
   const { showToast } = useToast();
@@ -35,11 +38,11 @@ export function CartPage() {
     },
   });
 
-  const handleClearCart = (id?: string, version?: number) => {
-    if (!id || !version) {
+  const handleClearCart = () => {
+    if (!cart) {
       return;
     }
-    mutate({ id, version });
+    mutate({ id: cart.id, version: cart.version });
   };
 
   if (isLoading) {
@@ -49,20 +52,21 @@ export function CartPage() {
   return (
     <Container component={'section'} className={styles.cart}>
       {isEmpty ? (
-        <NothingFound />
+        <NothingFound message="Your cart is empty. Let's fix that!" />
       ) : (
         <div className={styles.products}>
           <div className={styles.productsHeading}>
             <Typography variant="h4" component="h1">
               Shopping Cart
             </Typography>
-            <Button onClick={() => handleClearCart(cart?.id, cart?.version)} variant="text">
+            <Button onClick={() => setIsOpenDialog(true)} variant="text">
               Clear cart
             </Button>
           </div>
           {cart?.lineItems.map((item) => <CartRow key={item.id} product={item} />)}
         </div>
       )}
+
       <aside className={styles.cartAside}>
         <PromoInput />
         <Summary
@@ -76,6 +80,14 @@ export function CartPage() {
           understanding
         </Typography>
       </aside>
+
+      <AppDialog
+        isOpen={isOpenDialog}
+        title="Clear Shopping Cart"
+        text={MESSAGES.WANT_TO_CLEAR_CART}
+        onClose={() => setIsOpenDialog(false)}
+        onConfirm={handleClearCart}
+      />
     </Container>
   );
 }

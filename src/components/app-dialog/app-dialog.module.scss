@@ -1,0 +1,28 @@
+@use '../../styles/mixins' as *;
+
+.heading {
+  @include flex($align: start);
+
+  margin-bottom: var(--spacing-3);
+}
+
+.button-wrapper {
+  width: 100%;
+  margin-top: var(--spacing-3);
+  margin-left: auto;
+
+  @include flex;
+
+  @include media(phone) {
+    flex-direction: column-reverse;
+  }
+
+  & button {
+    width: 100%;
+  }
+}
+
+.reset {
+  color: var(--mui-palette-primary-main);
+  background-color: transparent;
+}
