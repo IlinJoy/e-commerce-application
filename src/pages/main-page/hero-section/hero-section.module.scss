@@ -5,13 +5,13 @@
   padding: var(--spacing-4);
   border-radius: var(--border-radius-2);
 
-  @include flex(column);
-
   text-align: center;
 
   background-image: url('/images/cover.webp');
   background-repeat: no-repeat;
   background-size: cover;
+
+  @include flex(column);
 }
 
 .content-wrapper {

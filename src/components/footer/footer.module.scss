@@ -1,0 +1,40 @@
+@use '../../styles/mixins' as *;
+
+.footer {
+  position: sticky;
+  bottom: 0;
+
+  margin-top: -20px;
+  padding: var(--spacing-10) var(--spacing-4);
+
+  background: linear-gradient(to bottom, var(--mui-palette-grey-900), var(--mui-palette-background-default));
+}
+
+.footer-content {
+  text-align: center;
+
+  @include flex(column, var(--spacing-4), $justify: center);
+
+  & h3 {
+    margin-bottom: var(--spacing-2);
+  }
+}
+
+.link-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-1) var(--spacing-2);
+  justify-content: center;
+
+  & a {
+    font-size: 0.9rem;
+    color: var(--mui-palette-primary-main);
+    text-decoration: none;
+
+    @include transition;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+}
