@@ -35,38 +35,11 @@
 }
 
 .nav-link {
-  position: relative;
-
-  font-size: var(--subtitle-size);
-  font-weight: 600;
-  color: var(--mui-palette-primary-main);
-  text-decoration: none;
-  text-transform: uppercase;
-
-  &::before {
-    content: '';
-
-    position: absolute;
-    bottom: 0;
-    left: 0;
-
-    width: 0%;
-    height: 2px;
-
-    background-color: var(--mui-palette-primary-main);
-
-    @include transition;
-  }
+  @include underline-link;
 
   &.active {
     pointer-events: none;
 
-    &::before {
-      width: 100%;
-    }
-  }
-
-  &:hover {
     &::before {
       width: 100%;
     }
