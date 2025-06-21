@@ -6,7 +6,7 @@ import { useToast } from '@/context/toast-provider';
 import { cookieHandler } from '@/services/cookies/cookie-handler';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/utils/constants/messages';
 import { getRequestToken } from '@/utils/request-token-handler';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 export const useProductActions = (productId?: string, variantId?: number) => {
   const { cart, setCart } = useCart();
@@ -24,7 +24,7 @@ export const useProductActions = (productId?: string, variantId?: number) => {
     setInCart(isProductInCart);
   }, [cart, productId, variantId]);
 
-  const handleAddToCart = async () => {
+  const handleAddToCart = useCallback(async () => {
     if (!productId || !variantId) {
       return;
     }
@@ -68,9 +68,9 @@ export const useProductActions = (productId?: string, variantId?: number) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [productId, variantId, cart, setCart, showToast]);
 
-  const handleRemoveFromCart = async () => {
+  const handleRemoveFromCart = useCallback(async () => {
     if (!cart) {
       return;
     }
@@ -101,7 +101,7 @@ export const useProductActions = (productId?: string, variantId?: number) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [cart, productId, setCart, showToast]);
 
   return {
     inCart,
