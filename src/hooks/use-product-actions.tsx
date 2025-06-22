@@ -39,8 +39,6 @@ export const useProductActions = (productId?: string, variantId?: number) => {
     }
 
     if (currentCart.anonymousId) {
-      cookieHandler.delete('cartId');
-
       try {
         currentCart = await getCartWithoutToken();
         setCart(currentCart);

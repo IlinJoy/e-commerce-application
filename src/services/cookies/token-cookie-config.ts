@@ -15,8 +15,4 @@ export const cookieConfig = {
     ...baseOptions,
     maxAge: 10000,
   },
-  cartId: {
-    ...baseOptions,
-    maxAge: 2592000,
-  },
 } as const;
