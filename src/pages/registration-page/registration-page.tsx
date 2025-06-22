@@ -59,7 +59,7 @@ export function RegistrationPage() {
 
   const handleRegistration = async (data: RegisterFormInputs) => {
     const customerInfo = await registerCustomer(data);
-    if (!customerInfo?.customer.id || !customerInfo.cart) {
+    if (!customerInfo?.customer.id) {
       throw new Error(ERROR_MESSAGES.REGISTRATION_FAIL);
     }
     return { customer: customerInfo.customer, password: data.customerData.password, cart: customerInfo.cart };
@@ -68,8 +68,8 @@ export function RegistrationPage() {
   const { mutate, isPending } = useMutation({
     mutationFn: handleRegistration,
     onSuccess: async (data) => {
-      setCart(data.cart);
       await mutateToken({ email: data.customer.email, password: data.password });
+      setCart(data.cart || null);
       showToast({ message: SUCCESS_MESSAGES.REGISTRATION });
     },
     onError: (error) => showToast({ message: error.message, severity: 'error' }),
