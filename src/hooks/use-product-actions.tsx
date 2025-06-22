@@ -3,7 +3,6 @@ import { getCartWithoutToken } from '@/api/cart';
 import { removeProductFromCart } from '@/api/remove-product-from-cart';
 import { useCart } from '@/context/cart-context';
 import { useToast } from '@/context/toast-provider';
-import { cookieHandler } from '@/services/cookies/cookie-handler';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/utils/constants/messages';
 import { getRequestToken } from '@/utils/request-token-handler';
 import { useCallback, useEffect, useState } from 'react';
