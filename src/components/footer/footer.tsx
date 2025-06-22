@@ -14,7 +14,7 @@ export function Footer() {
 
           <div className={styles.linkWrapper}>
             {teamMembers.map((member) => (
-              <Typography component="a" href={member.github} className={styles.link}>
+              <Typography component="a" href={member.github} className={styles.link} target="_blank">
                 <GitHubIcon />
                 {member.name}
               </Typography>
