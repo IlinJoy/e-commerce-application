@@ -4,7 +4,7 @@ import { createContext, use, useCallback, useState } from 'react';
 import { Toast } from '@/components/toast/toast';
 import type { SnackbarCloseReason } from '@mui/material/Snackbar';
 
-type ToastInfo = { message: string; isError?: boolean };
+export type ToastInfo = { message: string; severity?: 'error' | 'info' | 'success' | 'warning' };
 
 type ToastContextType = {
   showToast: (prop: ToastInfo) => void;
@@ -16,7 +16,7 @@ const ToastContext = createContext<ToastContextType>({
 
 export function ToastContextProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [toastInfo, setToastInfo] = useState<ToastInfo>({ message: '', isError: false });
+  const [toastInfo, setToastInfo] = useState<ToastInfo>({ message: '', severity: 'success' });
 
   const handleClose = (_?: React.SyntheticEvent | Event, reason?: SnackbarCloseReason) => {
     if (reason === 'clickaway') {

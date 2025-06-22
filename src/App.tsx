@@ -6,6 +6,7 @@ import { CustomerProvider } from './context/provider/customer-provider';
 import { ToastContextProvider } from './context/toast-provider';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router';
+import { ErrorBoundary } from 'react-error-boundary';
 
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
@@ -29,14 +30,16 @@ export function App() {
   }, [pathname]);
 
   return (
-    <ToastContextProvider>
-      <QueryClientProvider client={queryClient}>
-        <CustomerProvider>
-          <ThemeAppProvider theme={responseTheme}>
-            <AppRouter />
-          </ThemeAppProvider>
-        </CustomerProvider>
-      </QueryClientProvider>
-    </ToastContextProvider>
+    <ErrorBoundary fallback={<p>⚠️Something went wrong</p>}>
+      <ToastContextProvider>
+        <QueryClientProvider client={queryClient}>
+          <CustomerProvider>
+            <ThemeAppProvider theme={responseTheme}>
+              <AppRouter />
+            </ThemeAppProvider>
+          </CustomerProvider>
+        </QueryClientProvider>
+      </ToastContextProvider>
+    </ErrorBoundary>
   );
 }

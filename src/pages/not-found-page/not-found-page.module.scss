@@ -1,7 +1,12 @@
 @use '../../styles/mixins' as *;
 
-body:has(.not-found) {
-  background-image: linear-gradient(326deg, var(--mui-palette-error-dark), var(--mui-palette-background-default));
+main:has(.not-found) {
+  background: linear-gradient(
+    326deg,
+    var(--mui-palette-error-dark),
+    var(--mui-palette-background-default),
+    var(--mui-palette-background-default)
+  );
 }
 
 .not-found {
@@ -10,12 +15,12 @@ body:has(.not-found) {
   &-content {
     @include flex(column, var(--spacing-5), $justify: center);
 
-    min-height: 100dvh;
+    min-height: 80vh;
     text-align: center;
   }
 
   &-image {
-    position: fixed;
+    position: absolute;
     z-index: -1;
     right: 0;
     bottom: -5rem;

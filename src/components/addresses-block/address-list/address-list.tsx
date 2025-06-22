@@ -31,7 +31,7 @@ export function AddressList({ addresses, type, defaultAddressId, handleUpdateAdd
       showToast({ message: SUCCESS_MESSAGES.DELETE_ADDRESS });
     },
     onError: (err) => {
-      showToast({ message: err.message, isError: true });
+      showToast({ message: err.message, severity: 'error' });
     },
   });
 

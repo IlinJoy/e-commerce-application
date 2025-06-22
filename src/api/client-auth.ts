@@ -1,7 +1,7 @@
 import type { Address, CustomerDraft, CustomerSignInResult } from '@commercetools/platform-sdk';
 import type { ErrorResponse } from '@commercetools/platform-sdk';
-import { getCustomerToken, fetchFromApi } from '@/api/platformApi';
-import { mapApiErrorToMessage } from '@/utils/mapApiErrorToMessage';
+import { getCustomerToken, fetchFromApi } from '@/api/platform-api';
+import { mapApiErrorToMessage } from '@/utils/map-api-error-to-message';
 import { getRequestToken } from '@/utils/request-token-handler';
 
 export type RegisterCustomerOptions = {

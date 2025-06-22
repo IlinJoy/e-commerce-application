@@ -1,5 +1,5 @@
 import type { Customer, MyCustomerUpdateAction } from '@commercetools/platform-sdk';
-import { fetchFromApi } from './platformApi';
+import { fetchFromApi } from './platform-api';
 
 export const updateCustomer = async (token: string, body: { version: number; actions: MyCustomerUpdateAction[] }) => {
   return await fetchFromApi<Customer>('/me', token, {

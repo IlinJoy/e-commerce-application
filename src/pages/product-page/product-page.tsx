@@ -1,7 +1,7 @@
 import { getProductByKey } from '@/api/catalog';
 import { useQuery } from '@tanstack/react-query';
 import styles from './product-page.module.scss';
-import { getProductIdFromUrl } from '@/utils/getProductKeyFromUrl';
+import { getProductIdFromUrl } from '@/utils/get-product-key-from-url';
 import { NotFoundPage } from '../not-found-page/not-found-page';
 import Typography from '@mui/material/Typography';
 import { ProductImageBlock } from '@/components/product-image-block/product-image-block';

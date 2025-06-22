@@ -1,9 +1,9 @@
 @use '../../styles/mixins' as *;
 
 .product {
-  @include flex(row, var(--spacing-6), $justify: center, $align: start);
-
   padding: 0 var(--spacing-2);
+
+  @include flex(row, var(--spacing-6), $justify: center, $align: start);
 
   @include media(tablet) {
     flex-wrap: wrap;

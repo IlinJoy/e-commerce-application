@@ -3,8 +3,7 @@ import { render, screen, waitFor, fireEvent, act } from '@testing-library/react'
 import { describe, it, vi, expect } from 'vitest';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter } from 'react-router';
-
-import { fetchFromApi } from '@/api/platformApi';
+import { fetchFromApi } from '@/api/platform-api';
 import { Profile } from '@/components/profile/profile';
 
 const queryClient = new QueryClient();
@@ -25,7 +24,7 @@ const mockCustomer = {
 
 const mockShowToast = vi.fn();
 
-vi.mock('@/api/platformApi', () => ({ fetchFromApi: vi.fn() }));
+vi.mock('@/api/platform-api', () => ({ fetchFromApi: vi.fn() }));
 
 vi.mock('@/context/toast-provider', () => ({ useToast: () => ({ showToast: mockShowToast }) }));
 
@@ -46,11 +45,12 @@ describe('Profile', () => {
 
     render(<Profile />, { wrapper: Providers });
 
-    const emailInput = await screen.findByLabelText(/email/i);
-    expect((emailInput as HTMLInputElement).value).toBe(mockCustomer.email);
-    expect(screen.getByLabelText(/first name/i)).toHaveValue(mockCustomer.firstName);
-    expect(screen.getByLabelText(/last name/i)).toHaveValue(mockCustomer.lastName);
-    expect(screen.getByLabelText(/date of birth/i)).toHaveValue(mockCustomer.dateOfBirth);
+    await waitFor(() => {
+      expect(screen.getByLabelText(/email/i)).toHaveValue(mockCustomer.email);
+      expect(screen.getByLabelText(/first name/i)).toHaveValue(mockCustomer.firstName);
+      expect(screen.getByLabelText(/last name/i)).toHaveValue(mockCustomer.lastName);
+      expect(screen.getByLabelText(/date of birth/i)).toHaveValue(mockCustomer.dateOfBirth);
+    });
   });
 
   it('toggles edit mode', async () => {
@@ -126,7 +126,9 @@ describe('Profile', () => {
     fireEvent.click(screen.getByRole('button', { name: /save changes/i }));
 
     await waitFor(() => {
-      expect(mockShowToast).toHaveBeenCalledWith(expect.objectContaining({ message: 'Update failed', isError: true }));
+      expect(mockShowToast).toHaveBeenCalledWith(
+        expect.objectContaining({ message: 'Update failed', severity: 'error' })
+      );
     });
   });
 });

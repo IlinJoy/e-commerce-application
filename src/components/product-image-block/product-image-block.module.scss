@@ -1,7 +1,6 @@
 @use '../../styles/mixins' as *;
 
 .image-wrapper {
-  width: 100%;
   height: 70vh;
 
   @include flex(row, var(--spacing-3), $justify: start, $align: start);

@@ -34,7 +34,7 @@
   }
 }
 
-@mixin form-link-redirection() {
+@mixin form-link-redirection {
   margin-top: var(--spacing-3);
   color: var(--mui-palette-primary-main);
 
@@ -49,7 +49,7 @@
   }
 }
 
-@mixin card-border() {
+@mixin card-border {
   border: 1px solid var(--mui-palette-grey-800);
   border-radius: var(--border-radius-1);
 }
@@ -73,5 +73,36 @@
 
   &::before {
     content: '⚠ ';
+  }
+}
+
+@mixin underline-link($color: var(--mui-palette-primary-main)) {
+  position: relative;
+
+  font-size: var(--subtitle-size);
+  font-weight: 600;
+  color: $color;
+  text-decoration: none;
+  text-transform: uppercase;
+
+  &::before {
+    content: '';
+
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    width: 0%;
+    height: 2px;
+
+    background-color: $color;
+
+    @include transition;
+  }
+
+  &:hover {
+    &::before {
+      width: 100%;
+    }
   }
 }

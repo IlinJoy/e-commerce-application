@@ -1,3 +1,4 @@
+import { Footer } from '@/components/footer/footer';
 import { Header } from '@/components/header/header';
 import { Loader } from '@/components/loader/loader';
 import { Suspense } from 'react';
@@ -12,7 +13,7 @@ export function PageLayout() {
           <Outlet />
         </Suspense>
       </main>
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 }

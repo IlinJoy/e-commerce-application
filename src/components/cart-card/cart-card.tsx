@@ -10,7 +10,7 @@ import styles from './cart-card.module.scss';
 import { useNavigate } from 'react-router';
 import { ROUTES } from '@/router/routes';
 import { useMutation } from '@tanstack/react-query';
-import { removeProductFromCart } from '@/api/removeProductFromCart';
+import { removeProductFromCart } from '@/api/remove-product-from-cart';
 import { useCart } from '@/context/cart-context';
 import { useToast } from '@/context/toast-provider';
 import { SUCCESS_MESSAGES } from '@/utils/constants/messages';
@@ -38,7 +38,7 @@ export function CartRow({ product }: CartRowProps) {
       showToast({ message: SUCCESS_MESSAGES.REMOVE_PRODUCT });
     },
     onError: (err) => {
-      showToast({ message: err.message, isError: true });
+      showToast({ message: err.message, severity: 'error' });
     },
   });
 

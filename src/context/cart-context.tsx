@@ -8,7 +8,7 @@ import { ERROR_MESSAGES } from '@/utils/constants/messages';
 
 type CartContextType = {
   cart: Cart | null;
-  setCart: (cart: Cart) => void;
+  setCart: (cart: Cart | null) => void;
   resetCart: () => void;
   isLoading: boolean;
 };
@@ -25,7 +25,7 @@ export function CartContextProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(false);
   const { showToast } = useToast();
 
-  const setCart = useCallback((cart: Cart) => {
+  const setCart = useCallback((cart: Cart | null) => {
     setCartState(cart);
   }, []);
 
@@ -41,7 +41,7 @@ export function CartContextProvider({ children }: { children: ReactNode }) {
           const currentCart = await getCartWithoutToken();
           setCart(currentCart);
         } catch {
-          showToast({ message: ERROR_MESSAGES.CREATE_CART_FAIL, isError: true });
+          showToast({ message: ERROR_MESSAGES.CREATE_CART_FAIL, severity: 'error' });
         } finally {
           setIsLoading(false);
         }

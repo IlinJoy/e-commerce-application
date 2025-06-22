@@ -49,7 +49,7 @@ export function PromoInput() {
       resetField('promo');
     },
     onError: (err) => {
-      showToast({ message: err.message, isError: true });
+      showToast({ message: err.message, severity: 'error' });
     },
   });
 
@@ -73,7 +73,7 @@ export function PromoInput() {
       promoCode.isVisible = true;
       resetField('promo');
     } else {
-      showToast({ message: ERROR_MESSAGES.PROMO_EXIST, isError: true });
+      showToast({ message: ERROR_MESSAGES.PROMO_EXIST, severity: 'error' });
     }
   };
 

@@ -2,6 +2,7 @@ import Button from '@mui/material/Button';
 import { useLocation, useNavigate } from 'react-router';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import styles from './pagination-section.module.scss';
 
 type PaginationProps = {
   currentPage: number;
@@ -20,11 +21,11 @@ export const PaginationSection = ({ currentPage, totalPages, limit }: Pagination
   };
 
   return (
-    <div style={{ width: '100%', textAlign: 'center' }}>
+    <div className={styles.wrapper}>
       <Button disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}>
         <ArrowBackIcon />
       </Button>
-      <span style={{ marginLeft: '20px', marginRight: '20px' }}>
+      <span className={styles.pagesCounter}>
         Page {currentPage} from {totalPages}
       </span>
       <Button disabled={currentPage === totalPages} onClick={() => handlePageChange(currentPage + 1)}>

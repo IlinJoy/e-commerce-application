@@ -1,8 +1,8 @@
-import { loginCustomer } from './clientAuth';
-import { fetchFromApi, getCustomerToken } from '@/api/platformApi';
+import { loginCustomer } from './client-auth';
+import { fetchFromApi, getCustomerToken } from '@/api/platform-api';
 import { getRequestToken } from '@/utils/request-token-handler';
 
-vi.mock('@/api/platformApi', () => ({
+vi.mock('@/api/platform-api', () => ({
   fetchFromApi: vi.fn(),
   getCustomerToken: vi.fn(),
 }));
@@ -11,7 +11,7 @@ vi.mock('@/utils/request-token-handler', () => ({
   getRequestToken: vi.fn(),
 }));
 
-vi.mock('@/utils/mapApiErrorToMessage', () => ({
+vi.mock('@/utils/map-api-error-to-message', () => ({
   mapApiErrorToMessage: vi.fn(),
 }));
 

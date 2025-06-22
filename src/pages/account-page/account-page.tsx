@@ -1,10 +1,11 @@
 import styles from './account-page.module.scss';
 import { NavLink, Outlet } from 'react-router';
 import { ACCOUNT_LINKS } from '@/utils/constants/ui';
+import { FormWrapper } from '@/components/form-wrapper/form-wrapper';
 
 export function AccountPage() {
   return (
-    <>
+    <FormWrapper>
       <div className={styles.tabBar}>
         {ACCOUNT_LINKS.map((element) => (
           <NavLink
@@ -17,11 +18,7 @@ export function AccountPage() {
           </NavLink>
         ))}
       </div>
-
-      <div className={styles.formWrapper}>
-        <Outlet />
-        <div className={styles.profileBg}></div>
-      </div>
-    </>
+      <Outlet />
+    </FormWrapper>
   );
 }

@@ -1,9 +1,8 @@
-import { addProductToCart } from '@/api/addProductToCart';
+import { addProductToCart } from '@/api/add-product-to-cart';
 import { getCartWithoutToken } from '@/api/cart';
-import { removeProductFromCart } from '@/api/removeProductFromCart';
+import { removeProductFromCart } from '@/api/remove-product-from-cart';
 import { useCart } from '@/context/cart-context';
 import { useToast } from '@/context/toast-provider';
-import { cookieHandler } from '@/services/cookies/cookie-handler';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/utils/constants/messages';
 import { getRequestToken } from '@/utils/request-token-handler';
 import { useCallback, useEffect, useState } from 'react';
@@ -39,13 +38,11 @@ export const useProductActions = (productId?: string, variantId?: number) => {
     }
 
     if (currentCart.anonymousId) {
-      cookieHandler.delete('cartId');
-
       try {
         currentCart = await getCartWithoutToken();
         setCart(currentCart);
       } catch {
-        showToast({ message: ERROR_MESSAGES.ADD_PRODUCT_FAIL, isError: true });
+        showToast({ message: ERROR_MESSAGES.ADD_PRODUCT_FAIL, severity: 'error' });
         return;
       }
     }
@@ -64,7 +61,7 @@ export const useProductActions = (productId?: string, variantId?: number) => {
       setInCart(true);
       showToast({ message: SUCCESS_MESSAGES.ADD_PRODUCT });
     } catch {
-      showToast({ message: ERROR_MESSAGES.ADD_PRODUCT_FAIL, isError: true });
+      showToast({ message: ERROR_MESSAGES.ADD_PRODUCT_FAIL, severity: 'error' });
     } finally {
       setLoading(false);
     }
@@ -97,7 +94,7 @@ export const useProductActions = (productId?: string, variantId?: number) => {
       setInCart(false);
       showToast({ message: SUCCESS_MESSAGES.REMOVE_PRODUCT });
     } catch {
-      showToast({ message: ERROR_MESSAGES.REMOVE_PRODUCT_FAIL, isError: true });
+      showToast({ message: ERROR_MESSAGES.REMOVE_PRODUCT_FAIL, severity: 'error' });
     } finally {
       setLoading(false);
     }

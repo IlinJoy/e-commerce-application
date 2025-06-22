@@ -1,0 +1,23 @@
+@use '../../styles/mixins' as *;
+
+.wrapper {
+  width: 100%;
+  margin-top: var(--spacing-3);
+  text-align: center;
+
+  @include media(phone) {
+    & button {
+      width: 16px;
+      min-width: 32px;
+      padding: var(--spacing-1) 0;
+    }
+  }
+}
+
+.pages-counter {
+  margin: 0 var(--spacing-4);
+
+  @include media(phone) {
+    margin: 0 var(--spacing-2);
+  }
+}

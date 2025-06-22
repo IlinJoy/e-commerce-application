@@ -2,7 +2,7 @@ import Button from '@mui/material/Button';
 import styles from './quantity-input.module.scss';
 import { useMutation } from '@tanstack/react-query';
 import { getRequestToken } from '@/utils/request-token-handler';
-import { changeCardItemQuantity } from '@/api/changeCardItemQuantity';
+import { changeCardItemQuantity } from '@/api/change-card-item-quantity';
 import { useCart } from '@/context/cart-context';
 import { useToast } from '@/context/toast-provider';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/utils/constants/messages';
@@ -26,7 +26,7 @@ export function QuantityInput({ quantity, isDisabled, lineItemId }: QuantityInpu
       showToast({ message: SUCCESS_MESSAGES.UPDATE_CART });
     },
     onError: (err) => {
-      showToast({ message: err.message, isError: true });
+      showToast({ message: err.message, severity: 'error' });
     },
   });
 
@@ -44,7 +44,7 @@ export function QuantityInput({ quantity, isDisabled, lineItemId }: QuantityInpu
 
     if (newQuantity > QUANTITY_SETTINGS.max) {
       event.target.value = String(quantity);
-      showToast({ message: ERROR_MESSAGES.QUANTITY_LIMIT(newQuantity, QUANTITY_SETTINGS.max), isError: true });
+      showToast({ message: ERROR_MESSAGES.QUANTITY_LIMIT(newQuantity, QUANTITY_SETTINGS.max), severity: 'error' });
     } else if (newQuantity !== quantity) {
       updateQuantity(newQuantity);
     }

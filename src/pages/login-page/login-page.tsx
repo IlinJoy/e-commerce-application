@@ -5,13 +5,14 @@ import type { LoginFormInputs } from '@/components/login-form/login-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema } from '@/validation/login-validation';
 import { useMutation } from '@tanstack/react-query';
-import { loginCustomer } from '@/api/clientAuth';
+import { loginCustomer } from '@/api/client-auth';
 import { useAuth } from '@/hooks/use-auth';
 import styles from './login-page.module.scss';
 import { useToast } from '@/context/toast-provider';
 import { SUCCESS_MESSAGES } from '@/utils/constants/messages';
 import { useNavigate } from 'react-router';
 import { ROUTES } from '@/router/routes';
+import { FormWrapper } from '@/components/form-wrapper/form-wrapper';
 
 const defaultValues: LoginFormInputs = {
   email: '',
@@ -34,27 +35,18 @@ export function LoginPage() {
       onLogin(data);
       showToast({ message: SUCCESS_MESSAGES.LOGIN });
     },
-    onError: (error) => showToast({ message: error.message, isError: true }),
+    onError: (error) => showToast({ message: error.message, severity: 'error' }),
   });
 
   const onSubmit = handleSubmit((data: LoginFormInputs) => mutate(data));
 
   return (
-    <>
-      <div className={styles.formWrapper}>
-        <Typography variant="h2">Login</Typography>
-        <LoginForm
-          onSubmit={onSubmit}
-          control={control}
-          errors={errors}
-          isSubmitting={isPending}
-          isValidForm={isValid}
-        />
-        <Typography className={styles.signup}>
-          Don’t have an account? <span onClick={() => navigate(`/${ROUTES.REGISTRATION.path}`)}>Sign Up</span>
-        </Typography>
-      </div>
-      <div className={styles.loginBg}></div>
-    </>
+    <FormWrapper>
+      <Typography variant="h2">Login</Typography>
+      <LoginForm onSubmit={onSubmit} control={control} errors={errors} isSubmitting={isPending} isValidForm={isValid} />
+      <Typography className={styles.signup}>
+        Don’t have an account? <span onClick={() => navigate(`/${ROUTES.REGISTRATION.path}`)}>Sign Up</span>
+      </Typography>
+    </FormWrapper>
   );
 }

@@ -4,8 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { registrationSchema } from '@/validation/registration-validation';
 import type { Addresses, RegisterFormInputs } from '@/validation/registration-validation';
 import styles from './registration-page.module.scss';
-import { getCustomerToken } from '@/api/platformApi';
-import { registerCustomer } from '@/api/clientAuth';
+import { getCustomerToken } from '@/api/platform-api';
+import { registerCustomer } from '@/api/client-auth';
 import { useAuth } from '@/hooks/use-auth';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/utils/constants/messages';
 import { useToast } from '@/context/toast-provider';
@@ -15,6 +15,7 @@ import { ROUTES } from '@/router/routes';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router';
 import { useCart } from '@/context/cart-context';
+import { FormWrapper } from '@/components/form-wrapper/form-wrapper';
 
 const defaultAddress: Addresses = {
   country: '',
@@ -58,7 +59,7 @@ export function RegistrationPage() {
 
   const handleRegistration = async (data: RegisterFormInputs) => {
     const customerInfo = await registerCustomer(data);
-    if (!customerInfo?.customer.id || !customerInfo.cart) {
+    if (!customerInfo?.customer.id) {
       throw new Error(ERROR_MESSAGES.REGISTRATION_FAIL);
     }
     return { customer: customerInfo.customer, password: data.customerData.password, cart: customerInfo.cart };
@@ -67,18 +68,18 @@ export function RegistrationPage() {
   const { mutate, isPending } = useMutation({
     mutationFn: handleRegistration,
     onSuccess: async (data) => {
-      setCart(data.cart);
       await mutateToken({ email: data.customer.email, password: data.password });
+      setCart(data.cart || null);
       showToast({ message: SUCCESS_MESSAGES.REGISTRATION });
     },
-    onError: (error) => showToast({ message: error.message, isError: true }),
+    onError: (error) => showToast({ message: error.message, severity: 'error' }),
   });
 
   const { mutateAsync: mutateToken } = useMutation({
     mutationFn: (data: { email: string; password: string }) => getCustomerToken(data.email, data.password),
     onSuccess: (token) => updateToken(token),
     onError: () => {
-      showToast({ message: ERROR_MESSAGES.UPDATE_INFO, isError: true });
+      showToast({ message: ERROR_MESSAGES.UPDATE_INFO, severity: 'error' });
       onLogout();
     },
     retry: 5,
@@ -93,23 +94,20 @@ export function RegistrationPage() {
   });
 
   return (
-    <>
-      <div className={styles.formWrapper}>
-        <RegisterForm
-          onSubmit={onSubmit}
-          isSubmitting={isPending}
-          isValidForm={isValid}
-          setValue={setValue}
-          control={control}
-          resetField={resetField}
-          trigger={trigger}
-          clearErrors={clearErrors}
-        />
-        <Typography className={styles.signin}>
-          Already have an account? <span onClick={() => navigate(`/${ROUTES.LOGIN.path}`)}>Sign In</span>
-        </Typography>
-      </div>
-      <div className={styles.registrationBg}></div>
-    </>
+    <FormWrapper>
+      <RegisterForm
+        onSubmit={onSubmit}
+        isSubmitting={isPending}
+        isValidForm={isValid}
+        setValue={setValue}
+        control={control}
+        resetField={resetField}
+        trigger={trigger}
+        clearErrors={clearErrors}
+      />
+      <Typography className={styles.signin}>
+        Already have an account? <span onClick={() => navigate(`/${ROUTES.LOGIN.path}`)}>Sign In</span>
+      </Typography>
+    </FormWrapper>
   );
 }

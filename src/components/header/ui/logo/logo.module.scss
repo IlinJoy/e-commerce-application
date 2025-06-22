@@ -1,9 +1,10 @@
+.logo-wrapper {
+  z-index: 100;
+  flex-grow: 1;
+}
+
 .logo {
   cursor: pointer;
-
-  z-index: 100;
-
-  flex-grow: 1;
 
   font-family: var(--font-secondary);
   font-weight: 700;

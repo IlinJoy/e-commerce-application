@@ -1,33 +1,15 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback } from 'react';
 import { getDiscountCodes } from '@/api/promo';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/utils/constants/messages';
 import { useToast } from '@/context/toast-provider';
-import type { DiscountCode } from '@commercetools/platform-sdk';
+import { useQuery } from '@tanstack/react-query';
 
 export const useDiscountCode = () => {
   const { showToast } = useToast();
-  const [discountCodes, setDiscountCodes] = useState<DiscountCode[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const fetchDiscountCodes = async () => {
-      setIsLoading(true);
-      try {
-        const codes = await getDiscountCodes();
-        setDiscountCodes(codes);
-      } catch (err) {
-        const message = err instanceof Error ? err.message : 'Failed to load discount codes';
-        showToast({ message, isError: true });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchDiscountCodes();
-  }, [showToast]);
+  const { data: discountCodes, isLoading } = useQuery({ queryKey: ['discount codes'], queryFn: getDiscountCodes });
 
   const getDiscountCode = useCallback(
-    (key: string) => discountCodes.find((code) => code.key === key)?.code,
+    (key: string) => discountCodes?.find((code) => code.key === key)?.code,
     [discountCodes]
   );
 
@@ -44,7 +26,7 @@ export const useDiscountCode = () => {
         }
       } catch (error) {
         const message = error instanceof Error ? error.message : ERROR_MESSAGES.SOMETHING_WRONG;
-        showToast({ message, isError: true });
+        showToast({ message, severity: 'error' });
       }
     },
     [getDiscountCode, showToast]
