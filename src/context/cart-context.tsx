@@ -34,7 +34,6 @@ export function CartContextProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    console.log({ cart });
     if (!cart) {
       setIsLoading(true);
       const loadCart = async () => {
