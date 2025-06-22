@@ -10,12 +10,13 @@
   z-index: -1;
   inset: 0;
 
+  width: 110%;
   border-radius: 0 0 var(--border-radius-3) var(--border-radius-3);
 
   background-image: url('/images/login-bg.webp');
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-position: center;
+  background-position: left;
   background-size: cover;
 }
 
