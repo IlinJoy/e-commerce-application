@@ -15,6 +15,7 @@ import { ROUTES } from '@/router/routes';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router';
 import { useCart } from '@/context/cart-context';
+import { FormWrapper } from '@/components/form-wrapper/form-wrapper';
 
 const defaultAddress: Addresses = {
   country: '',
@@ -93,23 +94,20 @@ export function RegistrationPage() {
   });
 
   return (
-    <>
-      <div className={styles.formWrapper}>
-        <RegisterForm
-          onSubmit={onSubmit}
-          isSubmitting={isPending}
-          isValidForm={isValid}
-          setValue={setValue}
-          control={control}
-          resetField={resetField}
-          trigger={trigger}
-          clearErrors={clearErrors}
-        />
-        <Typography className={styles.signin}>
-          Already have an account? <span onClick={() => navigate(`/${ROUTES.LOGIN.path}`)}>Sign In</span>
-        </Typography>
-      </div>
-      <div className={styles.registrationBg}></div>
-    </>
+    <FormWrapper>
+      <RegisterForm
+        onSubmit={onSubmit}
+        isSubmitting={isPending}
+        isValidForm={isValid}
+        setValue={setValue}
+        control={control}
+        resetField={resetField}
+        trigger={trigger}
+        clearErrors={clearErrors}
+      />
+      <Typography className={styles.signin}>
+        Already have an account? <span onClick={() => navigate(`/${ROUTES.LOGIN.path}`)}>Sign In</span>
+      </Typography>
+    </FormWrapper>
   );
 }

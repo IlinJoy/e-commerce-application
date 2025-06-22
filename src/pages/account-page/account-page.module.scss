@@ -1,62 +1,20 @@
 @use '../../styles/mixins' as *;
 
-.profile-bg {
-  position: fixed;
-  z-index: -1;
-  inset: 0;
-
-  width: 100vw;
-  min-height: 100dvh;
-  padding: var(--spacing-8) var(--spacing-2);
-
-  background-image: url('/images/login-bg.webp');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-
-  @include flex(column);
-}
-
-.form-wrapper {
-  position: relative;
-
-  width: 38%;
-  min-width: 300px;
-  max-width: 900px;
-  min-height: 50vh;
-  margin: -1px auto;
-  padding: var(--spacing-7);
-  border-top-right-radius: var(--spacing-1);
-  border-bottom-right-radius: var(--spacing-1);
-  border-bottom-left-radius: var(--spacing-1);
-
-  background-color: var(--pallet-color-dark);
-
-  & h2 {
-    margin-bottom: var(--spacing-3);
-  }
-}
-
 .tab-bar {
-  display: flex;
-  gap: 10px;
-  justify-content: start;
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: var(--spacing-4);
 
-  width: 38%;
-  min-width: 300px;
-  max-width: 900px;
+  @include flex(row, var(--spacing-3), $justify: start);
+  @include border-bottom;
 }
 
 %tab {
-  padding: 8px 12px;
-  border-top-left-radius: var(--spacing-1);
-  border-top-right-radius: var(--spacing-1);
-
   font-size: 20px;
   color: var(--mui-palette-primary-main);
   text-decoration: none;
 
-  background-color: var(--mui-palette-grey-800);
+  opacity: 0.5;
 
   transition: all 0.2s ease;
 
@@ -73,5 +31,6 @@
   @extend %tab;
 
   color: var(--mui-palette-primary-main);
+  opacity: 1;
   background-color: var(--pallet-color-dark);
 }

@@ -12,6 +12,7 @@ import { useToast } from '@/context/toast-provider';
 import { SUCCESS_MESSAGES } from '@/utils/constants/messages';
 import { useNavigate } from 'react-router';
 import { ROUTES } from '@/router/routes';
+import { FormWrapper } from '@/components/form-wrapper/form-wrapper';
 
 const defaultValues: LoginFormInputs = {
   email: '',
@@ -40,21 +41,12 @@ export function LoginPage() {
   const onSubmit = handleSubmit((data: LoginFormInputs) => mutate(data));
 
   return (
-    <>
-      <div className={styles.formWrapper}>
-        <Typography variant="h2">Login</Typography>
-        <LoginForm
-          onSubmit={onSubmit}
-          control={control}
-          errors={errors}
-          isSubmitting={isPending}
-          isValidForm={isValid}
-        />
-        <Typography className={styles.signup}>
-          Don’t have an account? <span onClick={() => navigate(`/${ROUTES.REGISTRATION.path}`)}>Sign Up</span>
-        </Typography>
-      </div>
-      <div className={styles.loginBg}></div>
-    </>
+    <FormWrapper>
+      <Typography variant="h2">Login</Typography>
+      <LoginForm onSubmit={onSubmit} control={control} errors={errors} isSubmitting={isPending} isValidForm={isValid} />
+      <Typography className={styles.signup}>
+        Don’t have an account? <span onClick={() => navigate(`/${ROUTES.REGISTRATION.path}`)}>Sign Up</span>
+      </Typography>
+    </FormWrapper>
   );
 }

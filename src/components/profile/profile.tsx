@@ -15,6 +15,7 @@ import type { Customer } from '@commercetools/platform-sdk';
 import { PasswordChangeDialog } from './password-modal';
 import styles from './profile.module.scss';
 import { SUCCESS_MESSAGES } from '@/utils/constants/messages';
+import { useCustomerQuery } from '@/hooks/use-customer-query';
 
 export function Profile() {
   const { token } = useToken();
@@ -36,26 +37,20 @@ export function Profile() {
     mode: 'onChange',
   });
 
+  const { data } = useCustomerQuery();
+
   useEffect(() => {
-    const fetchCustomer = async () => {
-      try {
-        const data = await fetchFromApi<Customer>('/me', token);
-
-        reset({
-          customerData: {
-            email: data.email,
-            firstName: data.firstName,
-            lastName: data.lastName,
-            dateOfBirth: data.dateOfBirth,
-          },
-        });
-      } catch {
-        showToast({ message: 'Something went wrong. Please try later.', isError: true });
-      }
-    };
-
-    fetchCustomer();
-  }, [reset, showToast, token]);
+    if (data) {
+      reset({
+        customerData: {
+          email: data.email,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          dateOfBirth: data.dateOfBirth,
+        },
+      });
+    }
+  }, [data, reset]);
 
   const handleProfileUpdate = async (data: ProfileFormInputs) => {
     const freshCustomer = await fetchFromApi<Customer>('/me', token);
@@ -104,7 +99,7 @@ export function Profile() {
           </Button>
         </div>
 
-        <Typography variant="h6">
+        <Typography variant="h6" component="h2">
           Personal info
           <IconButton aria-label="edit personal info" onClick={() => setIsEditable((prev) => !prev)}>
             <EditIcon />

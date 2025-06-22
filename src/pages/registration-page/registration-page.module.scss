@@ -1,37 +1,5 @@
 @use '../../styles/mixins' as *;
 
-.registration-bg {
-  position: fixed;
-  z-index: -1;
-  inset: 0;
-
-  width: 100vw;
-  min-height: 100dvh;
-  padding: var(--spacing-8) var(--spacing-2);
-
-  background-image: url('/images/login-bg.webp');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-
-  @include flex(column);
-}
-
-.form-wrapper {
-  width: 38%;
-  min-width: 280px;
-  max-width: 500px;
-  margin: var(--spacing-8) auto;
-  padding: var(--spacing-7);
-  border-radius: var(--spacing-1);
-
-  background-color: var(--pallet-color-dark);
-
-  & h6 {
-    text-align: center;
-  }
-}
-
 .signin {
   @include form-link-redirection;
 }
