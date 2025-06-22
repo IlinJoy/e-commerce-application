@@ -77,7 +77,7 @@ export function Profile() {
       showToast({ message: SUCCESS_MESSAGES.PROFILE });
     },
     onError: (err) => {
-      showToast({ message: err.message, isError: true });
+      showToast({ message: err.message, severity: 'error' });
     },
   });
 

@@ -35,7 +35,7 @@ export function LoginPage() {
       onLogin(data);
       showToast({ message: SUCCESS_MESSAGES.LOGIN });
     },
-    onError: (error) => showToast({ message: error.message, isError: true }),
+    onError: (error) => showToast({ message: error.message, severity: 'error' }),
   });
 
   const onSubmit = handleSubmit((data: LoginFormInputs) => mutate(data));

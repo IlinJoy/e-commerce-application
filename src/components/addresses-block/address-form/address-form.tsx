@@ -66,7 +66,7 @@ export function AddressBlockForm({
       queryClient.setQueryData(['customer', token], data);
     },
     onError: (err) => {
-      showToast({ message: err.message, isError: true });
+      showToast({ message: err.message, severity: 'error' });
     },
   });
 

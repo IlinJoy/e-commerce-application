@@ -42,7 +42,7 @@ export const useProductActions = (productId?: string, variantId?: number) => {
         currentCart = await getCartWithoutToken();
         setCart(currentCart);
       } catch {
-        showToast({ message: ERROR_MESSAGES.ADD_PRODUCT_FAIL, isError: true });
+        showToast({ message: ERROR_MESSAGES.ADD_PRODUCT_FAIL, severity: 'error' });
         return;
       }
     }
@@ -61,7 +61,7 @@ export const useProductActions = (productId?: string, variantId?: number) => {
       setInCart(true);
       showToast({ message: SUCCESS_MESSAGES.ADD_PRODUCT });
     } catch {
-      showToast({ message: ERROR_MESSAGES.ADD_PRODUCT_FAIL, isError: true });
+      showToast({ message: ERROR_MESSAGES.ADD_PRODUCT_FAIL, severity: 'error' });
     } finally {
       setLoading(false);
     }
@@ -94,7 +94,7 @@ export const useProductActions = (productId?: string, variantId?: number) => {
       setInCart(false);
       showToast({ message: SUCCESS_MESSAGES.REMOVE_PRODUCT });
     } catch {
-      showToast({ message: ERROR_MESSAGES.REMOVE_PRODUCT_FAIL, isError: true });
+      showToast({ message: ERROR_MESSAGES.REMOVE_PRODUCT_FAIL, severity: 'error' });
     } finally {
       setLoading(false);
     }

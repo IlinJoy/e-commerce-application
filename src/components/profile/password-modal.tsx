@@ -53,7 +53,7 @@ export const PasswordChangeDialog = ({ open, onClose }: Props) => {
       showToast({ message: SUCCESS_MESSAGES.PASSWORD });
       onClose();
     } catch {
-      showToast({ message: ERROR_MESSAGES.UPDATE_PASSWORD_FAIL, isError: true });
+      showToast({ message: ERROR_MESSAGES.UPDATE_PASSWORD_FAIL, severity: 'error' });
     }
   };
 

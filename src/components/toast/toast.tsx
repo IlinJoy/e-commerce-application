@@ -1,15 +1,14 @@
 import type { SnackbarCloseReason } from '@mui/material/Snackbar';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import type { ToastInfo } from '@/context/toast-provider';
 
-export type ToastProps = {
-  message: string;
-  isError?: boolean;
+export type ToastProps = ToastInfo & {
   isOpen: boolean;
   onClose: (_?: React.SyntheticEvent | Event, reason?: SnackbarCloseReason) => void;
 };
 
-export function Toast({ message, isError, isOpen, onClose }: ToastProps) {
+export function Toast({ message, severity = 'success', isOpen, onClose }: ToastProps) {
   return (
     <div>
       <Snackbar
@@ -18,7 +17,7 @@ export function Toast({ message, isError, isOpen, onClose }: ToastProps) {
         onClose={onClose}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <Alert onClose={onClose} severity={isError ? 'error' : 'success'} variant="filled">
+        <Alert onClose={onClose} severity={severity} variant="filled">
           {message}
         </Alert>
       </Snackbar>

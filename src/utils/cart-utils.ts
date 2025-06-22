@@ -2,6 +2,7 @@ import type { Attribute, Cart, Customer, LineItem } from '@commercetools/platfor
 import { LANG } from './constants/filters';
 import { CART_ATTRIBUTES_NAMES } from './constants/ui';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from './constants/messages';
+import type { ToastInfo } from '@/context/toast-provider';
 
 export const getShippingAddressForCart = (customer: Customer) => {
   return customer.addresses.find(
@@ -44,10 +45,10 @@ export const getProductKeyFromPredicate = (predicate: string) => {
 const getDiscountsDoestMatch = (cart: Cart | null) =>
   cart?.discountCodes.find((code) => code.state !== 'MatchesCart')?.discountCode.obj?.code;
 
-export const composeDiscountMessage = (cart: Cart | null) => {
+export const composeDiscountMessage = (cart: Cart | null): ToastInfo => {
   const discountDoestMatch = getDiscountsDoestMatch(cart);
   const message = discountDoestMatch
     ? ERROR_MESSAGES.CODE_DOEST_MATCH(discountDoestMatch)
     : SUCCESS_MESSAGES.UPDATE_CART;
-  return { message, isError: !!discountDoestMatch };
+  return { message, severity: discountDoestMatch ? 'warning' : 'success' };
 };

@@ -26,7 +26,7 @@ export const useDiscountCode = () => {
         }
       } catch (error) {
         const message = error instanceof Error ? error.message : ERROR_MESSAGES.SOMETHING_WRONG;
-        showToast({ message, isError: true });
+        showToast({ message, severity: 'error' });
       }
     },
     [getDiscountCode, showToast]

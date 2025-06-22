@@ -34,7 +34,7 @@ export function CartPage() {
       showToast({ message: SUCCESS_MESSAGES.UPDATE_CART });
     },
     onError: (err) => {
-      showToast({ message: err.message, isError: true });
+      showToast({ message: err.message, severity: 'error' });
     },
   });
 

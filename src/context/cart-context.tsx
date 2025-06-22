@@ -41,7 +41,7 @@ export function CartContextProvider({ children }: { children: ReactNode }) {
           const currentCart = await getCartWithoutToken();
           setCart(currentCart);
         } catch {
-          showToast({ message: ERROR_MESSAGES.CREATE_CART_FAIL, isError: true });
+          showToast({ message: ERROR_MESSAGES.CREATE_CART_FAIL, severity: 'error' });
         } finally {
           setIsLoading(false);
         }

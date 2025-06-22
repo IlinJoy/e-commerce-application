@@ -38,7 +38,7 @@ export function CartRow({ product }: CartRowProps) {
       showToast({ message: SUCCESS_MESSAGES.REMOVE_PRODUCT });
     },
     onError: (err) => {
-      showToast({ message: err.message, isError: true });
+      showToast({ message: err.message, severity: 'error' });
     },
   });
 

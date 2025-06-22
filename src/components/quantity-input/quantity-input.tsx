@@ -26,7 +26,7 @@ export function QuantityInput({ quantity, isDisabled, lineItemId }: QuantityInpu
       showToast({ message: SUCCESS_MESSAGES.UPDATE_CART });
     },
     onError: (err) => {
-      showToast({ message: err.message, isError: true });
+      showToast({ message: err.message, severity: 'error' });
     },
   });
 
@@ -44,7 +44,7 @@ export function QuantityInput({ quantity, isDisabled, lineItemId }: QuantityInpu
 
     if (newQuantity > QUANTITY_SETTINGS.max) {
       event.target.value = String(quantity);
-      showToast({ message: ERROR_MESSAGES.QUANTITY_LIMIT(newQuantity, QUANTITY_SETTINGS.max), isError: true });
+      showToast({ message: ERROR_MESSAGES.QUANTITY_LIMIT(newQuantity, QUANTITY_SETTINGS.max), severity: 'error' });
     } else if (newQuantity !== quantity) {
       updateQuantity(newQuantity);
     }

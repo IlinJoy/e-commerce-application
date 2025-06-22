@@ -72,14 +72,14 @@ export function RegistrationPage() {
       await mutateToken({ email: data.customer.email, password: data.password });
       showToast({ message: SUCCESS_MESSAGES.REGISTRATION });
     },
-    onError: (error) => showToast({ message: error.message, isError: true }),
+    onError: (error) => showToast({ message: error.message, severity: 'error' }),
   });
 
   const { mutateAsync: mutateToken } = useMutation({
     mutationFn: (data: { email: string; password: string }) => getCustomerToken(data.email, data.password),
     onSuccess: (token) => updateToken(token),
     onError: () => {
-      showToast({ message: ERROR_MESSAGES.UPDATE_INFO, isError: true });
+      showToast({ message: ERROR_MESSAGES.UPDATE_INFO, severity: 'error' });
       onLogout();
     },
     retry: 5,

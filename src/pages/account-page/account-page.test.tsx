@@ -126,7 +126,9 @@ describe('Profile', () => {
     fireEvent.click(screen.getByRole('button', { name: /save changes/i }));
 
     await waitFor(() => {
-      expect(mockShowToast).toHaveBeenCalledWith(expect.objectContaining({ message: 'Update failed', isError: true }));
+      expect(mockShowToast).toHaveBeenCalledWith(
+        expect.objectContaining({ message: 'Update failed', severity: 'error' })
+      );
     });
   });
 });
