@@ -1,0 +1,22 @@
+.logo-wrapper {
+  z-index: 100;
+  flex-grow: 1;
+}
+
+.logo {
+  cursor: pointer;
+
+  font-family: var(--font-secondary);
+  font-weight: 700;
+  color: var(--mui-palette-primary-main);
+  text-decoration: none;
+  letter-spacing: var(--subtitle-spacing);
+
+  &:visited {
+    color: inherit;
+  }
+
+  &:hover {
+    opacity: 0.9;
+  }
+}

@@ -1,0 +1,34 @@
+@use '../../styles/typography' as typography;
+
+.MuiTypography-h1,
+.MuiTypography-h2 {
+  @include typography.heading-styles;
+}
+
+.MuiTypography-h1 {
+  letter-spacing: -0.03em;
+}
+
+.MuiTypography-subtitle-1,
+.MuiTypography-subtitle-2,
+.MuiTypography-caption {
+  @include typography.subtitle-styles;
+}
+
+.MuiTypography-subtitle-1,
+.MuiTypography-caption {
+  letter-spacing: 0.7em;
+}
+
+.MuiTypography-caption {
+  text-transform: uppercase;
+}
+
+.MuiTypography-body1 {
+  font-family: var(--font-secondary);
+  font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: normal;
+
+  opacity: 0.85;
+}

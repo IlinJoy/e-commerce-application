@@ -1,0 +1,65 @@
+@use '../../styles/mixins' as *;
+@use '../../styles/typography' as typo;
+
+.cart {
+  position: relative;
+  width: 100%;
+  max-width: 1440px;
+
+  @include flex(row, var(--spacing-2), $justify: start, $align: start);
+
+  @include media(tablet) {
+    flex-direction: column;
+    gap: var(--spacing-5);
+  }
+}
+
+.products {
+  width: 100%;
+
+  @include flex(column, var(--spacing-1));
+
+  &-heading {
+    @include flex;
+
+    width: 100%;
+    margin: var(--spacing-2) 0;
+
+    @include media(phone) {
+      flex-wrap: wrap;
+      align-items: start;
+    }
+  }
+}
+
+.cart-aside {
+  position: sticky;
+  top: var(--spacing-8);
+
+  overflow-y: auto;
+
+  width: 100%;
+  max-width: 400px;
+  max-height: 85vh;
+  padding: var(--spacing-2);
+
+  @include flex(column, var(--spacing-3), $align: start);
+
+  & span {
+    font-weight: 600;
+  }
+
+  & h2 {
+    font-size: 1.4rem;
+
+    @include typo.heading-styles;
+  }
+
+  @include media(tablet) {
+    max-width: none;
+    max-height: fit-content;
+    padding-right: 0;
+    padding-left: 0;
+    border-top: 1px solid var(--mui-palette-primary-main);
+  }
+}

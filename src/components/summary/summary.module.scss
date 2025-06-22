@@ -1,0 +1,23 @@
+@use '../../styles/mixins' as *;
+
+.summary {
+  width: 100%;
+
+  @include border-bottom;
+  @include flex(column, var(--spacing-2), $align: start);
+
+  & .header {
+    width: 100%;
+
+    @include flex;
+
+    & svg {
+      margin: var(--spacing-1);
+    }
+  }
+
+  & .discounted {
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+}

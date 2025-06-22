@@ -1,0 +1,16 @@
+@use '../../styles/mixins' as *;
+
+.accordion {
+  flex-grow: 1;
+  width: 100%;
+  border: 1px solid var(--mui-palette-grey-800);
+
+  @include media(tablet) {
+    margin: 0;
+    padding: 0 var(--spacing-3);
+  }
+}
+
+.expanded {
+  flex-shrink: 1;
+}

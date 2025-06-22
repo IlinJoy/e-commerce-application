@@ -1,0 +1,108 @@
+/* stylelint-disable at-rule-empty-line-before */
+@mixin flex($flex-direction: row, $gap: var(--spacing-1), $justify: space-between, $align: center) {
+  display: flex;
+  flex-direction: $flex-direction;
+  gap: $gap;
+
+  @if $justify {
+    justify-content: $justify;
+  }
+
+  @if $align {
+    align-items: $align;
+  }
+}
+
+@mixin transition($time: 0.35s, $property: all) {
+  transition: $time ease-out;
+  transition-property: $property;
+}
+
+@mixin media($size) {
+  @if $size == phone {
+    @media (width <= 600px) {
+      @content;
+    }
+  } @else if $size == tablet {
+    @media (width <= 768px) {
+      @content;
+    }
+  } @else if $size == desktop {
+    @media (width >= 1024px) {
+      @content;
+    }
+  }
+}
+
+@mixin form-link-redirection {
+  margin-top: var(--spacing-3);
+  color: var(--mui-palette-primary-main);
+
+  & span {
+    cursor: pointer;
+    color: var(--mui-palette-error-main);
+    @include transition;
+
+    &:hover {
+      opacity: 0.85;
+    }
+  }
+}
+
+@mixin card-border {
+  border: 1px solid var(--mui-palette-grey-800);
+  border-radius: var(--border-radius-1);
+}
+
+@mixin border-bottom {
+  &::after {
+    content: '';
+
+    display: block;
+
+    width: 100%;
+    margin-top: var(--spacing-1);
+    border-bottom: solid 1px var(--mui-palette-grey-700);
+  }
+}
+
+@mixin error-base {
+  padding: 0 var(--spacing-1);
+  border-radius: calc(var(--spacing-1) / 2);
+  background-color: var(--mui-palette-error-dark);
+
+  &::before {
+    content: '⚠ ';
+  }
+}
+
+@mixin underline-link($color: var(--mui-palette-primary-main)) {
+  position: relative;
+
+  font-size: var(--subtitle-size);
+  font-weight: 600;
+  color: $color;
+  text-decoration: none;
+  text-transform: uppercase;
+
+  &::before {
+    content: '';
+
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    width: 0%;
+    height: 2px;
+
+    background-color: $color;
+
+    @include transition;
+  }
+
+  &:hover {
+    &::before {
+      width: 100%;
+    }
+  }
+}

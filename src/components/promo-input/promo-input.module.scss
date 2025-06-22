@@ -1,0 +1,57 @@
+@use '../../styles/mixins' as *;
+
+.promo-wrapper {
+  width: 100%;
+
+  @include flex(column, var(--spacing-1), $align: start);
+  @include transition;
+  @include card-border;
+
+  padding: var(--spacing-2);
+
+  & label {
+    margin-bottom: var(--spacing-1);
+  }
+
+  & button {
+    width: 100%;
+  }
+}
+
+.input-wrapper {
+  flex-wrap: wrap;
+  width: 100%;
+  min-height: 30px;
+
+  @include flex($justify: start);
+  @include border-bottom;
+
+  & input {
+    flex-grow: 1;
+
+    width: 0;
+    min-width: 120px;
+    border: none;
+
+    font: inherit;
+
+    background: transparent;
+    caret-color: var(--mui-palette-primary-dark);
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.error {
+  margin-top: 3px;
+
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.66;
+  color: var(--mui-palette-error-main);
+  text-align: left;
+
+  @include error-base;
+}

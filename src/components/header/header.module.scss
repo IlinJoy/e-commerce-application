@@ -1,0 +1,24 @@
+@use '../../styles/mixins' as *;
+
+.header {
+  position: fixed;
+  z-index: 10;
+  top: 0;
+
+  width: 100vw;
+  border-bottom: 1px solid var(--mui-palette-primary-main);
+
+  background-color: transparent;
+
+  @include transition;
+
+  &.filled {
+    background-color: var(--mui-palette-background-default);
+  }
+}
+
+.bar {
+  @include flex;
+
+  height: var(--spacing-7);
+}

@@ -1,0 +1,21 @@
+@use '../../../styles/mixins' as *;
+
+.hero {
+  min-height: 86dvh;
+  padding: var(--spacing-4);
+  border-radius: var(--border-radius-2);
+
+  text-align: center;
+
+  background-image: url('/images/cover.webp');
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  @include flex(column);
+}
+
+.content-wrapper {
+  max-width: 40rem;
+
+  @include flex(column);
+}

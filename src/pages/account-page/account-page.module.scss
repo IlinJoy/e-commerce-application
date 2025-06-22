@@ -1,0 +1,36 @@
+@use '../../styles/mixins' as *;
+
+.tab-bar {
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: var(--spacing-4);
+
+  @include flex(row, var(--spacing-3), $justify: start);
+  @include border-bottom;
+}
+
+%tab {
+  font-size: 20px;
+  color: var(--mui-palette-primary-main);
+  text-decoration: none;
+
+  opacity: 0.5;
+
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--pallet-color-dark);
+  }
+}
+
+.tab {
+  @extend %tab;
+}
+
+.active-tab {
+  @extend %tab;
+
+  color: var(--mui-palette-primary-main);
+  opacity: 1;
+  background-color: var(--pallet-color-dark);
+}

@@ -1,0 +1,29 @@
+@use '../../styles/mixins' as *;
+
+.actions-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--spacing-2);
+}
+
+.button-wrapper {
+  margin-right: auto;
+  margin-bottom: var(--spacing-4);
+
+  & button {
+    padding: calc(var(--spacing-2) / 2) var(--spacing-3);
+  }
+
+  @include media(phone) {
+    margin-bottom: var(--spacing-3);
+
+    & button {
+      width: 100%;
+      margin-top: var(--spacing-1);
+    }
+  }
+}
+
+.dialog-content {
+  padding: 20px 30px;
+}

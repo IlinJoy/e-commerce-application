@@ -1,0 +1,27 @@
+@use '../../styles/mixins' as *;
+
+.MuiFormControl-root {
+  margin-bottom: var(--spacing-2);
+
+  & .MuiIconButton-sizeMedium {
+    width: var(--spacing-3);
+    height: var(--spacing-3);
+    opacity: 0.5;
+  }
+
+  &:last-of-type {
+    margin-bottom: var(--spacing-5);
+  }
+}
+
+.MuiFormHelperText-sizeMedium.Mui-error {
+  @include error-base;
+}
+
+.MuiInputLabel-asterisk {
+  color: var(--mui-palette-error-main);
+}
+
+.MuiFormControlLabel-root {
+  color: var(--mui-palette-primary-main);
+}

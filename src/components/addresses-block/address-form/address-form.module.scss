@@ -1,0 +1,46 @@
+@use '../../../styles/mixins' as *;
+
+.form {
+  &-heading {
+    @include flex;
+
+    width: 100%;
+
+    @include media(phone) {
+      flex-flow: wrap column-reverse;
+      align-items: center;
+      width: 100%;
+    }
+  }
+
+  &-heading-buttons {
+    @include flex($justify: end);
+
+    @include media(phone) {
+      justify-content: center;
+      width: 100%;
+      margin-top: var(--spacing-4);
+    }
+
+    border-top: 1px solid var(--mui-palette-primary-main);
+    border-bottom: 1px solid var(--mui-palette-primary-main);
+  }
+}
+
+.button-wrapper {
+  margin-right: auto;
+  margin-bottom: var(--spacing-4);
+
+  & button {
+    padding: calc(var(--spacing-2) / 2) var(--spacing-3);
+  }
+
+  @include media(phone) {
+    margin-bottom: var(--spacing-3);
+
+    & button {
+      width: 100%;
+      margin-top: var(--spacing-1);
+    }
+  }
+}

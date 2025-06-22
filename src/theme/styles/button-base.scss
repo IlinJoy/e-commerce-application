@@ -1,0 +1,25 @@
+.MuiButton-contained {
+  padding: 0.8em 3em;
+  border: 1px solid var(--mui-palette-primary-dark);
+  border-radius: 40px;
+
+  font-family: var(--font-secondary);
+  font-size: var(--subtitle-size);
+  font-weight: var(--subtitle-weight);
+  text-transform: uppercase;
+  letter-spacing: var(--subtitle-spacing);
+
+  transition: all 0.5s ease;
+
+  &:hover {
+    border: 1px solid var(--mui-palette-primary-dark);
+    color: var(--mui-palette-primary-main);
+    background-color: var(--mui-palette-background-default);
+  }
+}
+
+.MuiButtonBase-root {
+  & .MuiListItemIcon-root {
+    min-width: var(--spacing-5);
+  }
+}
