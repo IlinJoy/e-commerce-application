@@ -8,16 +8,8 @@ import { ProductImageBlock } from '@/components/product-image-block/product-imag
 import { PriceBlock } from '@/components/price-block/price-block';
 import Button from '@mui/material/Button';
 import { Loader } from '@/components/loader/loader';
-import { useCart } from '@/context/cart-context';
-import { useToast } from '@/context/toast-provider';
-import { useEffect, useState } from 'react';
-import { getRequestToken } from '@/utils/request-token-handler';
-import { cookieHandler } from '@/services/cookies/cookie-handler';
-import { getCartWithoutToken } from '@/api/cart';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/utils/constants/messages';
-import { addProductToCart } from '@/api/add-product-to-cart';
-import { removeProductFromCart } from '@/api/remove-product-from-cart';
 import CheckIcon from '@mui/icons-material/Check';
+import { useProductActions } from '@/hooks/use-product-actions';
 
 export const ProductPage = () => {
   const id = getProductIdFromUrl() || '';
@@ -31,92 +23,10 @@ export const ProductPage = () => {
     retry: 1,
   });
 
-  const { cart, setCart } = useCart();
-  const { showToast } = useToast();
-  const [inCart, setInCart] = useState(false);
-
-  useEffect(() => {
-    if (!cart || !cart.lineItems) {
-      setInCart(false);
-      return;
-    }
-
-    const isProductInCart = cart.lineItems.some((item) => item.productId === data?.id);
-    setInCart(isProductInCart);
-  }, [cart, data?.id]);
-
-  const handleAddToCart = async () => {
-    if (!data?.id) {
-      return;
-    }
-
-    const token = await getRequestToken();
-    let currentCart = cart;
-
-    if (!currentCart) {
-      return;
-    }
-
-    if (currentCart.anonymousId) {
-      cookieHandler.delete('cartId');
-      try {
-        currentCart = await getCartWithoutToken();
-        setCart(currentCart);
-      } catch {
-        showToast({ message: ERROR_MESSAGES.ADD_PRODUCT_FAIL, isError: true });
-        return;
-      }
-    }
-
-    try {
-      const updatedCart = await addProductToCart({
-        token,
-        cartId: currentCart.id,
-        cartVersion: currentCart.version,
-        productId: data.id,
-        variantId: data.masterVariant.id,
-        quantity: 1,
-      });
-
-      setCart(updatedCart);
-      setInCart(true);
-      showToast({ message: SUCCESS_MESSAGES.ADD_PRODUCT });
-    } catch {
-      showToast({ message: ERROR_MESSAGES.ADD_PRODUCT_FAIL, isError: true });
-    }
-  };
-
-  const handleRemoveFromCart = async () => {
-    if (!data?.id) {
-      return;
-    }
-
-    if (!cart) {
-      return;
-    }
-
-    const token = await getRequestToken();
-    const lineItem = cart.lineItems.find((item) => item.productId === data.id);
-
-    if (!lineItem) {
-      return;
-    }
-
-    try {
-      const updatedCart = await removeProductFromCart({
-        token,
-        cartId: cart.id,
-        cartVersion: cart.version,
-        lineItemId: lineItem.id,
-      });
-
-      setCart(updatedCart);
-      setInCart(false);
-      showToast({ message: SUCCESS_MESSAGES.REMOVE_PRODUCT });
-    } catch {
-      showToast({ message: ERROR_MESSAGES.REMOVE_PRODUCT_FAIL, isError: true });
-    }
-  };
+  const { inCart, loading, handleAddToCart, handleRemoveFromCart } = useProductActions(
+    data?.id,
+    data?.masterVariant.id
+  );
 
   if (isLoading) {
     return <Loader />;
@@ -144,7 +54,7 @@ export const ProductPage = () => {
 
         <div className={styles.buttonsWrapper}>
           {!inCart ? (
-            <Button onClick={handleAddToCart} className={styles.addBtn}>
+            <Button onClick={handleAddToCart} className={styles.addBtn} disabled={loading}>
               Add to cart
             </Button>
           ) : (
@@ -152,7 +62,7 @@ export const ProductPage = () => {
               <div className={styles.inCartWrapper}>
                 <CheckIcon className={styles.checkIcon} /> In cart
               </div>
-              <Button onClick={handleRemoveFromCart} className={styles.removeBtn}>
+              <Button onClick={handleRemoveFromCart} className={styles.removeBtn} disabled={loading}>
                 Remove from cart
               </Button>
             </>
