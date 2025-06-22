@@ -60,3 +60,5 @@ export const teamMembers = [
     contributions: ['CommerceTools Project and API Client Setup', 'Detailed Product Page Implementation'],
   },
 ];
+
+export const followImages = Array.from({ length: 6 }, (_, index) => `./images/follow-us-${index + 1}.png`);
