@@ -1,4 +1,4 @@
-import { fetchFromApi } from '@/api/platformApi';
+import { fetchFromApi } from '@/api/platform-api';
 import { getRequestToken } from '@/utils/request-token-handler';
 import type {
   Category,

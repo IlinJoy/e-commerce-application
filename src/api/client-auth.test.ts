@@ -1,5 +1,5 @@
-import { loginCustomer } from './clientAuth';
-import { fetchFromApi, getCustomerToken } from '@/api/platformApi';
+import { loginCustomer } from './client-auth';
+import { fetchFromApi, getCustomerToken } from '@/api/platform-api';
 import { getRequestToken } from '@/utils/request-token-handler';
 
 vi.mock('@/api/platformApi', () => ({

@@ -10,7 +10,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useToast } from '@/context/toast-provider';
 import { useToken } from '@/context/token-context';
 import { profileSchema, ProfileFormInputs } from '@/validation/profile-validation';
-import { fetchFromApi } from '@/api/platformApi';
+import { fetchFromApi } from '@/api/platform-api';
 import type { Customer } from '@commercetools/platform-sdk';
 import { PasswordChangeDialog } from './password-modal';
 import styles from './profile.module.scss';

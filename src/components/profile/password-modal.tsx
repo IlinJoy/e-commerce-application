@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import type { PasswordInputs } from '@/validation/profile-validation';
 import { passwordSchema } from '@/validation/profile-validation';
 import { FormInput } from '@/components/input/input';
-import { fetchFromApi, getCustomerToken } from '@/api/platformApi';
+import { fetchFromApi, getCustomerToken } from '@/api/platform-api';
 import { useToast } from '@/context/toast-provider';
 import { useToken } from '@/context/token-context';
 import type { Customer } from '@commercetools/platform-sdk';

@@ -74,7 +74,7 @@ export function AboutPage() {
 
         <div className={styles.wrapperTeam}>
           {teamMembers.map((member) => (
-            <TeamMemberCard member={member} />
+            <TeamMemberCard key={member.name} member={member} />
           ))}
         </div>
       </Container>

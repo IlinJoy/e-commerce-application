@@ -1,7 +1,7 @@
 import { getProductByKey } from '@/api/catalog';
 import { useQuery } from '@tanstack/react-query';
 import styles from './product-page.module.scss';
-import { getProductIdFromUrl } from '@/utils/getProductKeyFromUrl';
+import { getProductIdFromUrl } from '@/utils/get-product-key-from-url';
 import { NotFoundPage } from '../not-found-page/not-found-page';
 import Typography from '@mui/material/Typography';
 import { ProductImageBlock } from '@/components/product-image-block/product-image-block';
@@ -15,8 +15,8 @@ import { getRequestToken } from '@/utils/request-token-handler';
 import { cookieHandler } from '@/services/cookies/cookie-handler';
 import { getCartWithoutToken } from '@/api/cart';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/utils/constants/messages';
-import { addProductToCart } from '@/api/addProductToCart';
-import { removeProductFromCart } from '@/api/removeProductFromCart';
+import { addProductToCart } from '@/api/add-product-to-cart';
+import { removeProductFromCart } from '@/api/remove-product-from-cart';
 import CheckIcon from '@mui/icons-material/Check';
 
 export const ProductPage = () => {

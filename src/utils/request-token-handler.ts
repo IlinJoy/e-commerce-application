@@ -1,5 +1,5 @@
 import { cookieHandler } from '@/services/cookies/cookie-handler';
-import { getAnonymousToken } from '@/api/platformApi';
+import { getAnonymousToken } from '@/api/platform-api';
 
 export const getRequestToken = async () => {
   const token = cookieHandler.get('token') || cookieHandler.get('anonToken') || (await handleAnonToken());

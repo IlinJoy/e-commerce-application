@@ -4,7 +4,7 @@ import { describe, it, vi, expect } from 'vitest';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter } from 'react-router';
 
-import { fetchFromApi } from '@/api/platformApi';
+import { fetchFromApi } from '@/api/platform-api';
 import { Profile } from '@/components/profile/profile';
 
 const queryClient = new QueryClient();

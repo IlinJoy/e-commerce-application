@@ -1,5 +1,5 @@
 import { getRequestToken } from '@/utils/request-token-handler';
-import { fetchFromApi } from './platformApi';
+import { fetchFromApi } from './platform-api';
 import type { Cart, CartUpdateAction } from '@commercetools/platform-sdk';
 
 export const getCartWithoutToken = async () => {

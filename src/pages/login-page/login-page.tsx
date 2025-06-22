@@ -5,7 +5,7 @@ import type { LoginFormInputs } from '@/components/login-form/login-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema } from '@/validation/login-validation';
 import { useMutation } from '@tanstack/react-query';
-import { loginCustomer } from '@/api/clientAuth';
+import { loginCustomer } from '@/api/client-auth';
 import { useAuth } from '@/hooks/use-auth';
 import styles from './login-page.module.scss';
 import { useToast } from '@/context/toast-provider';
